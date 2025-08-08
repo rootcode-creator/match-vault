@@ -1,2 +1,7 @@
 @import "tailwindcss";
 
+@layer components {
+  .vertical-center {
+    height: calc(100vh - 64px);
+  }
+}
