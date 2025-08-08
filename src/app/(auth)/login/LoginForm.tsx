@@ -14,52 +14,57 @@ export default function LoginForm() {
     register,
     handleSubmit,
     formState: { isValid, errors },
-  } = useForm<LoginSchema>({resolver: zodResolver(loginSchema), mode: "onChange",});
+  } = useForm<LoginSchema>({
+    resolver: zodResolver(loginSchema),
+    mode: "onTouched",
+  });
   const onSubmit = (data: LoginSchema) => console.log(data);
 
   return (
-    <Card className="w-3/5 mx-auto">
-      <CardHeader className="flex flex-col items-center justify-center">
-        <div className="flex flex-col gap-2 items-center text-default">
-          <div className="flex flex-row items-center gap-3">
-            <GiPadlock size={30} />
-            <h1 className="text-3xl font-semibold">Login</h1>
+      <Card className="w-[500px] h-[450px] shadow-lg rounded-2xl bg-white border border-gray-100 flex flex-col justify-center">
+        <CardHeader className="flex flex-col items-center justify-center">
+          <div className="flex flex-col gap-2 items-center text-default">
+            <div className="flex flex-row items-center gap-3">
+              <GiPadlock size={30} />
+              <h1 className="text-3xl font-semibold">Login</h1>
+            </div>
+            <p className="text-neutral-500">Welcome back to MatchMe!</p>
           </div>
-          <p className="text-neutral-500">Welcome back to MatchMe!</p>
-        </div>
-      </CardHeader>
-      <CardBody>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="space-y-4">
-            <Input
-              defaultValue=""
-              label="Email"
-              variant="bordered"
-              {...register("email")}
-              isInvalid = {!! errors.email}
-              errorMessage = {
-                errors.email?.message as string 
-              }
-            />
-            <Input
-              defaultValue=""
-              label="Password"
-              variant="bordered"
-              type="password"
-              {...register("password")}
-              isInvalid = {!! errors.password}
-              errorMessage = {
-                errors.password?.message as string 
-              }
-            />
-            <Button fullWidth color="default" type="submit"
-            isDisabled = {!isValid}
-            >
-              Login
-            </Button>
-          </div>
-        </form>
-      </CardBody>
-    </Card>
+        </CardHeader>
+        <CardBody>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <div className="px-10 space-y-5 mt-6">
+              <Input
+                defaultValue=""
+                label="Email"
+                variant="bordered"
+                {...register("email")}
+                isInvalid={!!errors.email}
+                errorMessage={errors.email?.message as string}
+                className="w-6/12 mx-auto rounded-lg"
+              />
+              <Input
+                defaultValue=""
+                label="Password"
+                variant="bordered"
+                type="password"
+                {...register("password")}
+                isInvalid={!!errors.password}
+                errorMessage={errors.password?.message as string}
+                className="w-6/12 mx-auto rounded-lg"
+              />
+              <Button
+                fullWidth
+                color="default"
+                type="submit"
+                isDisabled={!isValid}
+                  className="block w-6/12 mx-auto h-10 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 font-medium"
+              >
+                Login
+              </Button>
+            </div>
+          </form>
+        </CardBody>
+      </Card>
   );
 }

@@ -9,7 +9,7 @@ export default function TopNav() {
   return (
     <Navbar
       maxWidth="full"
-      className="bg-gradient-to-r from-pink-400 via-red-400 to-pink-600"
+      className="bg-gradient-to-r from-pink-400 via-red-400 to-pink-600 flex items-center "
       classNames={{
         item: [
           "text-xl",
@@ -19,24 +19,27 @@ export default function TopNav() {
         ],
       }}
     >
-      <NavbarBrand as={Link} href="/" className="gap-3">
-        <GiSelfLove size={50} className="text-gray-200" />
-        <div className="font-bold text-3xl flex">
-          <span className="text-gray-200">MatchMe</span>
-        </div>
+     
+      <NavbarBrand as={Link} href="/" className="flex items-center gap-2 min-w-max">
+        <GiSelfLove size={40} className="text-gray-200" />
+        
+          <span className="text-gray-200 font-bold text-3xl">MatchMe</span>
       </NavbarBrand>
-      <NavbarContent justify="center" className="gap-8">
+     
+      
+      <NavbarContent className="flex-1 flex justify-center">
         <NavLink href="/members" label="Matches" />
         <NavLink href="/lists" label="Lists" />
         <NavLink href="/messages" label="Messages" />
       </NavbarContent>
-      <NavbarContent justify="end" className="gap-8">
+
+      <NavbarContent  className="min-w-max flex gap-4 items-center">
         <Button
           as={Link}
           href="/login"
           variant="bordered"
-          className="rounded-lg border border-white px-6 py-0 my-2 bg-transparent text-white font-semibold hover:bg-white/10 transition-colors"
-          size="sm"
+          className="rounded-lg border border-white px-3 py-0 my-3 bg-transparent text-white font-semibold hover:bg-white/10 transition-colors"
+          
         >
           Login
         </Button>
@@ -44,8 +47,8 @@ export default function TopNav() {
           as={Link}
           href="/register"
           variant="bordered"
-          className="rounded-lg border border-white px-6 py-0 my-2 bg-transparent text-white font-semibold hover:bg-white/10 transition-colors"
-          size="sm"
+          className="rounded-lg border border-white px-1 py-0 my-3 bg-transparent text-white font-semibold hover:bg-white/10 transition-colors"
+          
         >
           Register
         </Button>
