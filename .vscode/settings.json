@@ -1,0 +1,27 @@
+{
+  // Full white light theme for this workspace
+  "editor.quickSuggestions": {
+    "other": true,
+    "comments": true,
+    "strings": true
+  },
+  "editor.suggestOnTriggerCharacters": true,
+  
+  // Show the Welcome page on startup (has Pick a Color Theme)
+  "workbench.startupEditor": "welcomePage",
+  // Theme is not pinned at workspace level; choose any via Command Palette
+  // (Preferences: Color Theme) or Ctrl+K Ctrl+T
+  
+  // Disable auto code corrections/formatting
+  "editor.formatOnSave": false,
+  "editor.formatOnPaste": false,
+  "editor.formatOnType": false,
+  // No on-save code actions (ESLint/Prettier/organize imports)
+  "editor.codeActionsOnSave": {},
+  // Turn off ESLint/Prettier-driven formatting/fixes
+  "eslint.format.enable": false,
+  "prettier.enable": false,
+  // Don't auto-update imports when moving files
+  "typescript.updateImportsOnFileMove.enabled": "never",
+  "javascript.updateImportsOnFileMove.enabled": "never"
+}
