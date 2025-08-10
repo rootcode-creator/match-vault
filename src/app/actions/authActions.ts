@@ -73,6 +73,13 @@ export async function registerUser(data:RegisterSchema): Promise<ActionResult<Us
     }
 }
 
+
+export async function signOutUser(){
+    await signOut({redirectTo: '/'});
+}
+
+
+
 export async function getUserByEmail(email: string){
     return prisma.user.findUnique({where: {email}});
 }

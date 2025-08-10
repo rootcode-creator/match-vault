@@ -4,8 +4,14 @@ import Link from "next/link";
 import React from "react";
 import { GiSelfLove } from "react-icons/gi";
 import NavLink from "./NavLink";
+import UserMenu from "./UserMenu";
+import type { Session } from "next-auth";
 
-export default function TopNav() {
+type Props = {
+  user: Session["user"] | null;
+};
+
+export default function TopNav({ user }: Props) {
   return (
     <Navbar
       maxWidth="full"
@@ -34,7 +40,15 @@ export default function TopNav() {
         <NavLink href="/messages" label="Messages" />
       </NavbarContent>
 
-      <NavbarContent  className="min-w-max flex gap-4 items-center">
+  <NavbarContent  className="min-w-max flex gap-4 items-center mr-4 md:mr-6">
+
+
+      {user ? (
+        <UserMenu user={user} />
+      ):(
+
+        <>
+
         <Button
           as={Link}
           href="/login"
@@ -55,6 +69,8 @@ export default function TopNav() {
         >
           Register
         </Button>
+        </>
+      )}
       </NavbarContent>
     </Navbar>
   );
