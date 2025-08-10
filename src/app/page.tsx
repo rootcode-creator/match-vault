@@ -29,6 +29,7 @@ export default async function Home() {
         <button
           type="submit"
           className="inline-flex items-center gap-2 rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-800 hover:bg-gray-100"
+          
         >
           <FaRegSmile size={18} />
           Sign out
