@@ -10,6 +10,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema, LoginSchema } from "@/lib/schemas/LoginSchema";
 import { useRouter } from "next/navigation";
 import { signInUser } from "@/app/actions/authActions";
+import { toast } from "react-toastify";
 
 export default function LoginForm() {
   const {
@@ -30,7 +31,7 @@ export default function LoginForm() {
     if (result.status === "success") {
       router.push("/members");
     } else {
-      console.log(result.error as string);
+      toast.error(result.error as string);
     }
   };
 
