@@ -1,0 +1,57 @@
+"use client";
+import { calculateAge } from "@/lib/util";
+import { Card, CardBody, CardFooter, Image } from "@heroui/react";
+
+import type { Member } from "@prisma/client";
+import Link from "next/link";
+import React from "react";
+
+
+
+type Props = {
+    member: Member;
+}
+
+export default function MemberCard({
+    member,
+}: Props) {
+
+    return (
+        <Card
+            className="w-full shadow-md rounded-2xl border border-default-200 bg-white hover:shadow-lg transition-shadow transform-gpu hover:-translate-y-0.5 focus-visible:outline-none"
+        >
+            <CardBody className="p-0">
+                <Link
+                    href={`/members/${member.userId}`}
+                    aria-label={`View ${member.name}'s profile`}
+                    className="block rounded-2xl overflow-hidden transform-gpu transition-transform duration-200 hover:scale-[1.01] active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+                >
+                    <Image
+                        isZoomed
+                        draggable={false}
+                        alt={`${member.name}'s photo`}
+                        src={member.image || "/images/user.png"}
+                        classNames={{
+                            wrapper: "w-full aspect-[4/3] overflow-hidden",
+                            img: "w-full h-full object-cover rounded-2xl",
+                        }}
+                    />
+                </Link>
+            </CardBody>
+            <CardFooter className="flex flex-col items-start gap-1 px-2 sm:px-3 pb-3 pt-2 bg-transparent select-text">
+                <div className="flex items-baseline gap-1 min-w-0 leading-tight">
+                    <span className="font-semibold text-[15px] md:text-base text-foreground truncate select-text">
+                        {member.name}
+                    </span>
+                    <span className="font-semibold text-[15px] md:text-base text-foreground whitespace-nowrap select-text">
+                        , {calculateAge(member.dateOfBirth)}
+                    </span>
+                </div>
+                <span className="text-sm text-default-500 truncate max-w-full select-text">{member.city}</span>
+            </CardFooter>
+        </Card>
+    );
+
+
+
+}
