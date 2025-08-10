@@ -17,8 +17,8 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <Providers>
-           <TopNav />
-          {children}
+          <TopNav />
+          <main className="pt-8"> {children} </main>
         </Providers>
       </body>
     </html>

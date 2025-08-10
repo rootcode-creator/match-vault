@@ -8,7 +8,7 @@
   "editor.suggestOnTriggerCharacters": true,
   
   // Show the Welcome page on startup (has Pick a Color Theme)
-  "workbench.startupEditor": "welcomePage",
+  "workbench.startupEditor": "none",
   // Theme is not pinned at workspace level; choose any via Command Palette
   // (Preferences: Color Theme) or Ctrl+K Ctrl+T
   

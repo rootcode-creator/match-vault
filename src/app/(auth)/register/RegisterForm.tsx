@@ -73,6 +73,7 @@ export default function RegisterForm() {
       <CardBody>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="space-y-4">
+           
             <Input
               defaultValue=""
               label="Name"
@@ -100,10 +101,20 @@ export default function RegisterForm() {
                 errors.password?.message
               }
             />
+
+             {(
+              // Show server error like "User already exists"
+              (errors as any)?.root?.serverError?.message
+            ) && (
+              <p role="alert" className="text-sm text-red-500">
+                {(errors as any).root.serverError.message}
+              </p>
+            )}
             <Button
               isLoading={isSubmitting}
               isDisabled={!isValid}
               fullWidth
+              disableRipple
               color="default"
               type="submit"
               className="mt-2 h-10 bg-[#e5e7eb] text-black font-medium rounded-lg"

@@ -70,6 +70,7 @@ export default function LoginForm() {
             />
             <Button
               fullWidth
+              disableRipple
               color="default"
               type="submit"
               isDisabled={!isValid}

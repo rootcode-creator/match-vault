@@ -9,7 +9,8 @@ export default function TopNav() {
   return (
     <Navbar
       maxWidth="full"
-      className="bg-gradient-to-r from-pink-400 via-red-400 to-pink-600 flex items-center "
+      position="sticky"
+      className="bg-gradient-to-r from-pink-400 via-red-400 to-pink-600 flex items-center h-20 top-0 z-50"
       classNames={{
         item: [
           "text-xl",
@@ -38,6 +39,7 @@ export default function TopNav() {
           as={Link}
           href="/login"
           variant="bordered"
+          disableRipple
           className="rounded-lg border border-white px-3 py-0 my-3 bg-transparent text-white font-semibold hover:bg-white/10 transition-colors"
           
         >
@@ -47,6 +49,7 @@ export default function TopNav() {
           as={Link}
           href="/register"
           variant="bordered"
+          disableRipple
           className="rounded-lg border border-white px-1 py-0 my-3 bg-transparent text-white font-semibold hover:bg-white/10 transition-colors"
           
         >
