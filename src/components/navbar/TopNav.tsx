@@ -13,7 +13,7 @@ type Props = {
 
 export default function TopNav({ user }: Props) {
   return (
-    <header className="bg-gradient-to-r from-pink-400 via-red-400 to-pink-600 pl-3 sm:pl-5">
+    <header className="bg-[#f28482] pl-3 sm:pl-5">
       <Navbar
         maxWidth="full"
         position="sticky"

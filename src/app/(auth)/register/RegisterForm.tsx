@@ -197,7 +197,7 @@ export default function RegisterForm() {
                 disableRipple
                 color="default"
                 type="submit"
-                className="mt-2 h-10 rounded-lg bg-gradient-to-r from-pink-500 to-rose-500 text-white font-semibold shadow-md hover:shadow-lg active:translate-y-px focus:outline-none focus-visible:outline-none"
+                className="mt-2 h-10 rounded-lg bg-[#ffd6ba] text-black font-semibold shadow-md hover:shadow-lg active:translate-y-px focus:outline-none focus-visible:outline-none"
               >
                 Register
               </Button>
