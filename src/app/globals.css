@@ -84,3 +84,15 @@
   animation: loader-wave 1.2s ease-in-out infinite;
   transform-origin: center bottom;
 }
+
+/* Hide NextUI/HeroUI DevTools floating button */
+#nextui-devtools,
+#heroui-devtools,
+button[aria-label="Open NextUI devtools"],
+button[aria-label="Open HeroUI devtools"],
+[data-nextui-devtools],
+[data-heroui-devtools] {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}

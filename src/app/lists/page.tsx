@@ -1,7 +1,26 @@
-import React from 'react'
+import React from "react";
+import {
+  fetchCurrentUserLikeIds,
+  fetchLikeMembers,
+} from "../actions/likeActions";
+import ListsTab from "./ListsTab";
 
-export default function ListPage() {
+export default async function ListsPage({
+  searchParams,
+}: {
+  searchParams: { type: string };
+}) {
+  const likeIds = await fetchCurrentUserLikeIds();
+  const members = await fetchLikeMembers(
+    searchParams.type
+  );
+
   return (
-    <div>ListPage</div>
-  )
+    <div>
+      <ListsTab
+        members={members}
+        likeIds={likeIds}
+      />
+    </div>
+  );
 }

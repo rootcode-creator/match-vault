@@ -1,4 +1,5 @@
 "use client";
+import LikeButton from "@/components/LikeButton";
 import { calculateAge } from "@/lib/util";
 import { Card, CardBody, CardFooter, Image } from "@heroui/react";
 
@@ -10,12 +11,20 @@ import React from "react";
 
 type Props = {
     member: Member;
+    likeIds: string[];
 }
 
 export default function MemberCard({
     member,
+    likeIds,
 }: Props) {
 
+    const hasLiked = likeIds.includes(member.userId);
+
+    const preventLinkAction = (e: React.MouseEvent) =>{
+        e.preventDefault();
+        e.stopPropagation
+    }
     return (
         <Card
             className="w-full shadow-md rounded-2xl border border-default-200 bg-white hover:shadow-lg transition-shadow transform-gpu hover:-translate-y-0.5 focus-visible:outline-none"
@@ -37,6 +46,16 @@ export default function MemberCard({
                         }}
                     />
                 </Link>
+
+                <div onClick={preventLinkAction}>
+                    <div className="absolute top-3 right-3 z-50">
+                        <LikeButton
+                            targetId={member.userId}
+                            hasLiked={hasLiked}
+                        />
+                    </div>
+                    </div>
+
             </CardBody>
             <CardFooter className="flex flex-col items-start gap-1 px-2 sm:px-3 pb-3 pt-2 bg-transparent select-text">
                 <div className="flex items-baseline gap-1 min-w-0 leading-tight">
