@@ -2,15 +2,16 @@ import { getMemberByUserId } from "@/app/actions/memberActions";
 import { notFound } from "next/navigation";
 import React, { ReactNode } from "react";
 import MemberSidebar from "../MemberSidebar";
+import { Card } from "@heroui/react";
+import { getAuthUserId } from "@/app/actions/authActions";
 
 export default async function Layout({
   children,
-  params,
 }: {
   children: ReactNode;
-  params: Promise<{ userId: string }>;
 }) {
-  const { userId } = await params;
+  const userId = await getAuthUserId();
+
   const member = await getMemberByUserId(userId);
   if (!member) return notFound();
 
@@ -29,7 +30,7 @@ export default async function Layout({
     <div className="container mx-auto px-4 sm:px-6 lg:px-8 mt-6 mb-10">
       <div className="grid grid-cols-12 gap-6">
         <aside className="col-span-12 lg:col-span-3">
-          <MemberSidebar member={member}  navLinks={navLinks}/>
+          <MemberSidebar member={member} navLinks={navLinks} />
         </aside>
 
         <main className="col-span-12 lg:col-span-9">
@@ -40,4 +41,12 @@ export default async function Layout({
       </div>
     </div>
   );
+}
+
+export function MemberEditLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return <div className="px-4 py-6">{children}</div>;
 }

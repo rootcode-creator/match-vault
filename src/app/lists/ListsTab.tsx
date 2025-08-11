@@ -6,7 +6,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import React, { useTransition } from "react";
 import { Key } from "react";
 import MemberCard from "../members/MemberCard";
-import LoadingComponent from "@/app/members/[userId]/loading";
+import Loading from "@/app/members/[userId]/loading";
 
 type Props = {
   members: Member[];
@@ -91,7 +91,7 @@ export default function ListsTab({ members, likeIds }: Props) {
             className={`${accents[item.id].hover} ${accents[item.id].selectedText} ${accents[item.id].selectedRing} ${accents[item.id].selectedBg}`}
           >
             {isPending ? (
-              <LoadingComponent />
+              <Loading />
             ) : members.length > 0 ? (
               <div className="w-full mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-12 sm:pb-16">
                 <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-8">

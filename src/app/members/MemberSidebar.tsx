@@ -1,60 +1,80 @@
 "use client";
 
-import { Member } from "@prisma/client";
 import { calculateAge } from "@/lib/util";
+import {
+  Button,
+  Card,
+  CardBody,
+  CardFooter,
+  Divider,
+  Image,
+} from "@heroui/react";
+import { Member } from "@prisma/client";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import React from "react";
 
-type Props = { member: Member };
+type Props = {
+  member: Member;
+  navLinks:{ name: string, href:string}[];
+};
 
-export default function MemberSidebar({ member }: Props) {
+export default function MemberSidebar({
+  member,
+  navLinks,
+}: Props) {
+  const pathname = usePathname();
+  
+
   return (
-    <div className="rounded-2xl border border-default-200 bg-white shadow-sm p-4 sm:p-5 h-full">
-      <div className="flex flex-col items-center text-center">
-        <img
-          src={member.image || "/images/user.png"}
-          alt={member.name}
-          className="w-24 h-24 sm:w-28 sm:h-28 rounded-full object-cover shadow"
-          draggable={false}
-        />
-        <div className="mt-3">
-          <div className="font-semibold">
-            {member.name}, {calculateAge(member.dateOfBirth)}
+    <Card className="w-full mt-10 items-center h-[80vh]">
+      <Image
+        height={200}
+        width={200}
+        src={member.image || "/images/user.png"}
+        alt="User profile main image"
+        className="rounded-full mt-6 aspect-square object-cover"
+      />
+      <CardBody>
+        <div className="flex flex-col items-center">
+          <div className="text-2xl">
+            {member.name},{" "}
+            {calculateAge(member.dateOfBirth)}
           </div>
-          <div className="text-sm text-default-500">
-            {member.city || "Unknown"}, Canada
+          <div className="text-sm text-neutral-500">
+            {member.city}, {member.country}
           </div>
         </div>
-      </div>
-
-      <nav className="mt-6 space-y-3">
-        <Link
-          href={`/members/${member.userId}`}
-          className="block text-sm font-medium text-primary"
-        >
-          Profile
-        </Link>
-        <Link
-          href={`/members/${member.userId}/photos`}
-          className="block text-sm text-default-600 hover:text-foreground"
-        >
-          Photos
-        </Link>
-        <Link
-          href={`/members/${member.userId}/chat`}
-          className="block text-sm text-default-600 hover:text-foreground"
-        >
-          Chat
-        </Link>
-      </nav>
-
-      <div className="mt-6">
-        <Link
+        <Divider className="my-3" />
+        <nav className="flex flex-col p-4 ml-4 text-2xl gap-4">
+          {navLinks.map((link) => (
+            <Link
+              href={link.href}
+              key={link.name}
+              className={`block rounded 
+                                ${
+                                  pathname ===
+                                  link.href
+                                    ? "text-default"
+                                    : "hover:text-default/50"
+                                }`}
+            >
+              {link.name}
+            </Link>
+          ))}
+        </nav>
+      </CardBody>
+      <CardFooter>
+        <Button
+          as={Link}
           href="/members"
-          className="inline-flex w-full items-center justify-center rounded-xl border-2 border-primary px-4 py-2 text-sm font-medium text-primary hover:bg-primary/5 transition"
+          fullWidth
+          color="default"
+          variant="bordered"
         >
           Go back
-        </Link>
-      </div>
-    </div>
+        </Button>
+      </CardFooter>
+    </Card>
   );
 }
