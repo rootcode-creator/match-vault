@@ -18,7 +18,7 @@
     "bcryptjs": "^3.0.2",
     "date-fns": "^3.6.0",
     "framer-motion": "^12.23.12",
-    "next": "15.4.5",
+    "next": "15.5.7",
     "next-auth": "^5.0.0-beta.29",
     "react": "19.1.0",
     "react-dom": "19.1.0",
