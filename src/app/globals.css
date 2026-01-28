@@ -1,0 +1,99 @@
+@import "tailwindcss";
+
+@layer components {
+  .vertical-center {
+  height: calc(100vh - 64px);
+  }
+}
+
+.avatar-circle {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 2px solid #fff; /* Optional: white border for contrast */
+  box-shadow: 0 0 0 2px rgba(255,255,255,0.2); /* Optional: subtle shadow */
+  object-fit: cover;
+  background: #fff;
+}
+.nav-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 9999px; /* one clean circle */
+  background-color: rgba(255, 255, 255, 0.25); /* soft overlay without overriding image */
+  box-shadow: none; /* no separate ring/shadow */
+  border: none; /* remove visible ring */
+  overflow: hidden; /* ensure image stays circular */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav-avatar img,
+.nav-avatar picture,
+.nav-avatar svg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 9999px;
+}
+
+/* shift avatar slightly left from the right edge */
+.nav-avatar--shift {
+  margin-right: 12px;
+}
+
+.user-menu {
+  min-width: 200px;
+  padding: 8px;
+  border-radius: 12px;
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.user-menu__header {
+  padding: 8px 12px;
+  font-size: 0.875rem;
+  color: #6b7280;
+  cursor: default;
+}
+
+.user-menu__item {
+  padding: 8px 12px;
+  border-radius: 8px;
+  color: #111827;
+  transition: background-color 120ms ease;
+}
+.user-menu__item:hover {
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.user-menu__item--danger {
+  color: #dc2626;
+}
+.user-menu__item--danger:hover {
+  background: rgba(220, 38, 38, 0.08);
+}
+
+/* Wave loader */
+@keyframes loader-wave {
+  0%, 40%, 100% { transform: scaleY(0.4); }
+  20% { transform: scaleY(1); }
+}
+.loader-wave-bar {
+  animation: loader-wave 1.2s ease-in-out infinite;
+  transform-origin: center bottom;
+}
+
+/* Hide NextUI/HeroUI DevTools floating button */
+#nextui-devtools,
+#heroui-devtools,
+button[aria-label="Open NextUI devtools"],
+button[aria-label="Open HeroUI devtools"],
+[data-nextui-devtools],
+[data-heroui-devtools] {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
