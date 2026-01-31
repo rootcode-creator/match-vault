@@ -1,11 +1,12 @@
 import { NextResponse } from "next/server";
-import { auth } from "./auth";
+import type { NextRequest } from "next/server";
+import { getToken } from "next-auth/jwt";
 import { authRoutes, publicRoutes } from "./routes";
 
-
-export default auth( (req) => {
-    const {nextUrl} = req;
-    const isLoggedIn = !!req.auth;
+export default async function middleware(req: NextRequest) {
+    const { nextUrl } = req;
+    const token = await getToken({ req, secret: process.env.AUTH_SECRET });
+    const isLoggedIn = !!token;
 
     const isPublic = publicRoutes.includes(nextUrl.pathname);
     const isAuthRoute = authRoutes.includes(nextUrl.pathname);
@@ -27,7 +28,7 @@ export default auth( (req) => {
     }
 
     return NextResponse.next();
-})
+}
 
 export const config ={
    matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)']
