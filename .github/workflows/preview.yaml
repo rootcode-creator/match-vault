@@ -30,6 +30,14 @@ jobs:
           printf "%s" "$DOTENV" > .env
           printf "%s" "$DOTENV" > .env.production
           printf "%s" "$DOTENV" > .vercel/.env.production.local
+      - name: Verify required env vars present
+        run: |
+          if grep -qE '^NEXT_PUBLIC_PUSHER_APP_KEY=' .env 2>/dev/null; then
+            echo "Found NEXT_PUBLIC_PUSHER_APP_KEY in .env"
+            exit 0
+          fi
+          echo "Missing NEXT_PUBLIC_PUSHER_APP_KEY in dotenv. Add it to the GitHub Environment secret PRODUCTION."
+          exit 1
       - name: Install dependencies (legacy peer deps)
         run: npm ci --legacy-peer-deps
       - name: Build Project Artifacts

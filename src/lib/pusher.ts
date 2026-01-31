@@ -2,6 +2,7 @@ import PusherServer from "pusher";
 import PusherClient from "pusher-js";
 
 const CLUSTER = "ap1";
+const PUSHER_KEY = process.env.NEXT_PUBLIC_PUSHER_APP_KEY;
 
 declare global {
   var pusherServerInstance: PusherServer | undefined;
@@ -15,28 +16,29 @@ const globalForPusher = globalThis as typeof globalThis & {
 
 if (typeof window === "undefined") {
   if (!globalForPusher.pusherServerInstance) {
-    globalForPusher.pusherServerInstance = new PusherServer({
-      appId: process.env.PUSHER_APP_ID!,
-      key: process.env.NEXT_PUBLIC_PUSHER_APP_KEY!,
-      secret: process.env.PUSHER_APP_SECRET!,
-      cluster: CLUSTER,
-      useTLS: true,
-    });
+    if (process.env.PUSHER_APP_ID && PUSHER_KEY && process.env.PUSHER_APP_SECRET) {
+      globalForPusher.pusherServerInstance = new PusherServer({
+        appId: process.env.PUSHER_APP_ID,
+        key: PUSHER_KEY,
+        secret: process.env.PUSHER_APP_SECRET,
+        cluster: CLUSTER,
+        useTLS: true,
+      });
+    }
   }
 }
 
 if (typeof window !== "undefined") {
   if (!globalForPusher.pusherClientInstance) {
-    globalForPusher.pusherClientInstance = new PusherClient(
-      process.env.NEXT_PUBLIC_PUSHER_APP_KEY!,
-      {
+    if (PUSHER_KEY) {
+      globalForPusher.pusherClientInstance = new PusherClient(PUSHER_KEY, {
         cluster: CLUSTER,
         channelAuthorization: {
           endpoint: "/api/pusher-auth",
           transport: "ajax",
         },
-      }
-    );
+      });
+    }
   }
 }
 
