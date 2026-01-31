@@ -25,6 +25,7 @@ jobs:
       - name: Create dotenv files from GitHub Environment secrets
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          DIRECT_URL: ${{ secrets.DIRECT_URL }}
           AUTH_SECRET: ${{ secrets.AUTH_SECRET }}
           NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME: ${{ secrets.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME }}
           NEXT_PUBLIC_CLOUDINARY_API_KEY: ${{ secrets.NEXT_PUBLIC_CLOUDINARY_API_KEY }}
@@ -36,6 +37,7 @@ jobs:
           mkdir -p .vercel
           {
             printf 'DATABASE_URL="%s"\n' "$DATABASE_URL"
+            printf 'DIRECT_URL="%s"\n' "$DIRECT_URL"
             printf 'AUTH_SECRET="%s"\n' "$AUTH_SECRET"
             printf '\n'
             printf 'NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME="%s"\n' "$NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME"
@@ -56,7 +58,7 @@ jobs:
             exit 1
           fi
           missing=0
-          for key in NEXT_PUBLIC_PUSHER_APP_KEY DATABASE_URL AUTH_SECRET; do
+          for key in NEXT_PUBLIC_PUSHER_APP_KEY DATABASE_URL DIRECT_URL AUTH_SECRET; do
             if ! grep -qE "^[[:space:]]*${key}[[:space:]]*=" .env; then
               echo "Missing ${key} in generated .env"
               missing=1
