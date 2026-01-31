@@ -8,11 +8,13 @@ import MessageTable from "./MessageTable"
 export default async function MessagesPage({
   searchParams,
 }: {
-  searchParams: { container: string };
+  searchParams: Promise<{ container?: string }>;
 }) {
 
+  const { container } = await searchParams;
+
   const messages = await getMessagesByContainer(
-    searchParams.container
+    container ?? "inbox"
   );
 
   console.log({ messages });

@@ -2,13 +2,29 @@
 
 import { Button, Card, CardBody, CardHeader, Input } from "@heroui/react";
 import React, { useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, type FieldErrors, type FieldValues } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { GiPadlock } from "react-icons/gi";
 import { FiMail, FiLock, FiEye, FiEyeOff } from "react-icons/fi";
 import { signInUser } from "@/app/actions/authActions";
 import type { LoginSchema } from "@/lib/schemas/LoginSchema";
 import { toast } from "react-hot-toast";
+import type { ZodIssue } from "zod";
+
+type RootServerError = {
+  root?: {
+    serverError?: {
+      message?: unknown;
+    };
+  };
+};
+
+function getRootServerErrorMessage<T extends FieldValues>(
+  errors: FieldErrors<T>
+): string | undefined {
+  const message = (errors as unknown as RootServerError).root?.serverError?.message;
+  return typeof message === "string" ? message : undefined;
+}
 
 export default function LoginForm() {
   const router = useRouter();
@@ -35,11 +51,10 @@ export default function LoginForm() {
 
     // Show a toast and map possible field errors from server
     if (Array.isArray(result.error)) {
-      result.error.forEach((e: any, idx: number) => {
-        const fieldName = (e?.path?.join?.(".") ?? "root") as
-          | "email"
-          | "password"
-          | "root";
+      result.error.forEach((e: ZodIssue, idx: number) => {
+        const issuePath = e.path.map(String).join(".");
+        const fieldName: "email" | "password" | "root" =
+          issuePath === "email" || issuePath === "password" ? issuePath : "root";
         if (fieldName === "root") {
           setError("root.serverError", { type: "server", message: e.message });
         } else {
@@ -161,9 +176,9 @@ export default function LoginForm() {
             </div>
 
             {/* Non-field server error */}
-            {(errors as any)?.root?.serverError?.message && (
+            {getRootServerErrorMessage(errors) && (
               <p role="alert" className="w-full max-w-sm mx-auto text-sm text-black">
-                {(errors as any).root.serverError.message}
+                {getRootServerErrorMessage(errors)}
               </p>
             )}
 
