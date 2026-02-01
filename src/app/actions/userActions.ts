@@ -7,6 +7,9 @@ import { getAuthUserId } from "./authActions";
 import { prisma } from "@/lib/prisma";
 import { cloudinary } from "@/lib/cloudinary";
 
+const shouldExposeError =
+    process.env.DEBUG_ERRORS === 'true' || process.env.NODE_ENV !== 'production';
+
 
 
 export async function updateMemberProfile(data: MemberEditSchema, nameUpdated: boolean ): Promise <ActionResult<Member>> {
@@ -39,7 +42,8 @@ export async function updateMemberProfile(data: MemberEditSchema, nameUpdated: b
         return {status:'success', data:member}
     } catch (error) {
         console.error('updateMemberProfile failed', error);
-        return {status: 'error', error: 'Something went wrong'}
+        const message = error instanceof Error ? error.message : 'Unknown error';
+        return {status: 'error', error: shouldExposeError ? message : 'Something went wrong'}
     }
 }
 

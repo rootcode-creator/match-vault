@@ -9,6 +9,9 @@ import { User } from '@prisma/client';
 import bcrypt from 'bcryptjs';
 import { AuthError } from 'next-auth';
 
+const shouldExposeError =
+    process.env.DEBUG_ERRORS === 'true' || process.env.NODE_ENV !== 'production';
+
 
 export async function signInUser(data: LoginSchema): Promise<ActionResult<string>>{
     try {
@@ -21,18 +24,22 @@ export async function signInUser(data: LoginSchema): Promise<ActionResult<string
 
         return {status: 'success', data: 'Logged in'}
     } catch (error) {
-        console.log(error);
+        console.error('signInUser failed', error);
         if (error instanceof AuthError) {
             switch (error.type) {
                 case 'CredentialsSignin':
                     return {status: 'error', error: 'Invalid credentials'}
                     
                 default:
-                    return {status: 'error', error: 'Something went wrong'}
+                    return {
+                        status: 'error',
+                        error: shouldExposeError ? error.message : 'Something went wrong'
+                    }
             }
             
         }else{
-            return {status: 'error', error: 'Something else went wrong'}
+            const message = error instanceof Error ? error.message : 'Unknown error';
+            return {status: 'error', error: shouldExposeError ? message : 'Something else went wrong'}
 
         }
         
@@ -84,7 +91,8 @@ export async function registerUser(data:RegisterSchema): Promise<ActionResult<Us
 
     }catch(error){
         console.error('registerUser failed', error);
-        return{status: 'error', error: 'Something went wrong'}
+        const message = error instanceof Error ? error.message : 'Unknown error';
+        return{status: 'error', error: shouldExposeError ? message : 'Something went wrong'}
     }
 }
 

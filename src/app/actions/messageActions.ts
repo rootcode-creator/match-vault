@@ -9,6 +9,9 @@ import { mapMessageToMessageDto } from '@/lib/mappings';
 import { getPusherServer } from "@/lib/pusher";
 import { createChatId } from "@/lib/util";
 
+const shouldExposeError =
+    process.env.DEBUG_ERRORS === 'true' || process.env.NODE_ENV !== 'production';
+
 
 export async function createMessage(recipientUserId: string, data: MessageSchema): Promise<ActionResult<MessageDto>> {
     try{
@@ -37,7 +40,8 @@ export async function createMessage(recipientUserId: string, data: MessageSchema
         return {status: 'success', data: messageDto};
     } catch (error){
         console.error('createMessage failed', error);
-        return {status: 'error', error: 'Something went wrong'}
+        const message = error instanceof Error ? error.message : 'Unknown error';
+        return {status: 'error', error: shouldExposeError ? message : 'Something went wrong'}
     }
 
 }
