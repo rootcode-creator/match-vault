@@ -5,7 +5,8 @@ import { authRoutes, publicRoutes } from "./routes";
 
 export default async function middleware(req: NextRequest) {
     const { nextUrl } = req;
-    const token = await getToken({ req, secret: process.env.AUTH_SECRET });
+    const secret = process.env.AUTH_SECRET ?? process.env.NEXTAUTH_SECRET;
+    const token = await getToken({ req, secret });
     const isLoggedIn = !!token;
 
     const isPublic = publicRoutes.includes(nextUrl.pathname);
