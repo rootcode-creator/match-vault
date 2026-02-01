@@ -7,7 +7,6 @@ import { registerSchema, RegisterSchema } from '@/lib/schemas/RegisterSchema';
 import { ActionResult } from '@/types';
 import { User } from '@prisma/client';
 import bcrypt from 'bcryptjs';
-import { error } from 'console';
 import { AuthError } from 'next-auth';
 
 
@@ -84,7 +83,7 @@ export async function registerUser(data:RegisterSchema): Promise<ActionResult<Us
 
 
     }catch(error){
-        console.log(error);
+        console.error('registerUser failed', error);
         return{status: 'error', error: 'Something went wrong'}
     }
 }

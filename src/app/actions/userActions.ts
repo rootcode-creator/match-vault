@@ -38,7 +38,7 @@ export async function updateMemberProfile(data: MemberEditSchema, nameUpdated: b
         })
         return {status:'success', data:member}
     } catch (error) {
-        console.log(error);
+        console.error('updateMemberProfile failed', error);
         return {status: 'error', error: 'Something went wrong'}
     }
 }
