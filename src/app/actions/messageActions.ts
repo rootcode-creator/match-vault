@@ -12,10 +12,38 @@ import { createChatId } from "@/lib/util";
 const shouldExposeError =
     process.env.DEBUG_ERRORS === 'true' || process.env.NODE_ENV !== 'production';
 
+async function ensureMemberForUserId(userId: string) {
+    const user = await prisma.user.findUnique({
+        where: { id: userId },
+        select: { id: true, name: true, image: true },
+    });
+
+    if (!user) {
+        throw new Error('User not found');
+    }
+
+    await prisma.member.upsert({
+        where: { userId: user.id },
+        create: {
+            userId: user.id,
+            name: user.name ?? 'New Member',
+            gender: 'unspecified',
+            dateOfBirth: new Date('1970-01-01'),
+            description: '',
+            city: '',
+            country: '',
+            image: user.image ?? '/images/user.png',
+        },
+        update: {},
+    });
+}
+
 
 export async function createMessage(recipientUserId: string, data: MessageSchema): Promise<ActionResult<MessageDto>> {
     try{
         const userId = await getAuthUserId();
+        await ensureMemberForUserId(userId);
+        await ensureMemberForUserId(recipientUserId);
         const validated = messageSchema.safeParse(data);
         if(!validated.success) return {status: 'error', error : validated.error.errors}
 
