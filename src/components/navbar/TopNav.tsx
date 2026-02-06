@@ -6,6 +6,7 @@ import React from "react";
 import { GiSelfLove } from "react-icons/gi";
 import NavLink from "./NavLink";
 import UserMenu from "./UserMenu";
+import FiltersWrapper from "./FiltersWrapper";
 
 type UserInfo = {
   name: string | null;
@@ -18,6 +19,7 @@ type Props = {
 
 export default function TopNav({ userInfo }: Props) {
   return (
+    <>
     <header className="bg-gradient-to-r from-pink-400 via-red-400 to-pink-600 pl-3 sm:pl-5">
       <Navbar
         maxWidth="full"
@@ -76,5 +78,7 @@ export default function TopNav({ userInfo }: Props) {
         </NavbarContent>
       </Navbar>
     </header>
+    <FiltersWrapper />
+</>
   );
 }
