@@ -73,17 +73,17 @@ export default function Filters() {
                         size="md"
                         minValue={18}
                         maxValue={100}
-                        step={5}
+                        step={2}
                         showSteps
                         value={age}
                         onChange={(value) => setAge(Number(value))}
                         aria-label="Age range"
                         color="foreground"
                         classNames={{
-                            track: "h-1 bg-black rounded-full",
-                            filler: "h-1 bg-black rounded-full",
+                            track: "h-1 bg-pink-600 rounded-full",
+                            filler: "h-1 bg-pink-600 rounded-full",
                             step: "w-1 h-1 bg-default-400 rounded-full data-[in-range=true]:bg-default-400",
-                            thumb: "w-5 h-5 bg-white border-2 border-foreground shadow-sm",
+                            thumb: "w-5 h-5 bg-white border-2 border-pink-600 shadow-sm",
                         }}
                     />
 
@@ -103,8 +103,10 @@ export default function Filters() {
                         onValueChange={setWithPhoto}
                         aria-label='Filter: with photo'
                         classNames={{
-                            wrapper: "w-14 h-7 bg-default-300 group-data-[selected=true]:bg-default-400",
-                            thumb: "w-6 h-6 bg-white shadow-md group-data-[selected=true]:ms-7",
+                            base: "rounded-full",
+                            wrapper: "w-14 h-7 p-[3px] rounded-full overflow-hidden bg-white border-2 border-default-300 before:rounded-full after:rounded-full group-data-[selected=true]:bg-pink-600 group-data-[selected=true]:border-pink-600",
+                            thumb: "!w-5 !h-5 aspect-square shrink-0 rounded-full bg-white shadow-sm group-data-[selected=true]:!ms-[1.875rem] group-data-[pressed=true]:!w-5 group-data-[pressed=true]:!h-5",
+                            thumbIcon: "rounded-full",
                         }}
                     />
 
