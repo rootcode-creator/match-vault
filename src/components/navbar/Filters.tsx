@@ -1,13 +1,16 @@
 "use client";
 
 import { Select, SelectItem, Button, Slider, Switch } from '@heroui/react';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import React, { useMemo, useState } from 'react';
 import { FaFemale, FaMale } from 'react-icons/fa';
+
+import { Selection } from '@heroui/react';
 
 export default function Filters() {
 
     const [gender, setGender] = useState<"male" | "female" | null>(null);
-    const [age, setAge] = useState<number>(18);
+    const [ageRange, setAgeRange] = useState<[number, number]>([27, 82]);
     const [withPhoto, setWithPhoto] = useState<boolean>(false);
     const [orderBy, setOrderBy] = useState<string>("created");
 
@@ -16,31 +19,61 @@ export default function Filters() {
         { label: "Newest members", value: "created" },
     ];
 
-    const genderList: Array<{ value: "male" | "female"; icon: React.ComponentType<{ size?: number }> }> = [
+    const genderList = [
         { value: "male", icon: FaMale },
         { value: "female", icon: FaFemale },
-    ];
+    ] as const;
+
+    const pathname = usePathname();
+    const searchParams = useSearchParams();
+    const router = useRouter();
+    const handleAgeSelect = (value: number[]) => {
+        const params = new URLSearchParams(searchParams);
+        params.set("ageRange", value.toString());
+        router.replace(`${pathname}?${params}`);
+    }
 
     const resultText = useMemo(() => {
         return "Results: x";
     }, []);
 
-    return (
-        <div className='w-full bg-white shadow-sm border-b border-default-200 border-t-4 border-rose-500 relative z-20'>
-            <div className='flex items-center gap-6 py-2 px-3'>
 
-                <div className='flex items-center min-w-[90px]'>
-                    <div className='text-sm text-default-600 font-normal whitespace-nowrap'>
-                        {resultText}
-                    </div>
+    
+
+    const handleOrderSelect = (
+        value: Selection
+    ) => {
+        if (value instanceof Set) {
+        const params = new URLSearchParams(
+            searchParams
+        );
+        const selected = value.values().next().value;
+        if (selected === undefined) return;
+        params.set("orderBy", String(selected));
+
+        router.replace(`${pathname}?${params}`);
+
+
+    }
+};
+
+
+return (
+    <div className='w-full bg-white shadow-sm border-b border-default-200 border-t-4 border-rose-500 relative z-20'>
+        <div className='flex items-center gap-6 py-2 px-3'>
+
+            <div className='flex items-center min-w-[90px]'>
+                <div className='text-sm text-default-600 font-normal whitespace-nowrap'>
+                    {resultText}
                 </div>
+            </div>
 
 
-                <div className='flex gap-2 items-center min-w-[150px]'>
+            <div className='flex gap-2 items-center min-w-[150px]'>
 
-                    <div className='text-sm text-default-700 font-semibold whitespace-nowrap'>Gender:</div>
+                <div className='text-sm text-default-700 font-semibold whitespace-nowrap'>Gender:</div>
 
-                    {genderList.map(({ icon: Icon, value }) =>(
+                {genderList.map(({ icon: Icon, value }) => (
 
                     <Button
                         key={value}
@@ -59,98 +92,109 @@ export default function Filters() {
                     >
                         <Icon size={16} />
                     </Button>
-                    )
-                    )}
+                )
+                )}
 
 
+            </div>
+
+            <div className='flex items-center gap-3 w-80'>
+                <div className='text-sm text-default-700 font-semibold whitespace-nowrap'>Age range:</div>
+
+                <Slider
+                    className="flex-1"
+                    size="md"
+                    minValue={18}
+                    maxValue={100}
+                    defaultValue={[27, 82]}
+                    step={2}
+                    showSteps
+                    value={ageRange}
+                    onChange={(value) => {
+                        if (Array.isArray(value) && value.length === 2) {
+                            setAgeRange([Number(value[0]), Number(value[1])]);
+                        }
+                    }}
+                    aria-label="Age range"
+                    color="foreground"
+                    classNames={{
+                        track: "h-1 bg-pink-600 rounded-full",
+                        filler: "h-1 bg-pink-600 rounded-full",
+                        step: "w-1 h-1 bg-default-400 rounded-full data-[in-range=true]:bg-default-400",
+                        thumb: "w-5 h-5 bg-white border-2 border-pink-600 shadow-sm",
+                    }}
+
+                    onChangeEnd={values => handleAgeSelect(values as number[])}
+                />
+
+                <div className='text-sm text-default-700 font-semibold tabular-nums min-w-[56px] text-right'>
+                    {ageRange[0]}-{ageRange[1]}
                 </div>
+            </div>
 
-                <div className='flex items-center gap-3 w-80'>
-                    <div className='text-sm text-default-700 font-semibold whitespace-nowrap'>Age range:</div>
+            <div className='flex items-center gap-2 min-w-[110px]'>
 
-                    <Slider
-                        className="flex-1"
-                        size="md"
-                        minValue={18}
-                        maxValue={100}
-                        step={2}
-                        showSteps
-                        value={age}
-                        onChange={(value) => setAge(Number(value))}
-                        aria-label="Age range"
-                        color="foreground"
-                        classNames={{
-                            track: "h-1 bg-pink-600 rounded-full",
-                            filler: "h-1 bg-pink-600 rounded-full",
-                            step: "w-1 h-1 bg-default-400 rounded-full data-[in-range=true]:bg-default-400",
-                            thumb: "w-5 h-5 bg-white border-2 border-pink-600 shadow-sm",
-                        }}
-                    />
+                <p className='text-sm text-default-700 font-semibold whitespace-nowrap'>With photo</p>
 
-                    <div className='text-sm text-default-700 font-semibold tabular-nums w-8 text-right'>
-                        {age}
-                    </div>
-                </div>
+                <Switch
+                    color='default'
+                    size='sm'
+                    isSelected={withPhoto}
+                    onValueChange={setWithPhoto}
+                    aria-label='Filter: with photo'
+                    classNames={{
+                        base: "rounded-full",
+                        wrapper: "w-14 h-7 p-[3px] rounded-full overflow-hidden bg-white border-2 border-default-300 before:rounded-full after:rounded-full group-data-[selected=true]:bg-pink-600 group-data-[selected=true]:border-pink-600",
+                        thumb: "!w-5 !h-5 aspect-square shrink-0 rounded-full bg-white shadow-sm group-data-[selected=true]:!ms-[1.875rem] group-data-[pressed=true]:!w-5 group-data-[pressed=true]:!h-5",
+                        thumbIcon: "rounded-full",
+                    }}
+                />
 
-                <div className='flex items-center gap-2 min-w-[110px]'>
-
-                    <p className='text-sm text-default-700 font-semibold whitespace-nowrap'>With photo</p>
-
-                    <Switch
-                        color='default'
-                        size='sm'
-                        isSelected={withPhoto}
-                        onValueChange={setWithPhoto}
-                        aria-label='Filter: with photo'
-                        classNames={{
-                            base: "rounded-full",
-                            wrapper: "w-14 h-7 p-[3px] rounded-full overflow-hidden bg-white border-2 border-default-300 before:rounded-full after:rounded-full group-data-[selected=true]:bg-pink-600 group-data-[selected=true]:border-pink-600",
-                            thumb: "!w-5 !h-5 aspect-square shrink-0 rounded-full bg-white shadow-sm group-data-[selected=true]:!ms-[1.875rem] group-data-[pressed=true]:!w-5 group-data-[pressed=true]:!h-5",
-                            thumbIcon: "rounded-full",
-                        }}
-                    />
-
-                </div>
+            </div>
 
 
-                <div className='w-56 ml-auto'>
+            <div className='w-56 ml-auto'>
 
-                    <Select
-                        size="sm"
-                        placeholder="Order by"
-                        variant="bordered"
-                        color='default'
-                        className="w-full"
-                        classNames={{
-                            trigger: "h-8 min-h-8 border-2 border-foreground rounded-md",
-                            value: "text-sm text-default-700",
-                            selectorIcon: "hidden",
-                            popoverContent: "p-2 rounded-xl shadow-lg border border-default-200 bg-white z-50",
-                            listbox: "gap-1",
-                        }}
-                        selectedKeys={[orderBy]}
-                        onSelectionChange={(keys) => {
-                            const first = Array.from(keys)[0];
-                            if (typeof first === "string") setOrderBy(first);
-                        }}
-                        aria-label='Order by selector'
-                    >
+                <Select
+                    size="sm"
+                    placeholder="Order by"
+                    variant="bordered"
+                    color='default'
+                    className="w-full"
+                    classNames={{
+                        trigger: "h-8 min-h-8 border-2 border-foreground rounded-md",
+                        value: "text-sm text-default-700",
+                        selectorIcon: "hidden",
+                        popoverContent: "p-2 rounded-xl shadow-lg border border-default-200 bg-white z-50",
+                        listbox: "gap-1",
+                    }}
+                    selectedKeys={new Set([
+                        
+                        searchParams.get("orderBy") || "updated",
+                        
+                        ])
+                    }
+                    
+                    aria-label='Order by selector'
 
-                        {orderByList.map((item) => (
-                            <SelectItem
-                                key={item.value}
-                                className="rounded-lg px-3 py-2 text-sm data-[hover=true]:bg-default-100 data-[selected=true]:bg-default-200"
-                            >
-                                {item.label}
-                            </SelectItem>
-                        ))}
+                    onSelectionChange={handleOrderSelect}
+                >
 
-                    </Select>
+                    {orderByList.map((item) => (
+                        <SelectItem
+                            key={item.value}
+                            className="rounded-lg px-3 py-2 text-sm data-[hover=true]:bg-default-100 data-[selected=true]:bg-default-200"
+                        >
+                            {item.label}
+                        </SelectItem>
+                    ))}
 
-                </div>
+                </Select>
 
             </div>
 
         </div>
-    );
+
+    </div>
+);
 }

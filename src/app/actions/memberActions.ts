@@ -2,30 +2,82 @@
 
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
-import { Photo } from "@prisma/client";
+import { GetMemberParams, PaginatedResponse } from "@/types";
+import { Member, Photo } from "@prisma/client";
+import { addYears } from "date-fns";
+import { getAuthUserId } from "./authActions";
 
-export async function getMembers() {
-    const session = await auth();
-    if (!session?.user) return null;
 
-    try {
+function getAgeRange(ageRange: string): Date[] {
+    const [minAge, maxAge] = ageRange.split(',');
+    const currentDate = new Date();
+    const minDob = addYears(currentDate, -maxAge - 1);
+    const maxDob = addYears(currentDate, -minAge);
 
-        return prisma.member.findMany({
+    return [minDob, maxDob];
+}
+
+export async function getMembers({
+    ageRange = '18,100',
+    gender = 'male,female',
+    orderBy = 'updated',
+    pageNumber = '1',
+    pageSize = '12',
+    withPhoto = 'true'
+}: GetMemberParams): Promise<PaginatedResponse<Member>> {
+
+
+     const userId = await getAuthUserId();
+
+    const [minDob, maxDob] = getAgeRange(ageRange);
+
+    const selectedGender = gender.split(',');
+
+    const page = parseInt(pageNumber);
+    const limit = parseInt(pageSize);
+
+    const skip = (page - 1) * limit;
+
+
+
+     try {
+        const membersSelect = {
             where: {
+                AND: [
+                    { dateOfBirth: { gte: minDob } },
+                    { dateOfBirth: { lte: maxDob } },
+                    { gender: { in: selectedGender } },
+                    ...(withPhoto === 'true' ? [{ image: { not: null } }] : [])
+                ],
                 NOT: {
-                    userId: session.user.id
+                    userId
                 }
-            }
+            },
+        }
 
+
+        const count = await prisma.member.count(membersSelect)
+
+        const members = await prisma.member.findMany({
+            ...membersSelect,
+            orderBy: { [orderBy]: 'desc' },
+            skip,
+            take: limit
         });
 
+        return {
+            items: members,
+            totalCount: count
+        }
     } catch (error) {
         console.log(error);
         throw error;
     }
-
-
 }
+
+
+
+
 
 export async function getMemberByUserId(userId: string) {
     
