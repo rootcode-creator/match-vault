@@ -4,30 +4,43 @@
 import { Selection } from "@heroui/react";
 import { useEffect } from "react";
 import { FaFemale, FaMale } from "react-icons/fa";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import useFilterStore from "./useFilterStore";
+import usePaginationStore from "./usePaginationStore";
 
 export const useFilters = () => {
     
     const pathname = usePathname();
     const router = useRouter();
+    const searchParams = useSearchParams();
+    const currentQuery = searchParams.toString();
 
     const { filters, setFilters } = useFilterStore();
+
+    const pageNumber = usePaginationStore((state) => state.pagination.pageNumber);
+    const pageSize = usePaginationStore((state) => state.pagination.pageSize);
+    const totalCount = usePaginationStore((state) => state.pagination.totalCount);
+
+
     const { gender, ageRange, orderBy, withPhoto } = filters;
 
     
-    
-
     useEffect(() => {
-        const searchParams = new URLSearchParams();
+        const params = new URLSearchParams();
 
-        if (gender) searchParams.set("gender", gender.join(","));
-        if(ageRange) searchParams.set("ageRange", ageRange.toString());
-        if(orderBy) searchParams.set("orderBy", orderBy);
-        searchParams.set("withPhoto", withPhoto.toString());
+        if (gender) params.set("gender", gender.join(","));
+        if(ageRange) params.set("ageRange", ageRange.toString());
+        if(orderBy) params.set("orderBy", orderBy);
+        if(pageSize) params.set('pageSize', pageSize.toString());
+        if(pageNumber) params.set('pageNumber', pageNumber.toString());
+        params.set("withPhoto", withPhoto.toString());
 
-        router.replace(`${pathname}?${searchParams}`);
-    }, [ageRange, orderBy, gender, router, pathname, withPhoto]);
+        const nextQuery = params.toString();
+
+        if (nextQuery !== currentQuery) {
+            router.replace(`${pathname}?${nextQuery}`);
+        }
+    }, [ageRange, orderBy, gender, router, pathname, withPhoto, pageNumber, pageSize, currentQuery]);
 
     const orderByList = [
         { label: "Last active", value: "updated" },
@@ -71,5 +84,6 @@ export const useFilters = () => {
         selectOrder: handleOrderSelect,
         selectWithPhoto: handleWithPhotoToggle,
         filters,
+        totalCount
     };
 };

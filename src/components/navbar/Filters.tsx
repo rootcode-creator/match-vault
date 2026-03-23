@@ -6,10 +6,9 @@ import {  useFilters } from '@/hooks/useFilters';
 
 export default function Filters() {
 
-    const {orderByList, genderList, selectAge, SelectGender, selectOrder, selectWithPhoto, filters} = useFilters();
+    const {orderByList, genderList, selectAge, SelectGender, selectOrder, selectWithPhoto, filters, totalCount,} = useFilters();
 
 const { gender, ageRange, orderBy, withPhoto } = filters;
-const resultText = "Results: x";
 
 return (
     <div className='w-full bg-white shadow-sm border-b border-default-200 border-t-4 border-rose-500 relative z-20'>
@@ -17,7 +16,7 @@ return (
 
             <div className='flex items-center min-w-[90px]'>
                 <div className='text-sm text-default-600 font-normal whitespace-nowrap'>
-                    {resultText}
+                Results:{totalCount}
                 </div>
             </div>
 

@@ -15,6 +15,18 @@ const useFilterStore = create<FilterState>()(devtools((set) => ({
         withPhoto: true
     },
     setFilters: (filterName, value) => set(state => {
+        const currentValue = state.filters[filterName];
+
+        if (Array.isArray(currentValue) && Array.isArray(value)) {
+            const isSameArray =
+                currentValue.length === value.length &&
+                currentValue.every((item, index) => item === value[index]);
+
+            if (isSameArray) return state;
+        } else if (currentValue === value) {
+            return state;
+        }
+
         return {
             filters: { ...state.filters, [filterName]: value }
         }

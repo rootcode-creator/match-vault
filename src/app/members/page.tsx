@@ -5,6 +5,7 @@ import { fetchCurrentUserLikeIds } from '../actions/likeActions';
 import PaginationComponent from '@/components/PaginationComponent';
 import Filters from '@/components/navbar/Filters';
 import { GetMemberParams } from '@/types';
+import EmptyState from '@/components/EmptyState';
 
 export default async function MembersPage({searchParams,}:{
   searchParams: Promise<GetMemberParams>;
@@ -19,9 +20,7 @@ export default async function MembersPage({searchParams,}:{
       <Filters />
 
       {!members?.length ? (
-        <div className="mt-6">
-          <p className="text-default-500">No members found.</p>
-        </div>
+        <EmptyState />
       ) : (
         <div className="mt-6 grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-8">
           {members.map((member) => (
@@ -34,7 +33,9 @@ export default async function MembersPage({searchParams,}:{
         </div>
       )}
 
-      <PaginationComponent />
+      {!!members.length && (
+        <PaginationComponent totalCount={totalCount} />
+      )}
     </div>
   );
 }
