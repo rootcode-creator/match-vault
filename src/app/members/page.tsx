@@ -4,12 +4,13 @@ import MemberCard from './MemberCard';
 import { fetchCurrentUserLikeIds } from '../actions/likeActions';
 import PaginationComponent from '@/components/PaginationComponent';
 import Filters from '@/components/navbar/Filters';
-import { GetMemberParams, UserFilters } from '@/types';
+import { GetMemberParams } from '@/types';
 
 export default async function MembersPage({searchParams,}:{
   searchParams: Promise<GetMemberParams>;
 }) {
   const params = await searchParams;
+  
   const {items:members, totalCount}= await getMembers(params);
   const likeIds = await fetchCurrentUserLikeIds();
 

@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef } from 'react'
 import usePresenceStore from './usePresenceStore'
 import { Channel, Members } from 'pusher-js';
 import { pusherClient } from '@/lib/pusher';
+import { updateLastActive } from '@/app/actions/memberActions';
 
 export const usePresenceChannel = (userId: string | null = null) => {
     const set = usePresenceStore((state) => state.set);
@@ -38,8 +39,9 @@ export const usePresenceChannel = (userId: string | null = null) => {
         if (!channelRef.current) {
             channelRef.current = pusherClient.subscribe('presence-match-me');
 
-            channelRef.current.bind('pusher:subscription_succeeded', (members: Members) => {
+            channelRef.current.bind('pusher:subscription_succeeded', async (members: Members) => {
                 handleSetMembers(Object.keys(members.members));
+                await updateLastActive();
             })
 
             channelRef.current.bind('pusher:member_added', (member: { id: string }) => {

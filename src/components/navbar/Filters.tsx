@@ -1,62 +1,15 @@
 "use client";
 
 import { Select, SelectItem, Button, Slider, Switch } from '@heroui/react';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import React, { useMemo, useState } from 'react';
-import { FaFemale, FaMale } from 'react-icons/fa';
 
-import { Selection } from '@heroui/react';
+import {  useFilters } from '@/hooks/useFilters';
 
 export default function Filters() {
 
-    const [gender, setGender] = useState<"male" | "female" | null>(null);
-    const [ageRange, setAgeRange] = useState<[number, number]>([27, 82]);
-    const [withPhoto, setWithPhoto] = useState<boolean>(false);
-    const [orderBy, setOrderBy] = useState<string>("created");
+    const {orderByList, genderList, selectAge, SelectGender, selectOrder, selectWithPhoto, filters} = useFilters();
 
-    const orderByList = [
-        { label: "Last active", value: "updated" },
-        { label: "Newest members", value: "created" },
-    ];
-
-    const genderList = [
-        { value: "male", icon: FaMale },
-        { value: "female", icon: FaFemale },
-    ] as const;
-
-    const pathname = usePathname();
-    const searchParams = useSearchParams();
-    const router = useRouter();
-    const handleAgeSelect = (value: number[]) => {
-        const params = new URLSearchParams(searchParams);
-        params.set("ageRange", value.toString());
-        router.replace(`${pathname}?${params}`);
-    }
-
-    const resultText = useMemo(() => {
-        return "Results: x";
-    }, []);
-
-
-    
-
-    const handleOrderSelect = (
-        value: Selection
-    ) => {
-        if (value instanceof Set) {
-        const params = new URLSearchParams(
-            searchParams
-        );
-        const selected = value.values().next().value;
-        if (selected === undefined) return;
-        params.set("orderBy", String(selected));
-
-        router.replace(`${pathname}?${params}`);
-
-
-    }
-};
-
+const { gender, ageRange, orderBy, withPhoto } = filters;
+const resultText = "Results: x";
 
 return (
     <div className='w-full bg-white shadow-sm border-b border-default-200 border-t-4 border-rose-500 relative z-20'>
@@ -83,12 +36,12 @@ return (
                         variant="bordered"
                         color="default"
                         className={
-                            gender === value
+                            gender.includes(value)
                                 ? "min-w-7 w-7 h-7 bg-white text-black border-2 border-foreground rounded-md"
                                 : "min-w-7 w-7 h-7 bg-transparent text-pink-600 border-0"
                         }
-                        aria-label={`Filter gender: ${value}`}
-                        onPress={() => setGender((prev) => (prev === value ? null : value))}
+                        
+                        onClick={() => SelectGender(value)}
                     >
                         <Icon size={16} />
                     </Button>
@@ -106,15 +59,11 @@ return (
                     size="md"
                     minValue={18}
                     maxValue={100}
-                    defaultValue={[27, 82]}
+                    defaultValue={ageRange}
                     step={2}
-                    showSteps
-                    value={ageRange}
-                    onChange={(value) => {
-                        if (Array.isArray(value) && value.length === 2) {
-                            setAgeRange([Number(value[0]), Number(value[1])]);
-                        }
-                    }}
+                    
+                    
+                    
                     aria-label="Age range"
                     color="foreground"
                     classNames={{
@@ -124,7 +73,7 @@ return (
                         thumb: "w-5 h-5 bg-white border-2 border-pink-600 shadow-sm",
                     }}
 
-                    onChangeEnd={values => handleAgeSelect(values as number[])}
+                    onChangeEnd={(values) => selectAge(values as number[])}
                 />
 
                 <div className='text-sm text-default-700 font-semibold tabular-nums min-w-[56px] text-right'>
@@ -140,7 +89,7 @@ return (
                     color='default'
                     size='sm'
                     isSelected={withPhoto}
-                    onValueChange={setWithPhoto}
+                    onValueChange={selectWithPhoto}
                     aria-label='Filter: with photo'
                     classNames={{
                         base: "rounded-full",
@@ -168,22 +117,16 @@ return (
                         popoverContent: "p-2 rounded-xl shadow-lg border border-default-200 bg-white z-50",
                         listbox: "gap-1",
                     }}
-                    selectedKeys={new Set([
-                        
-                        searchParams.get("orderBy") || "updated",
-                        
-                        ])
-                    }
+                    selectedKeys={new Set([orderBy])}
                     
                     aria-label='Order by selector'
 
-                    onSelectionChange={handleOrderSelect}
+                    onSelectionChange={selectOrder}
                 >
 
                     {orderByList.map((item) => (
                         <SelectItem
                             key={item.value}
-                            className="rounded-lg px-3 py-2 text-sm data-[hover=true]:bg-default-100 data-[selected=true]:bg-default-200"
                         >
                             {item.label}
                         </SelectItem>

@@ -32,6 +32,7 @@ export async function getMembers({
     const [minDob, maxDob] = getAgeRange(ageRange);
 
     const selectedGender = gender.split(',');
+    const hasProfilePhoto = withPhoto === 'true';
 
     const page = parseInt(pageNumber);
     const limit = parseInt(pageSize);
@@ -47,7 +48,9 @@ export async function getMembers({
                     { dateOfBirth: { gte: minDob } },
                     { dateOfBirth: { lte: maxDob } },
                     { gender: { in: selectedGender } },
-                    ...(withPhoto === 'true' ? [{ image: { not: null } }] : [])
+                    hasProfilePhoto
+                        ? { image: { not: null } }
+                        : { image: null }
                 ],
                 NOT: {
                     userId
@@ -100,4 +103,19 @@ export async function getMemberPhotosByUserId(userId: string) {
     if (!member) return null;
 
     return member.photos.map(p=> p) as Photo[];
+}
+
+
+export async function updateLastActive() {
+    const userId = await getAuthUserId();
+
+    try {
+        return prisma.member.update({
+            where: { userId },
+            data: { updated: new Date() }
+        })
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
 }
