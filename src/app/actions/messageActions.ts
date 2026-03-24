@@ -222,7 +222,7 @@ export async function getMessageThread(recipientId: string) {
 }
 
 
-export async function getMessagesByContainer(container: string){
+export async function getMessagesByContainer(container?: string|null,cursor?:string, limit=4){
 
     try {
         
@@ -230,7 +230,9 @@ export async function getMessagesByContainer(container: string){
 
         const conditions = {
             [container ==='outbox'? 'senderId': 'recipientId']: userId,
-            ...(container === 'outbox'? {senderDeleted: false}:{recipientDeleted:false} )
+            ...(container === 'outbox'? {senderDeleted: false}:{recipientDeleted:false} ),
+            ...(cursor? {created: {lte:new Date(cursor)}} : {})
+
         }
 
 
@@ -240,10 +242,21 @@ export async function getMessagesByContainer(container: string){
             orderBy:{
                 created: 'desc'
             },
-            select:messageSelect
+            select:messageSelect,
+            take: limit + 1
 
         });
-        return messages.map(message => mapMessageToMessageDto(message));
+
+        let nextCursor: string | undefined;
+
+        if(messages.length> limit){
+            const nextItem = messages.pop();
+            nextCursor = nextItem?.created.toISOString();
+        }else {
+            nextCursor = undefined;
+        }
+        const messagesToReturn = messages.map(message => mapMessageToMessageDto(message));
+        return {messages: messagesToReturn, nextCursor};
 
     } catch (error) {
         console.log(error);

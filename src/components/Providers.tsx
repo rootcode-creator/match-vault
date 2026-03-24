@@ -22,26 +22,26 @@ export default function Providers({
   userId: string | null;
 }) {
   const isUnreadCountSet = useRef(false);
-  const setUnreadCount = useMessageStore(
-    (state) => state.setUnreadCount
+  const updateUnreadCount = useMessageStore(
+    (state) => state.updateUnreadCount
   );
 
-  const initUnreadCount = useCallback(
+  const setUnreadCount = useCallback(
     (amount: number) => {
-      setUnreadCount(amount);
+      updateUnreadCount(amount);
     },
-    [setUnreadCount]
+    [updateUnreadCount]
   );
 
   useEffect(() => {
     if (!isUnreadCountSet.current && userId) {
       getUnreadMessageCount().then((count) => {
-        initUnreadCount(count);
+        setUnreadCount(count);
       });
       isUnreadCountSet.current = true;
     }
-  }, [initUnreadCount, userId]);
-  usePresenceChannel(userId);
+  }, [setUnreadCount, userId]);
+  usePresenceChannel();
   useNotificationChannel(userId);
   return (
     <HeroUIProvider>

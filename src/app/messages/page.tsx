@@ -10,14 +10,16 @@ export default async function MessagesPage({
 }: {
   searchParams: Promise<{ container?: string }>;
 }) {
-
   const { container } = await searchParams;
+  const normalizedContainer =
+    container === "outbox" ? "outbox" : "inbox";
 
-  const messages = await getMessagesByContainer(
-    container ?? "inbox"
+
+  const {messages, nextCursor} = await getMessagesByContainer(
+    normalizedContainer 
   );
 
-  console.log({ messages });
+ 
 
 
 
@@ -32,7 +34,7 @@ export default async function MessagesPage({
 
       <div className="col-span-10">
 
-        <MessageTable messages={messages} />
+        <MessageTable initialMessages={messages} nextCursor={nextCursor} />
       </div>
     </div>
   );
