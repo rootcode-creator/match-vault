@@ -14,11 +14,19 @@ function getAppUrl() {
     return withProtocol.replace(/\/$/, '');
 }
 
+function getResendClient() {
+    const apiKey = process.env.RESEND_API_KEY;
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+    if (!apiKey) {
+        throw new Error('Missing RESEND_API_KEY environment variable');
+    }
+
+    return new Resend(apiKey);
+}
 
 export async function sendVerificationEmail(email: string, token: string) {
     const link = new URL(`/verify-email?token=${encodeURIComponent(token)}`, getAppUrl()).toString();
+    const resend = getResendClient();
 
     return resend.emails.send({
         from: 'verify@credentials.kawserahmed.tech',
@@ -35,6 +43,7 @@ export async function sendVerificationEmail(email: string, token: string) {
 
 export async function sendPasswordResetEmail(email: string, token: string) {
     const link = new URL(`/reset-password?token=${encodeURIComponent(token)}`, getAppUrl()).toString();
+    const resend = getResendClient();
 
     return resend.emails.send({
         from: 'password-reset@credentials.kawserahmed.tech',
