@@ -11,10 +11,7 @@ export function calculateAge(dob: Date) {
 
 export function handleFormServerErrors<TFieldValues extends FieldValues>(
 
-
     errorResponse: { error: string | ZodIssue[] },
-
-
     setError: UseFormSetError<TFieldValues>
 
 
@@ -23,22 +20,14 @@ export function handleFormServerErrors<TFieldValues extends FieldValues>(
 
     if (Array.isArray(errorResponse.error)) {
 
-
         errorResponse.error.forEach((e) => {
-
-
-            const fieldName = e.path.join('.') as Path<TFieldValues>
-
-
-            setError(fieldName, { message: e.message })
-
+        const fieldName = e.path.join('.') as Path<TFieldValues>
+        setError(fieldName, { message: e.message })
 
         })
 
 
     } else {
-
-
         setError('root.serverError', { message: errorResponse.error });
 
 

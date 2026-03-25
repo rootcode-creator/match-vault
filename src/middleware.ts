@@ -5,6 +5,7 @@ import { authRoutes, publicRoutes } from "./routes";
 export default auth((req) => {
     const { nextUrl } = req;
     const isLoggedIn = !!req.auth;
+    const isTokenRoute = nextUrl.pathname === '/reset-password' || nextUrl.pathname === '/verify-email';
 
     const isPublic = publicRoutes.includes(nextUrl.pathname);
     const isAuthRoute = authRoutes.includes(nextUrl.pathname);
@@ -15,7 +16,7 @@ export default auth((req) => {
     }
 
     if (isAuthRoute) {
-        if (isLoggedIn) {
+        if (isLoggedIn && !isTokenRoute) {
             return NextResponse.redirect(new URL('/members', nextUrl))
         }
         return NextResponse.next();

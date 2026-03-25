@@ -4,6 +4,7 @@ import { Button, Card, CardBody, CardHeader, Input } from "@heroui/react";
 import React, { useState } from "react";
 import { useForm, type FieldErrors, type FieldValues } from "react-hook-form";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { GiPadlock } from "react-icons/gi";
 import { FiMail, FiLock, FiEye, FiEyeOff } from "react-icons/fi";
 import { signInUser } from "@/app/actions/authActions";
@@ -193,6 +194,13 @@ export default function LoginForm() {
               >
                 Login
               </Button>
+
+             <div className="flex justify-center hover:underline text-sm">
+              <Link href="/forgot-password">
+                Forgot password?
+              </Link>
+            </div>
+
             </div>
           </div>
         </form>

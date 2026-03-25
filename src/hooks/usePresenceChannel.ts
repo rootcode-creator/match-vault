@@ -4,7 +4,7 @@ import { Channel, Members } from 'pusher-js';
 import { pusherClient } from '@/lib/pusher';
 import { updateLastActive } from '@/app/actions/memberActions';
 
-export const usePresenceChannel = (userId: string | null = null) => {
+export const usePresenceChannel = (userId: string | null) => {
     const set = usePresenceStore((state) => state.set);
     const add = usePresenceStore((state) => state.add);
     const remove = usePresenceStore((state) => state.remove);
@@ -22,45 +22,44 @@ export const usePresenceChannel = (userId: string | null = null) => {
         remove(memberId);
     }, [remove])
 
-    useEffect(() => {
-        if (!pusherClient) return;
+    const handleSubscriptionSucceeded = useCallback(async (members: Members) => {
+        handleSetMembers(Object.keys(members.members));
+        await updateLastActive();
+    }, [handleSetMembers]);
 
-        if (!userId) {
-            if (channelRef.current) {
-                channelRef.current.unsubscribe();
-                channelRef.current.unbind('pusher:subscription_succeeded', handleSetMembers);
-                channelRef.current.unbind('pusher:member_added', handleAddMember);
-                channelRef.current.unbind('pusher:member_removed', handleRemoveMember);
-                channelRef.current = null;
-            }
-            return;
-        }
+    const handleMemberAdded = useCallback((member: { id: string }) => {
+        handleAddMember(member.id);
+    }, [handleAddMember]);
+
+    const handleMemberRemoved = useCallback((member: { id: string }) => {
+        handleRemoveMember(member.id);
+    }, [handleRemoveMember]);
+
+
+    useEffect(() => {
+
+        if (!userId) return;
+
+       
 
         if (!channelRef.current) {
             channelRef.current = pusherClient.subscribe('presence-match-me');
 
-            channelRef.current.bind('pusher:subscription_succeeded', async (members: Members) => {
-                handleSetMembers(Object.keys(members.members));
-                await updateLastActive();
-            })
+            channelRef.current.bind('pusher:subscription_succeeded', handleSubscriptionSucceeded)
 
-            channelRef.current.bind('pusher:member_added', (member: { id: string }) => {
-                handleAddMember(member.id);
-            })
+            channelRef.current.bind('pusher:member_added', handleMemberAdded)
 
-            channelRef.current.bind('pusher:member_removed', (member: { id: string }) => {
-                handleRemoveMember(member.id);
-            });
+            channelRef.current.bind('pusher:member_removed', handleMemberRemoved);
         }
 
         return () => {
             if (channelRef.current) {
                 channelRef.current.unsubscribe();
-                channelRef.current.unbind('pusher:subscription_succeeded', handleSetMembers);
-                channelRef.current.unbind('pusher:member_added', handleAddMember);
-                channelRef.current.unbind('pusher:member_removed', handleRemoveMember);
+                channelRef.current.unbind('pusher:subscription_succeeded', handleSubscriptionSucceeded);
+                channelRef.current.unbind('pusher:member_added', handleMemberAdded);
+                channelRef.current.unbind('pusher:member_removed', handleMemberRemoved);
                 channelRef.current = null;
             }
         }
-    }, [handleAddMember, handleRemoveMember, handleSetMembers, userId])
+    }, [handleMemberAdded, handleMemberRemoved, handleSubscriptionSucceeded, userId])
 }
