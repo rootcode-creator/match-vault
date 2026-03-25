@@ -1,42 +1,69 @@
-import Credentials from "next-auth/providers/credentials";
 import Google from "next-auth/providers/google";
 import Github from "next-auth/providers/github";
 import type { NextAuthConfig } from "next-auth";
 
-import { loginSchema } from "./lib/schemas/LoginSchema";
-
-import { getUserByEmail } from "./app/actions/authActions";
-import {compare} from 'bcryptjs';
+function env(name: string) {
+    return process.env[name]?.trim();
+}
 
  
 // Notice this is only an object, not a full Auth.js instance
 export default {
-    providers: [
-        Google({
-            clientId: process.env.GOOGLE_CLIENT_ID,
-            clientSecret: process.env.GOOGLE_CLIENT_SECRET
-        }),
-        Github({
-            clientId: process.env.GITHUB_CLIENT_ID,
-            clientSecret: process.env.GITHUB_CLIENT_SECRET
-        }),
-        Credentials({
-            name: 'credentials',
-            async authorize(creds) {
-                const validated = loginSchema.safeParse(creds);
-
-                if (validated.success) {
-                    const { email, password } = validated.data;
-
-                    const user = await getUserByEmail(email);
-
-                    if (!user || !user.passwordHash || !(await compare(password, user.passwordHash))) return null;
-
-                    return user;
-                }
-
-                return null;
+    callbacks: {
+        async jwt({ user, token }) {
+            if (user) {
+                token.profileComplete = user.profileComplete;
             }
-        })
+            return token;
+        },
+        async session({ session, token }) {
+            if (token.sub && session.user) {
+                session.user.id = token.sub;
+                session.user.profileComplete = Boolean(token.profileComplete);
+            }
+
+            return session;
+        }
+    },
+    providers: [
+        ...(env('GOOGLE_CLIENT_ID') && env('GOOGLE_CLIENT_SECRET')
+            ? [Google({
+                clientId: env('GOOGLE_CLIENT_ID')!,
+                clientSecret: env('GOOGLE_CLIENT_SECRET')!,
+                allowDangerousEmailAccountLinking: true,
+                authorization: {
+                    params: {
+                        prompt: 'select_account'
+                    }
+                }
+            })]
+            : []),
+        ...(env('GITHUB_CLIENT_ID') && env('GITHUB_CLIENT_SECRET')
+            ? [Github({
+                clientId: env('GITHUB_CLIENT_ID')!,
+                clientSecret: env('GITHUB_CLIENT_SECRET')!,
+                allowDangerousEmailAccountLinking: true,
+                authorization: {
+                    params: {
+                        scope: 'read:user user:email'
+                    }
+                },
+                profile(profile) {
+                    const id = profile.id ?? profile.node_id ?? profile.login;
+
+                    if (!id) {
+                        throw new Error('GitHub profile id is missing');
+                    }
+
+                    return {
+                        id: String(id),
+                        name: profile.name ?? profile.login ?? null,
+                        email: profile.email ?? null,
+                        image: profile.avatar_url ?? null,
+                        profileComplete: false,
+                    };
+                }
+            })]
+            : []),
     ],
 } satisfies NextAuthConfig

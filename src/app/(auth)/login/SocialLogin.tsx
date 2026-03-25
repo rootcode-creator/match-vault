@@ -1,7 +1,7 @@
 import { Button } from "@heroui/react";
 import { FaGithub } from "react-icons/fa";
 import {FcGoogle} from "react-icons/fc";
-import { signIn } from "next-auth/react";
+import { signIn, signOut } from "next-auth/react";
 
 export default function SocialLogin() {
   const providers = [
@@ -17,22 +17,29 @@ export default function SocialLogin() {
     },
   ];
 
-  const onClick = (
+  const onClick = async (
     provider: "google" | "github"
   ) => {
-    signIn(provider, {
+    await signOut({ redirect: false });
+
+    if (provider === "google") {
+      await signIn(provider, { callbackUrl: "/members" }, { prompt: "select_account" });
+      return;
+    }
+
+    await signIn(provider, {
       callbackUrl: "/members",
     });
   };
 
   return (
-    <div className="flex items-center w-full gap-2">
+    <div className="flex items-center justify-center w-full gap-4 mt-3">
       {providers.map((provider) => (
         <Button
           key={provider.name}
           size="lg"
-          fullWidth
           variant="bordered"
+          className="h-10 w-[48%] rounded-lg border border-slate-300 bg-white text-slate-800 font-medium hover:bg-slate-50"
           onClick={() =>
             onClick(
               provider.name as "google" | "github"
@@ -40,6 +47,7 @@ export default function SocialLogin() {
           }
         >
           {provider.icon}
+          <span>{provider.text}</span>
         </Button>
       ))}
     </div>

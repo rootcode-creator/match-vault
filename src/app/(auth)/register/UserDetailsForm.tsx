@@ -16,7 +16,7 @@ export default function UserDetailsForm() {
   } = useFormContext();
 
   const inputWrapper =
-    "rounded-xl bg-white/90 border border-gray-200 shadow-sm transition-all duration-200 ease-out " +
+    "rounded-xl bg-white/90 border border-slate-300 shadow-sm transition-all duration-200 ease-out " +
     "hover:shadow-md focus-within:bg-white focus-within:border-pink-500/70 " +
     "focus-within:ring-2 focus-within:ring-pink-300/60 focus-within:shadow-[0_8px_24px_-8px_rgba(236,72,153,0.35)]";
   const inputBase =

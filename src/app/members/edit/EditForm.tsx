@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation';
 import { useForm } from "react-hook-form";
 import { Button, Input, Textarea } from '@heroui/react';
 import { updateMemberProfile } from '@/app/actions/userActions';
-import toast from 'react-hot-toast';
+import { toast } from 'react-toastify';
 import { handleFormServerErrors } from '@/lib/util';
 
 

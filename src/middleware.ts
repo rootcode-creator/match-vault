@@ -1,6 +1,9 @@
 import { NextResponse } from 'next/server';
-import { auth } from './auth';
+import NextAuth from 'next-auth';
+import authConfig from './auth.config';
 import { authRoutes, publicRoutes } from './routes';
+
+const { auth } = NextAuth(authConfig);
 
 export default auth((req) => {
     const { nextUrl } = req;
@@ -25,8 +28,8 @@ export default auth((req) => {
         return NextResponse.redirect(new URL('/login', nextUrl))
     }
 
-    if (isLoggedIn && !isProfileComplete && nextUrl.pathname !== '/complete-profile') {
-        return NextResponse.redirect(new URL('/complete-profile', nextUrl));
+    if (isLoggedIn && !isProfileComplete && nextUrl.pathname !== '/profile-complete') {
+        return NextResponse.redirect(new URL('/profile-complete', nextUrl));
     }
 
     return NextResponse.next();

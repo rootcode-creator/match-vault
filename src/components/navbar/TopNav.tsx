@@ -41,7 +41,7 @@ export default function TopNav({ userInfo }: Props) {
         >
           <GiSelfLove size={40} className="text-gray-200" />
 
-          <span className="text-gray-200 font-bold text-3xl">MatchMe</span>
+          <span className="text-gray-200 font-bold text-3xl">MatchVault</span>
         </NavbarBrand>
 
         <NavbarContent className="flex-1 flex justify-center -translate-x-4 sm:-translate-x-6 md:-translate-x-7 lg:-translate-x-8">

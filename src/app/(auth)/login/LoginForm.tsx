@@ -9,7 +9,7 @@ import { GiPadlock } from "react-icons/gi";
 import { FiMail, FiLock, FiEye, FiEyeOff } from "react-icons/fi";
 import { signInUser } from "@/app/actions/authActions";
 import type { LoginSchema } from "@/lib/schemas/LoginSchema";
-import { toast } from "react-hot-toast";
+import { toast } from "react-toastify";
 import type { ZodIssue } from "zod";
 import SocialLogin from "./SocialLogin";
 
@@ -77,7 +77,7 @@ export default function LoginForm() {
 
   // match the Register form input feel
   const inputWrapper =
-    "rounded-xl bg-white/90 border border-gray-200 shadow-sm transition-all duration-200 ease-out " +
+    "rounded-xl bg-white/90 border border-slate-300 shadow-sm transition-all duration-200 ease-out " +
     "hover:shadow-md focus-within:bg-white focus-within:border-pink-500/70 " +
     "focus-within:ring-2 focus-within:ring-pink-300/60 focus-within:shadow-[0_8px_24px_-8px_rgba(236,72,153,0.35)]";
   const inputBase =
@@ -93,7 +93,7 @@ export default function LoginForm() {
             <GiPadlock size={30} />
             <h1 className="text-3xl font-semibold">Login</h1>
           </div>
-          <p className="text-neutral-500">Welcome back to NextMatch</p>
+          <p className="text-neutral-500">Welcome back to MatchVault</p>
         </div>
       </CardHeader>
 
@@ -191,14 +191,14 @@ export default function LoginForm() {
                 disableRipple
                 color="default"
                 type="submit"
-                className="mt-2 h-10 rounded-lg bg-gradient-to-r from-pink-500 to-rose-500 text-white font-semibold shadow-md hover:shadow-lg active:translate-y-px focus:outline-none focus-visible:outline-none"
+                className="mt-2 mb-4 h-10 rounded-lg bg-gradient-to-r from-pink-500 to-rose-500 text-white font-semibold shadow-md hover:shadow-lg active:translate-y-px focus:outline-none focus-visible:outline-none"
               >
                 Login
               </Button>
 
               <SocialLogin />
 
-             <div className="flex justify-center hover:underline text-sm">
+             <div className="mt-4 flex justify-center hover:underline text-sm">
               <Link href="/forgot-password">
                 Forgot password?
               </Link>

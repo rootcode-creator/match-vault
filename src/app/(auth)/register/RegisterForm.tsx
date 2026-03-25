@@ -99,7 +99,7 @@ export default function RegisterForm() {
             </h1>
           </div>
           <p className="text-neutral-500">
-            Welcome to NextMatch
+            Welcome to MatchVault
           </p>
         </div>
       </CardHeader>
