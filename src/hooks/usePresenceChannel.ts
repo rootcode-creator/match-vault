@@ -39,6 +39,7 @@ export const usePresenceChannel = (userId: string | null) => {
     useEffect(() => {
 
         if (!userId) return;
+        if (!pusherClient) return;
 
        
 
