@@ -23,7 +23,6 @@ export default function VerifyEmailResultCard({ result }: Props) {
               <MdOutlineMailOutline size={24} />
               <h1 className="text-2xl font-semibold leading-tight">Verify your email address</h1>
             </div>
-            <p className="text-sm text-neutral-500">Welcome to NextMatch</p>
           </div>
         </CardHeader>
 
