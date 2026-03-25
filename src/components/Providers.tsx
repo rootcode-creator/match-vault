@@ -17,9 +17,11 @@ import "react-toastify/dist/ReactToastify.css";
 export default function Providers({
   children,
   userId,
+  profileComplete,
 }: {
   children: ReactNode;
   userId: string | null;
+  profileComplete: boolean;
 }) {
   const isUnreadCountSet = useRef(false);
   const updateUnreadCount = useMessageStore(
@@ -41,8 +43,8 @@ export default function Providers({
       isUnreadCountSet.current = true;
     }
   }, [setUnreadCount, userId]);
-  usePresenceChannel(userId);
-  useNotificationChannel(userId);
+  usePresenceChannel(userId, profileComplete);
+  useNotificationChannel(userId, profileComplete);
   return (
     <HeroUIProvider>
       <ToastContainer

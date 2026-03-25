@@ -11,6 +11,7 @@ import { signInUser } from "@/app/actions/authActions";
 import type { LoginSchema } from "@/lib/schemas/LoginSchema";
 import { toast } from "react-hot-toast";
 import type { ZodIssue } from "zod";
+import SocialLogin from "./SocialLogin";
 
 type RootServerError = {
   root?: {
@@ -194,6 +195,8 @@ export default function LoginForm() {
               >
                 Login
               </Button>
+
+              <SocialLogin />
 
              <div className="flex justify-center hover:underline text-sm">
               <Link href="/forgot-password">

@@ -1,22 +1,21 @@
-import { NextResponse } from "next/server";
-import { auth } from "@/auth";
-import { authRoutes, publicRoutes } from "./routes";
+import { NextResponse } from 'next/server';
+import { auth } from './auth';
+import { authRoutes, publicRoutes } from './routes';
 
 export default auth((req) => {
     const { nextUrl } = req;
     const isLoggedIn = !!req.auth;
-    const isTokenRoute = nextUrl.pathname === '/reset-password' || nextUrl.pathname === '/verify-email';
 
     const isPublic = publicRoutes.includes(nextUrl.pathname);
     const isAuthRoute = authRoutes.includes(nextUrl.pathname);
-
+    const isProfileComplete = req.auth?.user.profileComplete;
 
     if (isPublic) {
         return NextResponse.next();
     }
 
     if (isAuthRoute) {
-        if (isLoggedIn && !isTokenRoute) {
+        if (isLoggedIn) {
             return NextResponse.redirect(new URL('/members', nextUrl))
         }
         return NextResponse.next();
@@ -26,9 +25,17 @@ export default auth((req) => {
         return NextResponse.redirect(new URL('/login', nextUrl))
     }
 
-    return NextResponse.next();
-});
+    if (isLoggedIn && !isProfileComplete && nextUrl.pathname !== '/complete-profile') {
+        return NextResponse.redirect(new URL('/complete-profile', nextUrl));
+    }
 
-export const config ={
-   matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)']
+    return NextResponse.next();
+})
+
+/**
+ * This is a regular expression that will match any URL path 
+ * that does not start with /api, /_next/static, /_next/image, or favicon.ico.
+ */
+export const config = {
+    matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)']
 }

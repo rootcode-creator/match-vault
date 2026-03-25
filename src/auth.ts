@@ -1,26 +1,28 @@
 import NextAuth from "next-auth"
-import { PrismaAdapter } from "@auth/prisma-adapter";
-import authConfig from "./auth.config";
-import { prisma } from "./lib/prisma";
+import { PrismaAdapter } from "@auth/prisma-adapter"
+import { PrismaClient } from "@prisma/client"
+import authConfig from "./auth.config"
 
-export const { handlers, auth, signIn, signOut } = NextAuth({
-  callbacks:{
-    async jwt({token}) {
-      console.log('token::: ', token);
-      return token;
+const prisma = new PrismaClient()
+
+export const { auth, handlers, signIn, signOut } = NextAuth({
+    callbacks: {
+        async jwt({ user, token }) {
+            if (user) {
+                token.profileComplete = user.profileComplete;
+            }
+            return token;
+        },
+        async session({ session, token }) {
+            if (token.sub && session.user) {
+                session.user.id = token.sub;
+                session.user.profileComplete = token.profileComplete as boolean;
+            }
+
+            return session;
+        }
     },
-    async session({session, token}) {
-      
-      if (token.sub && session.user) {
-        session.user.id = token.sub;
-      }
-      console.log('session::: ', session);
-
-      return session;
-    }
-  },
-  
-  adapter: PrismaAdapter(prisma),
-  session: { strategy: "jwt" },
-  ...authConfig,
+    adapter: PrismaAdapter(prisma),
+    session: { strategy: "jwt" },
+    ...authConfig,
 })
