@@ -11,7 +11,7 @@ type Props = {
 
 export default function VerifyEmailResultCard({ result }: Props) {
   return (
-    <div className="flex justify-center items-start pt-6 pb-8 min-h-[calc(100dvh-80px)] px-4">
+    <div className="flex justify-center items-center min-h-[calc(100dvh-80px)] px-4 py-6">
       <Card
         className="relative w-full max-w-sm mx-auto py-5 px-5 h-fit rounded-2xl bg-white/95 backdrop-blur
         ring-1 ring-pink-100 border border-white/60
