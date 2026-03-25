@@ -3,6 +3,7 @@
 import ResultMessage from "@/components/ResultMessage";
 import { ActionResult } from "@/types";
 import { Card, CardBody, CardHeader } from "@heroui/react";
+import { MdOutlineMailOutline } from "react-icons/md";
 
 type Props = {
   result: ActionResult<string>;
@@ -18,7 +19,10 @@ export default function VerifyEmailResultCard({ result }: Props) {
       >
         <CardHeader className="flex flex-col items-center justify-center mb-1">
           <div className="flex flex-col gap-1.5 items-center text-default text-center">
-            <div className="flex flex-row items-center">
+            <div className="flex flex-row items-center gap-2.5">
+              <div className="flex items-center justify-center rounded-xl p-2 bg-primary-50 text-primary-600 border border-primary-100">
+                <MdOutlineMailOutline size={20} />
+              </div>
               <h1 className="text-2xl font-semibold leading-tight">Verify your email address</h1>
             </div>
           </div>
