@@ -5,7 +5,7 @@ import { hash } from 'bcryptjs';
 const prisma = new PrismaClient();
 
 async function seedMembers() {
-    return membersData.map(async member => prisma.user.create({
+    return Promise.all(membersData.map(async member => prisma.user.create({
         data: {
             email: member.email,
             emailVerified: new Date(),
@@ -33,7 +33,7 @@ async function seedMembers() {
                 }
             }
         }
-    }))
+    })))
 }
 
 async function seedAdmin() {
