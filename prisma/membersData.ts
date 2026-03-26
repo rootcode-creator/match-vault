@@ -1,6 +1,6 @@
 export const membersData = [
     {
-        email: "sarahi.jameson@test.com",
+        email: "sarah.jameson@test.com",
         username: 'sarah.jameson',
         gender: "female",
         dateOfBirth: "1993-05-15",
@@ -13,7 +13,7 @@ export const membersData = [
         image: "/images/f1.jpg"
     },
     {
-        email: "kareni.robertson@test.com",
+        email: "karen.robertson@test.com",
         username: 'karen.robertson',
         gender: "female",
         dateOfBirth: "1994-10-11",
@@ -26,7 +26,7 @@ export const membersData = [
         image: "/images/f2.jpg"
     },
     {
-        email: "margoi.mclean@test.com",
+        email: "margo.mclean@test.com",
         username: 'margo.mclean',
         gender: "female",
         dateOfBirth: "1991-01-19",
@@ -39,7 +39,7 @@ export const membersData = [
         image: "/images/f3.jpg"
     },
     {
-        email: "loisi.dawson@test.com",
+        email: "lois.dawson@test.com",
         username: 'lois.dawson',
         gender: "female",
         dateOfBirth: "1992-06-13",
@@ -52,7 +52,7 @@ export const membersData = [
         image: "/images/f4.jpg"
     },
     {
-        email: "ruthiei.anderson@test.com",
+        email: "ruthie.anderson@test.com",
         username: 'ruthie.anderson',
         gender: "female",
         dateOfBirth: "1990-12-25",
@@ -65,7 +65,7 @@ export const membersData = [
         image: "/images/f5.jpg"
     },
     {
-        email: "toddi.bennett@test.com",
+        email: "todd.bennett@test.com",
         username: 'todd.bennett',
         gender: "male",
         dateOfBirth: "1992-03-05",
@@ -78,7 +78,7 @@ export const membersData = [
         image: "/images/m1.jpg"
     },
     {
-        email: "porteri.thompson@test.com",
+        email: "porter.thompson@test.com",
         username: 'porter.thompson',
         gender: "male",
         dateOfBirth: "1995-04-28",
@@ -91,7 +91,7 @@ export const membersData = [
         image: "/images/m2.jpg"
     },
     {
-        email: "mayoi.wilson@test.com",
+        email: "mayo.wilson@test.com",
         username: 'mayo.wilson',
         gender: "male",
         dateOfBirth: "1993-07-12",
@@ -104,7 +104,7 @@ export const membersData = [
         image: "/images/m3.jpg"
     },
     {
-        email: "skinneri.jones@test.com",
+        email: "skinner.jones@test.com",
         username: 'skinner.jones',
         gender: "male",
         dateOfBirth: "1991-11-30",
@@ -117,7 +117,7 @@ export const membersData = [
         image: "/images/m4.jpg"
     },
     {
-        email: "davisi.harrison@test.com",
+        email: "davis.harrison@test.com",
         username: 'davis.harrison',
         gender: "male",
         dateOfBirth: "1994-02-14",

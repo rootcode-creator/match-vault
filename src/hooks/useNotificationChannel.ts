@@ -31,8 +31,10 @@ export const useNotificationChannel = (userId: string | null, profileComplete: b
 
     useEffect(() => {
         if (!userId || !profileComplete) return;
+        const client = pusherClient;
+        if (!client) return;
         if (!channelRef.current) {
-            channelRef.current = pusherClient.subscribe(`private-${userId}`);
+            channelRef.current = client.subscribe(`private-${userId}`);
 
             channelRef.current.bind('message:new', handleNewMessage);
             channelRef.current.bind('like:new', handleNewLike);

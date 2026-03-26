@@ -77,14 +77,14 @@ export default function LoginForm() {
 
   // match the Register form input feel
   const inputWrapper =
-    "rounded-xl bg-white/90 border border-slate-300 shadow-sm transition-all duration-200 ease-out " +
+    "rounded-xl bg-white/90 border-2 border-slate-400 shadow-sm transition-all duration-200 ease-out " +
     "hover:shadow-md focus-within:bg-white focus-within:border-pink-500/70 " +
     "focus-within:ring-2 focus-within:ring-pink-300/60 focus-within:shadow-[0_8px_24px_-8px_rgba(236,72,153,0.35)]";
   const inputBase =
     "text-base placeholder:text-gray-400 outline-none focus:outline-none focus-visible:outline-none focus:ring-0";
 
   return (
-    <Card className="relative w-full max-w-md mx-auto py-10 px-8 rounded-2xl bg-white/95 backdrop-blur
+    <Card className="relative w-full max-w-xl mx-auto py-10 px-8 rounded-2xl bg-white/95 backdrop-blur
       ring-1 ring-pink-100 border border-white/60
       shadow-[0_18px_50px_-12px_rgba(236,72,153,0.45),0_25px_55px_-25px_rgba(0,0,0,0.35)]">
       <CardHeader className="flex flex-col items-center justify-center mb-6">
@@ -101,7 +101,7 @@ export default function LoginForm() {
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="space-y-6">
             {/* Email */}
-            <div className="w-full max-w-sm mx-auto">
+            <div className="w-full max-w-lg mx-auto">
               <label
                 htmlFor="email"
                 className="block text-sm font-medium text-foreground mb-1"
@@ -134,7 +134,7 @@ export default function LoginForm() {
             </div>
 
             {/* Password */}
-            <div className="w-full max-w-sm mx-auto">
+            <div className="w-full max-w-lg mx-auto">
               <label
                 htmlFor="password"
                 className="block text-sm font-medium text-foreground mb-1"
@@ -179,12 +179,12 @@ export default function LoginForm() {
 
             {/* Non-field server error */}
             {getRootServerErrorMessage(errors) && (
-              <p role="alert" className="w-full max-w-sm mx-auto text-sm text-black">
+              <p role="alert" className="w-full max-w-lg mx-auto text-sm text-black">
                 {getRootServerErrorMessage(errors)}
               </p>
             )}
 
-            <div className="w-full max-w-sm mx-auto">
+            <div className="w-full max-w-lg mx-auto">
               <Button
                 isDisabled={isSubmitting}
                 fullWidth

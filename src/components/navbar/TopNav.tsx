@@ -1,6 +1,11 @@
 "use client";
 
-import { Button, Navbar, NavbarBrand, NavbarContent } from "@heroui/react";
+import {
+  Button,
+  Navbar,
+  NavbarBrand,
+  NavbarContent,
+} from "@heroui/react";
 import Link from "next/link";
 import React from "react";
 import { GiSelfLove } from "react-icons/gi";
@@ -8,23 +13,39 @@ import NavLink from "./NavLink";
 import UserMenu from "./UserMenu";
 import FiltersWrapper from "./FiltersWrapper";
 
-type UserInfo = {
-  name: string | null;
-  image: string | null;
-} | null;
-
 type Props = {
-  userInfo: UserInfo;
+  userInfo: {
+    name: string | null;
+    image: string | null;
+  } | null;
+  isAdmin: boolean;
 };
 
-export default function TopNav({ userInfo }: Props) {
+export default function TopNav({
+  userInfo,
+  isAdmin,
+}: Props) {
+
+  const memberLinks = [
+    { href: "/members", label: "Matches" },
+    { href: "/lists", label: "Lists" },
+    { href: "/messages", label: "Messages" },
+  ];
+
+  const adminLinks = [
+    {
+      href: "/admin/moderation",
+      label: "Photo Moderation",
+    },
+  ];
+
+  const links =
+    isAdmin ? adminLinks : memberLinks;
   return (
     <>
-    <header className="bg-gradient-to-r from-pink-400 via-red-400 to-pink-600 pl-3 sm:pl-5">
       <Navbar
         maxWidth="full"
-        position="sticky"
-        className="flex items-center h-20 top-0 z-50"
+        className="h-20 bg-gradient-to-r from-pink-400 via-red-400 to-pink-600"
         classNames={{
           item: [
             "text-xl",
@@ -37,30 +58,43 @@ export default function TopNav({ userInfo }: Props) {
         <NavbarBrand
           as={Link}
           href="/"
-          className="flex items-center gap-2 min-w-max"
+          className="flex-1"
         >
-          <GiSelfLove size={40} className="text-gray-200" />
-
-          <span className="text-gray-200 font-bold text-3xl">MatchVault</span>
+          <GiSelfLove
+            size={40}
+            className="text-gray-200"
+          />
+          <div className="font-bold text-3xl flex">
+            <span className="text-gray-200">
+              MatchVault
+            </span>
+          </div>
         </NavbarBrand>
-
-        <NavbarContent className="flex-1 flex justify-center -translate-x-4 sm:-translate-x-6 md:-translate-x-7 lg:-translate-x-8">
-          <NavLink href="/members" label="Matches" />
-          <NavLink href="/lists" label="Lists" />
-          <NavLink href="/messages" label="Messages" />
+        <NavbarContent justify="center">
+          {userInfo &&
+            links.map((item) => (
+              <NavLink
+                key={item.href}
+                href={item.href}
+                label={item.label}
+              />
+            ))}
         </NavbarContent>
-
-        <NavbarContent className="min-w-max flex gap-4 items-center mr-4 md:mr-6">
+        <NavbarContent
+          justify="end"
+          className="flex-1"
+        >
           {userInfo ? (
-            <UserMenu userInfo={userInfo} />
+            <div className="ml-auto">
+              <UserMenu userInfo={userInfo} />
+            </div>
           ) : (
-            <>
+            <div className="ml-auto flex items-center gap-2">
               <Button
                 as={Link}
                 href="/login"
                 variant="bordered"
-                disableRipple
-                className="rounded-lg border border-white px-3 py-0 my-3 bg-transparent text-white font-semibold hover:bg-white/10 transition-colors"
+                className="text-white bg-transparent border-2 border-white/90 hover:bg-white/10 rounded-full"
               >
                 Login
               </Button>
@@ -68,17 +102,15 @@ export default function TopNav({ userInfo }: Props) {
                 as={Link}
                 href="/register"
                 variant="bordered"
-                disableRipple
-                className="rounded-lg border border-white px-1 py-0 my-3 bg-transparent text-white font-semibold hover:bg-white/10 transition-colors"
+                className="text-white bg-transparent border-2 border-white/90 hover:bg-white/10 rounded-full"
               >
                 Register
               </Button>
-            </>
+            </div>
           )}
         </NavbarContent>
       </Navbar>
-    </header>
-    <FiltersWrapper />
-</>
+      <FiltersWrapper />
+    </>
   );
 }

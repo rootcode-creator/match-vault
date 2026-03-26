@@ -30,6 +30,7 @@ export default function CompleteProfileForm() {
 
   const {
     handleSubmit,
+    setError,
     formState: { errors, isSubmitting, isValid },
   } = methods;
 
@@ -43,7 +44,18 @@ export default function CompleteProfileForm() {
       signIn(result.data, {
         callbackUrl: "/members",
       });
+      return;
     }
+
+    const errorMessage =
+      typeof result.error === "string"
+        ? result.error
+        : result.error.map((issue) => issue.message).join(", ");
+
+    setError("root.serverError", {
+      type: "server",
+      message: errorMessage,
+    });
   };
 
   return (

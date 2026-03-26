@@ -4,7 +4,7 @@ import {auth, signIn, signOut} from '@/auth';
 import { sendPasswordResetEmail, sendVerificationEmail } from '@/lib/mail';
 import {prisma} from '@/lib/prisma';
 import { LoginSchema } from '@/lib/schemas/LoginSchema';
-import { combinedRegisterSchema, registerSchema, RegisterSchema } from '@/lib/schemas/RegisterSchema';
+import { combinedRegisterSchema, ProfileSchema, registerSchema, RegisterSchema } from '@/lib/schemas/RegisterSchema';
 import { deleteTokenById, generateToken, getTokenByToken } from '@/lib/tokens';
 import { ActionResult } from '@/types';
 import { User } from '@prisma/client';
@@ -247,14 +247,25 @@ export async function completeSocialLoginProfile(data: ProfileSchema):
             data: {
                 profileComplete: true,
                 member: {
-                    create: {
-                        name: session.user.name as string,
-                        image: session.user.image,
-                        gender: data.gender,
-                        dateOfBirth: new Date(data.dateOfBirth),
-                        description: data.description,
-                        city: data.city,
-                        country: data.country
+                    upsert: {
+                        update: {
+                            name: session.user.name as string,
+                            image: session.user.image,
+                            gender: data.gender,
+                            dateOfBirth: new Date(data.dateOfBirth),
+                            description: data.description,
+                            city: data.city,
+                            country: data.country
+                        },
+                        create: {
+                            name: session.user.name as string,
+                            image: session.user.image,
+                            gender: data.gender,
+                            dateOfBirth: new Date(data.dateOfBirth),
+                            description: data.description,
+                            city: data.city,
+                            country: data.country
+                        }
                     }
                 }
             },
@@ -267,9 +278,29 @@ export async function completeSocialLoginProfile(data: ProfileSchema):
             }
         })
 
-        return { status: 'success', data: user.accounts[0].provider }
+        const provider = user.accounts[0]?.provider;
+
+        if (!provider) {
+            return {
+                status: 'error',
+                error: 'No linked social provider found. Please sign in again with Google or GitHub.'
+            }
+        }
+
+        return { status: 'success', data: provider }
     } catch (error) {
         console.log(error);
         throw error;
     }
+}
+
+
+export async function getUserRole() {
+    const session = await auth();
+
+    const role = session?.user.role;
+
+    if (!role) throw new Error('Not in role');
+
+    return role;
 }

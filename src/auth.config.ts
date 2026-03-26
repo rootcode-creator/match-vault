@@ -1,6 +1,10 @@
 import Google from "next-auth/providers/google";
 import Github from "next-auth/providers/github";
+import Credentials from "next-auth/providers/credentials";
 import type { NextAuthConfig } from "next-auth";
+import { prisma } from "@/lib/prisma";
+import bcrypt from "bcryptjs";
+import { Role } from "@prisma/client";
 
 function env(name: string) {
     return process.env[name]?.trim();
@@ -10,9 +14,13 @@ function env(name: string) {
 // Notice this is only an object, not a full Auth.js instance
 export default {
     callbacks: {
-        async jwt({ user, token }) {
+        async jwt({ user, token, account }) {
             if (user) {
                 token.profileComplete = user.profileComplete;
+                token.role = user.role;
+            }
+            if (account) {
+                token.isOAuth = account.provider !== 'credentials';
             }
             return token;
         },
@@ -20,12 +28,45 @@ export default {
             if (token.sub && session.user) {
                 session.user.id = token.sub;
                 session.user.profileComplete = Boolean(token.profileComplete);
+                session.user.role = token.role as Role;
+                session.user.isOAuth = Boolean(token.isOAuth);
             }
 
             return session;
         }
     },
     providers: [
+        Credentials({
+            name: 'Credentials',
+            credentials: {
+                email: { label: 'Email', type: 'email' },
+                password: { label: 'Password', type: 'password' }
+            },
+            async authorize(credentials) {
+                const email = String(credentials?.email ?? '').trim().toLowerCase();
+                const password = String(credentials?.password ?? '');
+
+                if (!email || !password) return null;
+
+                const user = await prisma.user.findUnique({
+                    where: { email }
+                });
+
+                if (!user || !user.passwordHash) return null;
+
+                const isValid = await bcrypt.compare(password, user.passwordHash);
+                if (!isValid) return null;
+
+                return {
+                    id: user.id,
+                    email: user.email,
+                    name: user.name,
+                    image: user.image,
+                    role: user.role,
+                    profileComplete: user.profileComplete,
+                };
+            }
+        }),
         ...(env('GOOGLE_CLIENT_ID') && env('GOOGLE_CLIENT_SECRET')
             ? [Google({
                 clientId: env('GOOGLE_CLIENT_ID')!,

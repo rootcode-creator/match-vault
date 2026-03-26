@@ -1,35 +1,13 @@
 import { Resend } from 'resend';
-const rawAppUrl =
-    process.env.APP_URL ||
-    process.env.NEXT_PUBLIC_APP_URL ||
-    process.env.NEXTAUTH_URL ||
-    (process.env.VERCEL_URL
-        ? `https://${process.env.VERCEL_URL}`
-        : 'http://localhost:3000');
 
-function getAppUrl() {
-    const withProtocol = /^https?:\/\//i.test(rawAppUrl)
-        ? rawAppUrl
-        : `https://${rawAppUrl}`;
-    return withProtocol.replace(/\/$/, '');
-}
-
-function getResendClient() {
-    const apiKey = process.env.RESEND_API_KEY;
-
-    if (!apiKey) {
-        throw new Error('Missing RESEND_API_KEY environment variable');
-    }
-
-    return new Resend(apiKey);
-}
+const resend = new Resend(process.env.RESEND_API_KEY);
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
 export async function sendVerificationEmail(email: string, token: string) {
-    const link = new URL(`/verify-email?token=${encodeURIComponent(token)}`, getAppUrl()).toString();
-    const resend = getResendClient();
+    const link = `${baseUrl}/verify-email?token=${token}`;
 
     return resend.emails.send({
-        from: 'verify@credentials.kawserahmed.tech',
+        from: 'testing@resend.dev',
         to: email,
         subject: 'Verify your email address',
         html: `
@@ -40,13 +18,11 @@ export async function sendVerificationEmail(email: string, token: string) {
     })
 }
 
-
 export async function sendPasswordResetEmail(email: string, token: string) {
-    const link = new URL(`/reset-password?token=${encodeURIComponent(token)}`, getAppUrl()).toString();
-    const resend = getResendClient();
+    const link = `${baseUrl}/reset-password?token=${token}`;
 
     return resend.emails.send({
-        from: 'password-reset@credentials.kawserahmed.tech',
+        from: 'testing@resend.dev',
         to: email,
         subject: 'Reset your password',
         html: `

@@ -4,15 +4,15 @@ import { getUnreadMessageCount } from "@/app/actions/messageActions";
 import useMessageStore from "@/hooks/useMessageStore";
 import { useNotificationChannel } from "@/hooks/useNotificationChannel";
 import { usePresenceChannel } from "@/hooks/usePresenceChannel";
-import { HeroUIProvider } from "@heroui/react";
+import { HeroUIProvider } from "@heroui/system";
 import React, {
   ReactNode,
-  useCallback,
   useEffect,
   useRef,
 } from "react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { SessionProvider } from "next-auth/react";
 
 export default function Providers({
   children,
@@ -28,30 +28,25 @@ export default function Providers({
     (state) => state.updateUnreadCount
   );
 
-  const setUnreadCount = useCallback(
-    (amount: number) => {
-      updateUnreadCount(amount);
-    },
-    [updateUnreadCount]
-  );
-
   useEffect(() => {
     if (!isUnreadCountSet.current && userId) {
       getUnreadMessageCount().then((count) => {
-        setUnreadCount(count);
+        updateUnreadCount(count);
       });
       isUnreadCountSet.current = true;
     }
-  }, [setUnreadCount, userId]);
+  }, [updateUnreadCount, userId]);
   usePresenceChannel(userId, profileComplete);
   useNotificationChannel(userId, profileComplete);
   return (
-    <HeroUIProvider>
-      <ToastContainer
-        position="bottom-right"
-        hideProgressBar
-      />
-      {children}
-    </HeroUIProvider>
+    <SessionProvider>
+      <HeroUIProvider>
+        <ToastContainer
+          position="bottom-right"
+          hideProgressBar
+        />
+        {children}
+      </HeroUIProvider>
+    </SessionProvider>
   );
 }

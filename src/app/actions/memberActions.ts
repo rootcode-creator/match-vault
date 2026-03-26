@@ -1,12 +1,10 @@
 'use server';
 
-import { auth } from "@/auth";
-import { prisma } from "@/lib/prisma";
-import { GetMemberParams, PaginatedResponse } from "@/types";
-import { Member, Photo } from "@prisma/client";
-import { addYears } from "date-fns";
-import { getAuthUserId } from "./authActions";
-
+import { prisma } from '@/lib/prisma';
+import { Member, Photo } from '@prisma/client';
+import { addYears } from 'date-fns';
+import { getAuthUserId } from './authActions';
+import { GetMemberParams, PaginatedResponse } from '@/types';
 
 function getAgeRange(ageRange: string): Date[] {
     const [minAge, maxAge] = ageRange.split(',');
@@ -25,39 +23,31 @@ export async function getMembers({
     pageSize = '12',
     withPhoto = 'true'
 }: GetMemberParams): Promise<PaginatedResponse<Member>> {
-
-
-     const userId = await getAuthUserId();
+    const userId = await getAuthUserId();
 
     const [minDob, maxDob] = getAgeRange(ageRange);
 
     const selectedGender = gender.split(',');
-    const hasProfilePhoto = withPhoto === 'true';
 
     const page = parseInt(pageNumber);
     const limit = parseInt(pageSize);
 
     const skip = (page - 1) * limit;
 
-
-
-     try {
+    try {
         const membersSelect = {
             where: {
                 AND: [
                     { dateOfBirth: { gte: minDob } },
                     { dateOfBirth: { lte: maxDob } },
                     { gender: { in: selectedGender } },
-                    hasProfilePhoto
-                        ? { image: { not: null } }
-                        : { image: null }
+                    ...(withPhoto === 'true' ? [{ image: { not: null } }] : [])
                 ],
                 NOT: {
                     userId
                 }
             },
         }
-
 
         const count = await prisma.member.count(membersSelect)
 
@@ -78,33 +68,26 @@ export async function getMembers({
     }
 }
 
-
-
-
-
 export async function getMemberByUserId(userId: string) {
-    
     try {
-       return prisma.member.findUnique({where: {userId}});
+        return prisma.member.findUnique({ where: { userId } })
     } catch (error) {
         console.log(error);
-        
     }
 }
 
-
 export async function getMemberPhotosByUserId(userId: string) {
-    const member = await prisma.member.findUnique({
-        where: {userId},
-        select: {photos: true}
-    });
+    const currentUserId = await getAuthUserId();
 
+    const member = await prisma.member.findUnique({
+        where: { userId },
+        select: { photos: { where: currentUserId === userId ? {} : { isApproved: true } } }
+    });
 
     if (!member) return null;
 
-    return member.photos.map(p=> p) as Photo[];
+    return member.photos.map(p => p) as Photo[];
 }
-
 
 export async function updateLastActive() {
     const userId = await getAuthUserId();

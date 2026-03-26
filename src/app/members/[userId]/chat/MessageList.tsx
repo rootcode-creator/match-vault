@@ -69,9 +69,10 @@ export default function MessageList({
 
 
 useEffect(() => {
-    if (!pusherClient) return;
+    const client = pusherClient;
+    if (!client) return;
     const channelName = `private-chat-${chatId}`;
-    const channel = pusherClient.subscribe(channelName);
+    const channel = client.subscribe(channelName);
     channel.bind("message:new", handleNewMessage);
     channel.bind("messages:read", handleReadMessages);
     channel.bind("pusher:subscription_error", (status: number) => {

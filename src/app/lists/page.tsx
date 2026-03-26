@@ -5,15 +5,16 @@ import {
 } from "../actions/likeActions";
 import ListsTab from "./ListsTab";
 
+export const dynamic = "force-dynamic";
+
 export default async function ListsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ type?: string }>;
+  searchParams: { type: string };
 }) {
-  const { type } = await searchParams;
   const likeIds = await fetchCurrentUserLikeIds();
   const members = await fetchLikeMembers(
-    type ?? "source"
+    searchParams.type
   );
 
   return (

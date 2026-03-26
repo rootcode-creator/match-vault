@@ -7,9 +7,16 @@ import {
   Textarea,
 } from "@heroui/react";
 import { format, subYears } from "date-fns";
+import { useEffect, useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 
 export default function ProfileDetailsForm() {
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
   const {
     register,
     control,
@@ -17,13 +24,15 @@ export default function ProfileDetailsForm() {
     formState: { errors },
   } = useFormContext();
 
+  if (!isMounted) return null;
+
   const genderList = [
     { label: "Male", value: "male" },
     { label: "Female", value: "female" },
   ];
 
   const inputWrapper =
-    "rounded-xl bg-white/90 border border-slate-300 shadow-sm transition-all duration-200 ease-out " +
+    "rounded-xl bg-white/90 border-2 border-slate-400 shadow-sm transition-all duration-200 ease-out " +
     "hover:shadow-md focus-within:bg-white focus-within:border-pink-500/70 " +
     "focus-within:ring-2 focus-within:ring-pink-300/60 focus-within:shadow-[0_8px_24px_-8px_rgba(236,72,153,0.35)]";
   const inputBase =

@@ -1,37 +1,31 @@
 'use server'
 
-import { MemberEditSchema, memberEditSchema } from "@/lib/schemas/MemberEditSchema";
-import { ActionResult } from "@/types";
-import { Member, Photo } from "@prisma/client";
-import { getAuthUserId } from "./authActions";
-import { prisma } from "@/lib/prisma";
-import { cloudinary } from "@/lib/cloudinary";
+import { MemberEditSchema, memberEditSchema } from '@/lib/schemas/MemberEditSchema';
+import { ActionResult } from '@/types';
+import { Member, Photo } from '@prisma/client';
+import { getAuthUserId } from './authActions';
+import { prisma } from '@/lib/prisma';
+import { cloudinary } from '@/lib/cloudinary';
 
-const shouldExposeError =
-    process.env.DEBUG_ERRORS === 'true' || process.env.NODE_ENV !== 'production';
-
-
-
-export async function updateMemberProfile(data: MemberEditSchema, nameUpdated: boolean ): Promise <ActionResult<Member>> {
-    
+export async function updateMemberProfile(data: MemberEditSchema, nameUpdated: boolean): Promise<ActionResult<Member>> {
     try {
         const userId = await getAuthUserId();
+
         const validated = memberEditSchema.safeParse(data);
 
-        if (!validated.success) return {status: 'error', error: validated.error.errors}
+        if (!validated.success) return { status: 'error', error: validated.error.errors }
 
-        const {name, description, city, country} = validated.data;
+        const { name, description, city, country } = validated.data;
 
         if (nameUpdated) {
             await prisma.user.update({
-                where: {id: userId},
-                data: {name}
+                where: { id: userId },
+                data: { name }
             })
         }
 
-
         const member = await prisma.member.update({
-            where: {userId},
+            where: { userId },
             data: {
                 name,
                 description,
@@ -39,166 +33,90 @@ export async function updateMemberProfile(data: MemberEditSchema, nameUpdated: b
                 country
             }
         })
-        return {status:'success', data:member}
+        return { status: 'success', data: member }
     } catch (error) {
-        console.error('updateMemberProfile failed', error);
-        const message = error instanceof Error ? error.message : 'Unknown error';
-        return {status: 'error', error: shouldExposeError ? message : 'Something went wrong'}
+        console.log(error);
+
+        return { status: 'error', error: 'Something went wrong' }
     }
 }
 
-export async function addImage(url: string, publicId:string){
-    try{
+
+export async function addImage(url: string, publicId: string) {
+    try {
         const userId = await getAuthUserId();
+
         return prisma.member.update({
-            where:{userId},
+            where: { userId },
             data: {
                 photos: {
                     create: [
-
                         {
                             url,
                             publicId
                         }
                     ]
+                }
             }
-        }
         })
-    }catch(error){
+    } catch (error) {
         console.log(error);
-        throw Error;
+        throw error;
     }
 }
 
 
 export async function setMainImage(photo: Photo) {
-
-
     try {
-
-
+        if (!photo.isApproved) throw new Error('Only approved photos can be set to main image')
         const userId = await getAuthUserId();
-
-
-
-
 
         await prisma.user.update({
-
-
             where: { id: userId },
-
-
             data: { image: photo.url }
-
-
         })
-
-
-
-
 
         return prisma.member.update({
-
-
             where: { userId },
-
-
             data: { image: photo.url }
-
-
         })
-
-
     } catch (error) {
-
-
         console.log(error);
-
-
         throw error;
-
-
     }
-
-
 }
 
-
-
-
 export async function deleteImage(photo: Photo) {
-
-
     try {
-
-
         const userId = await getAuthUserId();
 
-
-
-
-
         if (photo.publicId) {
-
-
             await cloudinary.v2.uploader.destroy(photo.publicId);
-
-
         }
 
-
-
-
-
         return prisma.member.update({
-
-
             where: { userId },
-
-
             data: {
-
-
                 photos: {
-
-
                     delete: { id: photo.id }
-
-
                 }
-
-
             }
-
-
         })
-
-
     } catch (error) {
-
-
         console.log(error);
-
-
         throw error;
-
-
     }
-
-
 }
 
 export async function getUserInfoForNav() {
-    try{
+    try {
         const userId = await getAuthUserId();
         return prisma.user.findUnique({
-            where: {id: userId},
-            select: {name: true, image: true}
+            where: { id: userId },
+            select: { name: true, image: true }
         })
-    }catch(error){
+    } catch (error) {
         console.log(error);
         throw error;
-        
     }
 }

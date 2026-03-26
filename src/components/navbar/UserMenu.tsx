@@ -11,7 +11,7 @@ import {
 } from "@heroui/react";
 import { Session } from "next-auth";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 type Props = {
   userInfo:{
@@ -23,6 +23,24 @@ type Props = {
 export default function UserMenu({
   userInfo,
 }: Props) {
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  if (!isMounted) {
+    return (
+      <Avatar
+        className="nav-avatar nav-avatar--shift"
+        color="default"
+        name={userInfo?.name || "user avatar"}
+        size="sm"
+        src={userInfo?.image || "/images/user.png"}
+      />
+    );
+  }
+
    
   return (
     <Dropdown placement="bottom-end">

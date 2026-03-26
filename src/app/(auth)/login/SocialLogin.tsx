@@ -33,13 +33,13 @@ export default function SocialLogin() {
   };
 
   return (
-    <div className="flex items-center justify-center w-full gap-4 mt-3">
+    <div className="flex items-center justify-center w-full gap-5 mt-3">
       {providers.map((provider) => (
         <Button
           key={provider.name}
-          size="lg"
+          size="md"
           variant="bordered"
-          className="h-10 w-[48%] rounded-lg border border-slate-300 bg-white text-slate-800 font-medium hover:bg-slate-50"
+          className="h-9 w-[44%] rounded-lg border-2 border-slate-400 bg-white text-slate-800 font-medium hover:bg-slate-50"
           onClick={() =>
             onClick(
               provider.name as "google" | "github"

@@ -1,5 +1,4 @@
 import { TokenType } from '@prisma/client';
-import { randomBytes } from 'crypto';
 import { prisma } from './prisma';
 
 export async function getTokenByEmail(email: string) {
@@ -13,10 +12,8 @@ export async function getTokenByEmail(email: string) {
     }
 }
 
-export async function getTokenByToken(token: string | null | undefined) {
+export async function getTokenByToken(token: string) {
     try {
-        if (!token || !token.trim()) return null;
-
         return prisma.token.findFirst({
             where: { token }
         })
@@ -26,19 +23,8 @@ export async function getTokenByToken(token: string | null | undefined) {
     }
 }
 
-export async function deleteTokenById(id: string) {
-    try {
-        return prisma.token.delete({
-            where: { id }
-        })
-    } catch (error) {
-        console.log(error);
-        throw error;
-    }
-}
-
 export async function generateToken(email: string, type: TokenType) {
-    const token = randomBytes(48).toString('hex');
+    const token = getToken();
     const expires = new Date(Date.now() + 1000 * 60 * 60 * 24); //  Expires in 24 hours
 
     const existingToken = await getTokenByEmail(email);
@@ -57,4 +43,21 @@ export async function generateToken(email: string, type: TokenType) {
             type
         }
     })
+}
+
+export async function deleteTokenById(id: string) {
+    try {
+        return prisma.token.delete({
+            where: { id }
+        })
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+}
+
+function getToken() {
+    const arrayBuffer = new Uint8Array(48);
+    crypto.getRandomValues(arrayBuffer);
+    return Array.from(arrayBuffer, byte => byte.toString(16).padStart(2, '0')).join('');
 }

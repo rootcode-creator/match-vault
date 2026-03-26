@@ -21,14 +21,15 @@ export default async function RootLayout({
   // Don't rely on session.user.image here: with JWT sessions it won't change
   // until the token is refreshed (often only on re-login).
   const userInfo = userId ? await getUserInfoForNav() : null;
-  
+
   const profileComplete = session?.user
-    .profileComplete as boolean 
+    .profileComplete as boolean;
+  const isAdmin = session?.user?.role === "ADMIN";
   return (
     <html lang="en">
       <body>
         <Providers profileComplete={profileComplete} userId={userId}>
-          <TopNav userInfo={userInfo} />
+          <TopNav userInfo={userInfo} isAdmin={isAdmin} />
           <main className="container mx-auto">
             {children}
           </main>

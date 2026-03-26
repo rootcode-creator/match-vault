@@ -39,12 +39,13 @@ export const usePresenceChannel = (userId: string | null, profileComplete: boole
     useEffect(() => {
 
         if (!userId || !profileComplete) return;
-        if (!pusherClient) return;
+        const client = pusherClient;
+        if (!client) return;
 
        
 
         if (!channelRef.current) {
-            channelRef.current = pusherClient.subscribe('presence-match-me');
+            channelRef.current = client.subscribe('presence-match-me');
 
             channelRef.current.bind('pusher:subscription_succeeded', handleSubscriptionSucceeded)
 

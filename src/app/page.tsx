@@ -1,53 +1,37 @@
-import { auth, signOut } from "@/auth";
-import { FaRegSmile } from "react-icons/fa";
+import { auth } from "@/auth";
+import Link from "next/link";
 
 export default async function Home() {
-    const session = await auth();
+  const session = await auth();
+
   return (
-    <div>
-      <h1 className="text-3xl">Hello App!</h1>
-
-
-<h3 className="text-2xl font-semibold">
-
-  User session data:
-</h3>
-   {session ? (
-
-    <div>
-      <pre>
-
-        {
-          JSON.stringify(session, null, 2) 
-        }
-      </pre>
-     <form
-            action={async () => {
-              "use server";
-              await signOut();
-            }}>
-        <button
-          type="submit"
-          className="inline-flex items-center gap-2 rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-800 hover:bg-gray-100"
-          
+    <div className="flex flex-col justify-center items-center mt-20 gap-6 text-default">
+      <h1 className="text-4xl font-bold">
+        Welcome to Match Vault
+      </h1>
+      {session ? (
+        <Link
+          href="/members"
+          className="inline-flex items-center justify-center rounded-xl border border-black/20 px-6 py-2 text-lg font-medium hover:bg-black/5"
         >
-          <FaRegSmile size={18} />
-          Sign out
-        </button>
-        
-      </form>
-
-</div>
-   ):(
-   
-   <div>
-     Not signed in
-   </div>
-   
-  
- 
-  )}
- </div>
+          Continue
+        </Link>
+      ) : (
+        <div className="flex flex-row gap-4">
+          <Link
+            href="/login"
+            className="inline-flex items-center justify-center rounded-xl border border-black/20 px-6 py-2 text-lg font-medium hover:bg-black/5"
+          >
+            Login
+          </Link>
+          <Link
+            href="/register"
+            className="inline-flex items-center justify-center rounded-xl border border-black/20 px-6 py-2 text-lg font-medium hover:bg-black/5"
+          >
+            Register
+          </Link>
+        </div>
+      )}
+    </div>
   );
- 
 }
