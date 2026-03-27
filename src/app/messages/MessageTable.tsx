@@ -122,7 +122,7 @@ export default function MessageTable({ initialMessages,
             color="default"
             variant="bordered"
             radius="md"
-            className="border-2 border-sky-300 bg-sky-50 text-sky-800 font-semibold min-w-40 hover:bg-sky-100 hover:border-sky-400 focus-visible:ring-2 focus-visible:ring-sky-200 disabled:bg-default-100 disabled:border-default-200 disabled:text-default-400"
+            className="rounded-xl border border-black/20 bg-default-50 px-6 py-2 text-base font-semibold text-black hover:bg-black/5 min-w-36 disabled:bg-default-100 disabled:border-black/10 disabled:text-default-400"
             isLoading={loadingMore}
             isDisabled={!hasMore}
             onClick={loadMore}
