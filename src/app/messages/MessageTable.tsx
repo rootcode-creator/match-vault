@@ -24,6 +24,7 @@ import MessageTableCell from "./MessageTableCell";
 type Props = {
     initialMessages: MessageDto[];
     nextCursor?: string;
+  loadMoreLimit?: number;
 };
 
 const outboxColumns = [
@@ -42,10 +43,11 @@ const inboxColumns = [
 
 export default function MessageTable({ initialMessages,
      nextCursor,
+  loadMoreLimit,
 }: Props) {
 
 
-    const {columns, isOutbox, isDeleting, deleteMessage, selectRow, messages, loadMore, loadingMore, hasMore}= useMessages(initialMessages, nextCursor);
+    const {columns, isOutbox, isDeleting, deleteMessage, selectRow, messages, loadMore, loadingMore, hasMore}= useMessages(initialMessages, nextCursor, loadMoreLimit);
 
    
     

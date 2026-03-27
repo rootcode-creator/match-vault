@@ -27,7 +27,8 @@ const inboxColumns = [
 
 export const useMessages = (
   initialMessages: MessageDto[],
-  nextCursor?: string
+  nextCursor?: string,
+  loadMoreLimit = 2
 ) => {
   const set = useMessageStore((state) => state.set);
   const remove = useMessageStore((state) => state.remove);
@@ -39,13 +40,11 @@ export const useMessages = (
     (state) => state.resetMessages
   );
 
-
-  const cursorRef = useRef(nextCursor);
-
-
   const searchParams = useSearchParams();
   const router = useRouter();
   const container = searchParams.get("container");
+  const normalizedContainer =
+    container === "outbox" ? "outbox" : "inbox";
   const isOutbox =
     searchParams.get("container") === "outbox";
   const [isDeleting, setDeleting] = useState({
@@ -54,30 +53,33 @@ export const useMessages = (
   });
 
   const [loadingMore, setLoadingMore] = useState(false);
+  const [cursor, setCursor] = useState(nextCursor);
 
   useEffect(() => {
+    resetMessages();
     set(initialMessages);
-
-    return () => {
-      resetMessages();
-    };
-  }, [initialMessages, resetMessages, set]);
+    setCursor(nextCursor);
+  }, [initialMessages, nextCursor, normalizedContainer, resetMessages, set]);
 
 
 const loadMore = useCallback(async () => {
-  if(cursorRef.current){
+  if(cursor){
     setLoadingMore(true);
-    const {messages, nextCursor} = 
-    await getMessagesByContainer(
-      container,
-      cursorRef.current
-    );
+    try {
+      const {messages, nextCursor} = 
+      await getMessagesByContainer(
+        normalizedContainer,
+        cursor,
+        loadMoreLimit
+      );
 
-    set(messages);
-    cursorRef.current = nextCursor;
-    setLoadingMore(false);
+      set(messages);
+      setCursor(nextCursor);
+    } finally {
+      setLoadingMore(false);
+    }
   }
-}, [container, set]);
+}, [cursor, loadMoreLimit, normalizedContainer, set]);
 
 
 
@@ -122,6 +124,6 @@ const loadMore = useCallback(async () => {
     messages,
     loadingMore,
     loadMore,
-    hasMore:!!cursorRef.current,
+    hasMore:!!cursor,
   };
 };

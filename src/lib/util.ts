@@ -21,6 +21,11 @@ export function handleFormServerErrors<TFieldValues extends FieldValues>(
     if (Array.isArray(errorResponse.error)) {
 
         errorResponse.error.forEach((e) => {
+        if (e.path.length === 0) {
+            setError('root.serverError', { message: e.message });
+            return;
+        }
+
         const fieldName = e.path.join('.') as Path<TFieldValues>
         setError(fieldName, { message: e.message })
 

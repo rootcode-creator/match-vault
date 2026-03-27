@@ -10,13 +10,18 @@ export default async function MessagesPage({
 }: {
   searchParams: Promise<{ container?: string }>;
 }) {
+  const INITIAL_MESSAGES_LIMIT = 5;
+  const LOAD_MORE_MESSAGES_LIMIT = 2;
+
   const { container } = await searchParams;
   const normalizedContainer =
     container === "outbox" ? "outbox" : "inbox";
 
 
   const {messages, nextCursor} = await getMessagesByContainer(
-    normalizedContainer 
+    normalizedContainer,
+    undefined,
+    INITIAL_MESSAGES_LIMIT
   );
 
  
@@ -34,7 +39,11 @@ export default async function MessagesPage({
 
       <div className="col-span-10">
 
-        <MessageTable initialMessages={messages} nextCursor={nextCursor} />
+        <MessageTable
+          initialMessages={messages}
+          nextCursor={nextCursor}
+          loadMoreLimit={LOAD_MORE_MESSAGES_LIMIT}
+        />
       </div>
     </div>
   );

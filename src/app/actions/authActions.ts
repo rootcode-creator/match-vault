@@ -7,7 +7,7 @@ import { LoginSchema } from '@/lib/schemas/LoginSchema';
 import { combinedRegisterSchema, ProfileSchema, registerSchema, RegisterSchema } from '@/lib/schemas/RegisterSchema';
 import { deleteTokenById, generateToken, getTokenByToken } from '@/lib/tokens';
 import { ActionResult } from '@/types';
-import { User } from '@prisma/client';
+import { Prisma, User } from '@prisma/client';
 import bcrypt from 'bcryptjs';
 import { AuthError } from 'next-auth';
 
@@ -114,8 +114,35 @@ export async function registerUser(data:RegisterSchema): Promise<ActionResult<Us
 
 
     }catch(error){
-        console.error( error);
-        return{status: 'error', error: 'Something went wrong'}
+        console.error('registerUser failed', error);
+
+        if (error instanceof Prisma.PrismaClientKnownRequestError) {
+            if (error.code === 'P2002') {
+                const target = Array.isArray(error.meta?.target)
+                    ? error.meta.target.map((item) => String(item))
+                    : [];
+
+                if (target.includes('email')) {
+                    return {
+                        status: 'error',
+                        error: [
+                            {
+                                code: 'custom',
+                                message: 'Email is already registered',
+                                path: ['email']
+                            }
+                        ]
+                    }
+                }
+            }
+        }
+
+        const message = error instanceof Error ? error.message : 'Unknown error';
+
+        return {
+            status: 'error',
+            error: shouldExposeError ? message : 'Something went wrong'
+        }
     }
 }
 

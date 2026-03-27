@@ -222,7 +222,7 @@ export async function getMessageThread(recipientId: string) {
 }
 
 
-export async function getMessagesByContainer(container?: string|null,cursor?:string, limit=4){
+export async function getMessagesByContainer(container?: string|null,cursor?:string, limit=5){
 
     try {
         
@@ -231,7 +231,7 @@ export async function getMessagesByContainer(container?: string|null,cursor?:str
         const conditions = {
             [container ==='outbox'? 'senderId': 'recipientId']: userId,
             ...(container === 'outbox'? {senderDeleted: false}:{recipientDeleted:false} ),
-            ...(cursor? {created: {lte:new Date(cursor)}} : {})
+            ...(cursor? {created: {lt:new Date(cursor)}} : {})
 
         }
 
