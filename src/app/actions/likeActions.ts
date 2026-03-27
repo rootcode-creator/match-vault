@@ -73,7 +73,7 @@ export async function toggleLikeMember(targetUserId: string, isLiked: boolean) {
 
     } catch (error) {
         console.log(error);
-        throw error;
+        return;
     }
 }
 
@@ -95,7 +95,7 @@ export async function fetchCurrentUserLikeIds() {
         return likeIds.map(like => like.targetUserId);
     } catch (error) {
         console.log(error);
-        throw error;
+        return [];
     }
 }
 
@@ -120,7 +120,7 @@ export async function fetchLikeMembers(type = 'source') {
         }
     } catch (error) {
         console.log(error);
-        throw error;
+        return [];
     }
 }
 
