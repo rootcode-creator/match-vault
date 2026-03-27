@@ -41,7 +41,9 @@ export async function getMembers({
                     { dateOfBirth: { gte: minDob } },
                     { dateOfBirth: { lte: maxDob } },
                     { gender: { in: selectedGender } },
-                    ...(withPhoto === 'true' ? [{ image: { not: null } }] : [])
+                    ...(withPhoto === 'true'
+                        ? [{ image: { not: null } }]
+                        : [{ image: null }])
                 ],
                 NOT: {
                     userId

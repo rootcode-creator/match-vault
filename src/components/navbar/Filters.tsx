@@ -80,9 +80,11 @@ return (
                 </div>
             </div>
 
-            <div className='flex items-center gap-2 min-w-[110px]'>
+                        <div className='flex items-center gap-2 min-w-[130px]'>
 
-                <p className='text-sm text-default-700 font-semibold whitespace-nowrap'>With photo</p>
+                                <p className='text-sm text-default-700 font-semibold whitespace-nowrap'>
+                                    {withPhoto ? 'With photo' : 'Without photo'}
+                                </p>
 
                 <Switch
                     color='default'
