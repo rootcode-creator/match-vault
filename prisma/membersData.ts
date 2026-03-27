@@ -72,7 +72,7 @@ export const membersData = [
         name: "Todd Bennett",
         created: "2024-08-17",
         lastActive: "2024-09-03",
-        description: "Todd is a software developer who loves coding and building apps that make life easier. Outside of work, Todd enjoys woodworking and has built much of his home furniture. He also loves spending time with his two young children, introducing them to his favorite hobby—camping in the great outdoors.",
+        description: "Todd was a software developer who loves coding and building apps that make life easier. Outside of work, Todd enjoys woodworking and has built much of his home furniture. He also loves spending time with his two young children, introducing them to his favorite hobby—camping in the great outdoors.",
         city: "Surrey",
         country: "Canada",
         image: "/images/m1.jpg"
