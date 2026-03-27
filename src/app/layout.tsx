@@ -21,6 +21,7 @@ export default async function RootLayout({
 }>) {
   const session = await auth();
   const userId = session?.user?.id || null;
+  const isLoggedIn = Boolean(userId);
 
   // Don't rely on session.user.image here: with JWT sessions it won't change
   // until the token is refreshed (often only on re-login).
@@ -33,7 +34,7 @@ export default async function RootLayout({
     <html lang="en">
       <body>
         <Providers profileComplete={profileComplete} userId={userId}>
-          <TopNav userInfo={userInfo} isAdmin={isAdmin} />
+          <TopNav userInfo={userInfo} isLoggedIn={isLoggedIn} isAdmin={isAdmin} />
           <main className="container mx-auto">
             {children}
           </main>

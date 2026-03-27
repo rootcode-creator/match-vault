@@ -117,6 +117,6 @@ export async function getUserInfoForNav() {
         })
     } catch (error) {
         console.log(error);
-        throw error;
+        return null;
     }
 }

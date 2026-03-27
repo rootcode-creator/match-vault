@@ -18,11 +18,13 @@ type Props = {
     name: string | null;
     image: string | null;
   } | null;
+  isLoggedIn: boolean;
   isAdmin: boolean;
 };
 
 export default function TopNav({
   userInfo,
+  isLoggedIn,
   isAdmin,
 }: Props) {
 
@@ -71,7 +73,7 @@ export default function TopNav({
           </div>
         </NavbarBrand>
         <NavbarContent justify="center">
-          {userInfo &&
+          {isLoggedIn &&
             links.map((item) => (
               <NavLink
                 key={item.href}
@@ -84,7 +86,7 @@ export default function TopNav({
           justify="end"
           className="flex-1"
         >
-          {userInfo ? (
+          {isLoggedIn ? (
             <div className="ml-auto">
               <UserMenu userInfo={userInfo} />
             </div>
