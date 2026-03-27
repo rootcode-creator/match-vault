@@ -24,6 +24,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import ProfileDetailsForm from "./ProfileDetailsForm";
 import { registerUser } from "@/app/actions/authActions";
 import { useRouter } from "next/navigation";
+import type { ZodIssue } from "zod";
 
 const stepSchemas = [registerSchema, profileSchema]
 
@@ -55,6 +56,33 @@ export default function RegisterForm() {
       router.push("/register/success");
     } else {
       handleFormServerErrors(result, setError);
+
+      if (Array.isArray(result.error)) {
+        const accountFields = new Set(["name", "email", "password"]);
+        const profileFields = new Set([
+          "gender",
+          "description",
+          "city",
+          "country",
+          "dateOfBirth",
+        ]);
+
+        const hasAccountFieldError = result.error.some((issue: ZodIssue) =>
+          accountFields.has(String(issue.path[0]))
+        );
+        const hasProfileFieldError = result.error.some((issue: ZodIssue) =>
+          profileFields.has(String(issue.path[0]))
+        );
+
+        if (hasAccountFieldError) {
+          setActiveStep(0);
+          return;
+        }
+
+        if (hasProfileFieldError) {
+          setActiveStep(1);
+        }
+      }
     }
   };
 

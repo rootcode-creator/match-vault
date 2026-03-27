@@ -64,7 +64,7 @@ export async function registerUser(data:RegisterSchema): Promise<ActionResult<Us
         const validated = combinedRegisterSchema.safeParse(data);
         
         if (!validated.success) {
-            return {status: 'error', error: validated.error.errors}
+            return {status: 'error', error: validated.error.issues}
         }
 
         const {name, email, password, gender, description,city, country,dateOfBirth } = validated.data;
@@ -75,7 +75,18 @@ export async function registerUser(data:RegisterSchema): Promise<ActionResult<Us
             where: {email}
         });
 
-        if(existingUser) return {status: 'error', error: 'User already exists'};
+        if (existingUser) {
+            return {
+                status: 'error',
+                error: [
+                    {
+                        code: 'custom',
+                        message: 'Email is already registered',
+                        path: ['email']
+                    }
+                ]
+            };
+        }
 
        const user = await prisma.user.create({
             data: {

@@ -11,7 +11,7 @@ export async function sendVerificationEmail(email: string, token: string) {
         to: email,
         subject: 'Verify your email address',
         html: `
-            <h1>Verify your email address ${email}</h1>
+            <h1>Verify your email address "${email}"</h1>
             <p>Click the link below to verify your email address</p>
             <a href="${link}">Verify email</a>
         `
@@ -26,7 +26,7 @@ export async function sendPasswordResetEmail(email: string, token: string) {
         to: email,
         subject: 'Reset your password',
         html: `
-            <h1>You have requested to reset your password for ${email}</h1>
+            <h1>You have requested to reset your password for "${email}"</h1>
             <p>Click the link below to reset password</p>
             <a href="${link}">Reset password</a>
         `

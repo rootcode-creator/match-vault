@@ -84,10 +84,10 @@ export default function LoginForm() {
     "text-base placeholder:text-gray-400 outline-none focus:outline-none focus-visible:outline-none focus:ring-0";
 
   return (
-    <Card className="relative w-full max-w-xl mx-auto py-10 px-8 rounded-2xl bg-white/95 backdrop-blur
+    <Card className="relative w-full max-w-md mx-auto py-6 px-6 rounded-2xl bg-white/95 backdrop-blur
       ring-1 ring-pink-100 border border-white/60
       shadow-[0_18px_50px_-12px_rgba(236,72,153,0.45),0_25px_55px_-25px_rgba(0,0,0,0.35)]">
-      <CardHeader className="flex flex-col items-center justify-center mb-6">
+      <CardHeader className="flex flex-col items-center justify-center mb-4">
         <div className="flex flex-col gap-2 items-center text-default">
           <div className="flex flex-row items-center gap-3">
             <GiPadlock size={30} />
@@ -99,7 +99,7 @@ export default function LoginForm() {
 
       <CardBody>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="space-y-6">
+          <div className="space-y-5">
             {/* Email */}
             <div className="w-full max-w-lg mx-auto">
               <label

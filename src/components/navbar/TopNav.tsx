@@ -89,12 +89,12 @@ export default function TopNav({
               <UserMenu userInfo={userInfo} />
             </div>
           ) : (
-            <div className="ml-auto flex items-center gap-2">
+            <div className="ml-auto flex items-center gap-3">
               <Button
                 as={Link}
                 href="/login"
                 variant="bordered"
-                className="text-white bg-transparent border-2 border-white/90 hover:bg-white/10 rounded-full"
+                className="min-w-[96px] h-10 rounded-2xl text-slate-900 font-medium bg-white/95 border border-white/80 shadow-sm hover:bg-white hover:shadow-md active:scale-[0.99] transition"
               >
                 Login
               </Button>
@@ -102,7 +102,7 @@ export default function TopNav({
                 as={Link}
                 href="/register"
                 variant="bordered"
-                className="text-white bg-transparent border-2 border-white/90 hover:bg-white/10 rounded-full"
+                className="min-w-[112px] h-10 rounded-2xl text-slate-900 font-medium bg-white/95 border border-white/80 shadow-sm hover:bg-white hover:shadow-md active:scale-[0.99] transition"
               >
                 Register
               </Button>
