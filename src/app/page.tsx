@@ -1,12 +1,11 @@
 import { auth } from "@/auth";
 import Link from "next/link";
-import Image from "next/image";
 
 export default async function Home() {
   const session = await auth();
 
   return (
-    <div className="mx-auto flex w-full max-w-6xl flex-col items-center px-6 pb-16 pt-14 text-default">
+    <div className="mx-auto flex w-full max-w-6xl flex-col items-center bg-default-100 px-6 pb-16 pt-14 text-default">
       <p className="text-sm font-semibold uppercase tracking-[0.22em] text-default-500">
         Find your person
       </p>
@@ -57,44 +56,10 @@ export default async function Home() {
         )}
       </div>
 
-      <div className="mt-12 w-full max-w-4xl rounded-[2rem] border border-black/10 bg-white/80 p-6 shadow-sm md:p-8">
-        <div className="flex flex-col items-center gap-5">
-          <div className="flex items-center justify-center">
-            <Image
-              src="/images/f1.jpg"
-              alt="Match profile"
-              width={112}
-              height={112}
-              className="h-24 w-24 rounded-full border-4 border-white object-cover shadow-sm md:h-28 md:w-28"
-            />
-            <Image
-              src="/images/m1.jpg"
-              alt="Match profile"
-              width={112}
-              height={112}
-              className="-ml-5 h-24 w-24 rounded-full border-4 border-white object-cover shadow-sm md:h-28 md:w-28"
-            />
-            <Image
-              src="/images/f2.jpg"
-              alt="Match profile"
-              width={112}
-              height={112}
-              className="-ml-5 h-24 w-24 rounded-full border-4 border-white object-cover shadow-sm md:h-28 md:w-28"
-            />
-            <Image
-              src="/images/m2.jpg"
-              alt="Match profile"
-              width={112}
-              height={112}
-              className="-ml-5 h-24 w-24 rounded-full border-4 border-white object-cover shadow-sm md:h-28 md:w-28"
-            />
-          </div>
-          <p className="max-w-2xl text-center text-base text-default-600 md:text-lg">
-            Thousands of meaningful introductions start with one hello.
-            Your next favorite person could be one swipe away.
-          </p>
-        </div>
-      </div>
+      <p className="mt-12 max-w-2xl text-center text-base text-default-600 md:text-lg">
+        Thousands of meaningful introductions start with one hello.
+        Your next favorite person could be one swipe away.
+      </p>
     </div>
   );
 }
