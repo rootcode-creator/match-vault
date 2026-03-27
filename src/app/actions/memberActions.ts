@@ -95,12 +95,18 @@ export async function updateLastActive() {
     const userId = await getAuthUserId();
 
     try {
-        return prisma.member.update({
+        const result = await prisma.member.updateMany({
             where: { userId },
             data: { updated: new Date() }
-        })
+        });
+
+        if (result.count === 0) {
+            return null;
+        }
+
+        return result;
     } catch (error) {
         console.log(error);
-        throw error;
+        return null;
     }
 }

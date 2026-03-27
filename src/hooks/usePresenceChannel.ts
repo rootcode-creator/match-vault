@@ -24,7 +24,12 @@ export const usePresenceChannel = (userId: string | null, profileComplete: boole
 
     const handleSubscriptionSucceeded = useCallback(async (members: Members) => {
         handleSetMembers(Object.keys(members.members));
-        await updateLastActive();
+
+        try {
+            await updateLastActive();
+        } catch {
+            // non-blocking: presence should continue even if last-active update fails
+        }
     }, [handleSetMembers]);
 
     const handleMemberAdded = useCallback((member: { id: string }) => {
