@@ -7,6 +7,7 @@ import {
   AiFillHeart,
   AiOutlineHeart,
 } from "react-icons/ai";
+import { toast } from "react-toastify";
 
 type Props = {
   targetId: string;
@@ -20,8 +21,12 @@ export default function LikeButton({
   const router = useRouter();
 
   async function toggleLike() {
-    await toggleLikeMember(targetId, hasLiked);
-    router.refresh();
+    try {
+      await toggleLikeMember(targetId, hasLiked);
+      router.refresh();
+    } catch {
+      toast.error("Failed to update like. Please try again.");
+    }
   }
 
   return (

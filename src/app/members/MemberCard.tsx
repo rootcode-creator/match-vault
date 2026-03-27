@@ -24,7 +24,7 @@ export default function MemberCard({
 
     const preventLinkAction = (e: React.MouseEvent) =>{
         e.preventDefault();
-        e.stopPropagation
+        e.stopPropagation();
     }
     return (
         <Card
