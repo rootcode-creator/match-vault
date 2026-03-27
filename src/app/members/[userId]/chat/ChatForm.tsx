@@ -54,6 +54,10 @@ export default function ChatForm() {
           fullWidth
           placeholder="Type a message"
           variant="faded"
+          classNames={{
+            inputWrapper:
+              "border border-default-300 data-[hover=true]:border-default-400 group-data-[focus=true]:border-primary",
+          }}
           {...register("text")}
           isInvalid={!!errors.text}
           errorMessage={errors.text?.message}

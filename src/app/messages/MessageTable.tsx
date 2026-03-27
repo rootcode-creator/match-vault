@@ -117,9 +117,12 @@ export default function MessageTable({ initialMessages,
           </TableBody>
         </Table>
 
-        <div className="sticky bottom-0 pb-3 mr-3 text-right">
+        <div className="sticky bottom-0 pb-3 px-3 flex justify-end">
           <Button
             color="default"
+            variant="bordered"
+            radius="md"
+            className="border-2 border-sky-300 bg-sky-50 text-sky-800 font-semibold min-w-40 hover:bg-sky-100 hover:border-sky-400 focus-visible:ring-2 focus-visible:ring-sky-200 disabled:bg-default-100 disabled:border-default-200 disabled:text-default-400"
             isLoading={loadingMore}
             isDisabled={!hasMore}
             onClick={loadMore}
