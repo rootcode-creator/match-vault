@@ -4,6 +4,8 @@ import {
   fetchLikeMembers,
 } from "../actions/likeActions";
 import ListsTab from "./ListsTab";
+import { auth } from "@/auth";
+import { redirect } from "next/navigation";
 
 export const dynamic = "force-dynamic";
 
@@ -12,6 +14,12 @@ export default async function ListsPage({
 }: {
   searchParams: Promise<{ type?: string }>;
 }) {
+  const session = await auth();
+
+  if (!session?.user?.id) {
+    redirect("/login");
+  }
+
   const params = await searchParams;
   const type =
     params.type === "source" ||
