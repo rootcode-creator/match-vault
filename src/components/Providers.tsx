@@ -30,9 +30,13 @@ export default function Providers({
 
   useEffect(() => {
     if (!isUnreadCountSet.current && userId) {
-      getUnreadMessageCount().then((count) => {
-        updateUnreadCount(count);
-      });
+      getUnreadMessageCount()
+        .then((count) => {
+          updateUnreadCount(count);
+        })
+        .catch(() => {
+          updateUnreadCount(0);
+        });
       isUnreadCountSet.current = true;
     }
   }, [updateUnreadCount, userId]);

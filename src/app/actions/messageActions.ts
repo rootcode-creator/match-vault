@@ -321,7 +321,7 @@ export async function getUnreadMessageCount() {
         })
     } catch (error) {
         console.log(error);
-        throw error;
+        return 0;
     }
 }
 

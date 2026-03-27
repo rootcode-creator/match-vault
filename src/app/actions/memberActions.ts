@@ -3,7 +3,7 @@
 import { prisma } from '@/lib/prisma';
 import { Member, Photo } from '@prisma/client';
 import { addYears } from 'date-fns';
-import { getAuthUserId } from './authActions';
+import { getAuthUserId, getAuthUserIdOrNull } from './authActions';
 import { GetMemberParams, PaginatedResponse } from '@/types';
 
 function getAgeRange(ageRange: string): Date[] {
@@ -92,9 +92,13 @@ export async function getMemberPhotosByUserId(userId: string) {
 }
 
 export async function updateLastActive() {
-    const userId = await getAuthUserId();
-
     try {
+        const userId = await getAuthUserIdOrNull();
+
+        if (!userId) {
+            return null;
+        }
+
         const result = await prisma.member.updateMany({
             where: { userId },
             data: { updated: new Date() }
