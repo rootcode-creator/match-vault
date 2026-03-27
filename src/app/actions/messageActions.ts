@@ -231,7 +231,6 @@ export async function getMessagesByContainer(container?: string|null,cursor?:str
         const conditions = {
             [container ==='outbox'? 'senderId': 'recipientId']: userId,
             ...(container === 'outbox'? {senderDeleted: false}:{recipientDeleted:false} ),
-            ...(cursor? {created: {lt:new Date(cursor)}} : {})
 
         }
 
@@ -239,10 +238,21 @@ export async function getMessagesByContainer(container?: string|null,cursor?:str
         const messages = await prisma.message.findMany({
 
             where: conditions,
-            orderBy:{
-                created: 'desc'
-            },
+            orderBy:[
+                {
+                    created: 'desc'
+                },
+                {
+                    id: 'desc'
+                }
+            ],
             select:messageSelect,
+            ...(cursor
+                ? {
+                    cursor: { id: cursor },
+                    skip: 1,
+                }
+                : {}),
             take: limit + 1
 
         });
@@ -251,7 +261,7 @@ export async function getMessagesByContainer(container?: string|null,cursor?:str
 
         if(messages.length> limit){
             const nextItem = messages.pop();
-            nextCursor = nextItem?.created.toISOString();
+            nextCursor = nextItem?.id;
         }else {
             nextCursor = undefined;
         }
