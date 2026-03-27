@@ -1,10 +1,27 @@
 import { Resend } from 'resend';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
-const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+
+function getBaseUrl() {
+    const configured = process.env.NEXT_PUBLIC_BASE_URL?.trim();
+
+    if (configured) {
+        if (configured.startsWith('http://') || configured.startsWith('https://')) {
+            return configured;
+        }
+
+        return `https://${configured}`;
+    }
+
+    if (process.env.VERCEL_URL) {
+        return `https://${process.env.VERCEL_URL}`;
+    }
+
+    return 'http://localhost:3000';
+}
 
 export async function sendVerificationEmail(email: string, token: string) {
-    const link = `${baseUrl}/verify-email?token=${token}`;
+    const link = `${getBaseUrl()}/verify-email?token=${token}`;
 
     return resend.emails.send({
         from: 'verify-email@credentials.kawserahmed.tech',
@@ -19,7 +36,7 @@ export async function sendVerificationEmail(email: string, token: string) {
 }
 
 export async function sendPasswordResetEmail(email: string, token: string) {
-    const link = `${baseUrl}/reset-password?token=${token}`;
+    const link = `${getBaseUrl()}/reset-password?token=${token}`;
 
     return resend.emails.send({
         from: 'reset-password@credentials.kawserahmed.tech',
