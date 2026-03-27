@@ -6,15 +6,15 @@ import PaginationComponent from '@/components/PaginationComponent';
 import Filters from '@/components/navbar/Filters';
 import { GetMemberParams } from '@/types';
 import EmptyState from '@/components/EmptyState';
-import { auth } from '@/auth';
+import { getAuthUserIdOrNull } from '../actions/authActions';
 import { redirect } from 'next/navigation';
 
 export default async function MembersPage({searchParams,}:{
   searchParams: Promise<GetMemberParams>;
 }) {
-  const session = await auth();
+  const userId = await getAuthUserIdOrNull();
 
-  if (!session?.user?.id) {
+  if (!userId) {
     redirect('/login');
   }
 

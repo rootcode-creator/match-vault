@@ -130,10 +130,23 @@ export async function getUserByEmail(email: string){
     return prisma.user.findUnique({where: {email}});
 }
 
+export async function getAuthUserIdOrNull() {
+    const session = await auth();
+    const userId = session?.user?.id;
+
+    if (!userId) return null;
+
+    const existingUser = await prisma.user.findUnique({
+        where: { id: userId },
+        select: { id: true }
+    });
+
+    return existingUser?.id ?? null;
+}
+
 
 export async function getAuthUserId(){
-    const session = await auth();
-    const userId =  session?.user?.id;
+    const userId = await getAuthUserIdOrNull();
     
     if (!userId) throw new Error("Unauthorized");
     return userId;
