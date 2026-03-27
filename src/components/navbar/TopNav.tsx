@@ -12,6 +12,7 @@ import { GiSelfLove } from "react-icons/gi";
 import NavLink from "./NavLink";
 import UserMenu from "./UserMenu";
 import FiltersWrapper from "./FiltersWrapper";
+import { usePathname } from "next/navigation";
 
 type Props = {
   userInfo: {
@@ -27,6 +28,8 @@ export default function TopNav({
   isLoggedIn,
   isAdmin,
 }: Props) {
+  const pathname = usePathname();
+  const isHomePage = pathname === "/";
 
   const memberLinks = [
     { href: "/members", label: "Matches" },
@@ -90,7 +93,7 @@ export default function TopNav({
             <div className="ml-auto">
               <UserMenu userInfo={userInfo} />
             </div>
-          ) : (
+          ) : !isHomePage ? (
             <div className="ml-auto flex items-center gap-3">
               <Button
                 as={Link}
@@ -109,7 +112,8 @@ export default function TopNav({
                 Register
               </Button>
             </div>
-          )}
+          ) : null
+          }
         </NavbarContent>
       </Navbar>
       <FiltersWrapper />
