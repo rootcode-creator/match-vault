@@ -16,7 +16,7 @@ export const membersData = [
         email: "karen.robertson@test.com",
         username: 'karen.robertson',
         gender: "female",
-        dateOfBirth: "1994-10-11",
+        dateOfBirth: "1994-10-12",
         name: "Karen Robertson",
         created: "2024-08-12",
         lastActive: "2024-09-01",
