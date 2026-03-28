@@ -58,7 +58,7 @@ export const membersData = [
         dateOfBirth: "1990-12-25",
         name: "Ruthie Anderson",
         created: "2024-08-21",
-        lastActive: "2024-09-02",
+        lastActive: "2024-09-03",
         description: "Ruthie is a wellness coach with a passion for mindfulness and meditation. She loves helping others discover the benefits of a balanced lifestyle. When not working, Ruthie enjoys exploring Vancouver’s vibrant yoga scene and spending quiet mornings by the ocean with her dog, Luna.",
         city: "New Westminster",
         country: "Canada",
