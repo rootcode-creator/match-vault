@@ -19,7 +19,7 @@ export default async function Home() {
       </p>
 
       <p className="mt-5 max-w-3xl text-center text-lg text-default-600">
-        Meet singles nearby, connect over what matters, and turn great chats into real dates.
+        Thousands of meaningful introductions start with one hello. Your next favorite person could be one swipe away.
       </p>
 
       <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
