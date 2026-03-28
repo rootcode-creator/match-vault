@@ -55,11 +55,6 @@ export default async function Home() {
           </>
         )}
       </div>
-
-      <p className="mt-12 max-w-2xl text-center text-base text-default-600 md:text-lg">
-        Thousands of meaningful introductions start with one hello.
-        Your next favorite person could be one swipe away.
-      </p>
     </div>
   );
 }

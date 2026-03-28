@@ -15,10 +15,8 @@ import {
 import React from "react";
 import { useForm } from "react-hook-form";
 import {
-  HiOutlineMicrophone,
-  HiOutlinePlus,
+  HiPaperAirplane,
 } from "react-icons/hi2";
-import { BsEmojiSmile } from "react-icons/bs";
 
 export default function ChatForm() {
   const router = useRouter();
@@ -61,37 +59,19 @@ export default function ChatForm() {
           classNames={{
             base: "w-full",
             inputWrapper:
-              "h-14 rounded-full border border-black/20 bg-default-50 px-2 shadow-none data-[hover=true]:bg-default-100 group-data-[focus=true]:border-black/25",
+              "h-12 rounded-xl border border-default-200 bg-default-100 px-3 shadow-none data-[hover=true]:bg-default-100 group-data-[focus=true]:border-default-300",
             input:
-              "text-base text-default-700 placeholder:text-default-500",
+              "text-sm text-default-700 placeholder:text-default-500",
             innerWrapper: "gap-2",
           }}
-          startContent={
-            <div className="flex items-center gap-3 text-default-700 pl-1">
-              <button
-                type="button"
-                aria-label="Add"
-                className="inline-flex items-center justify-center"
-              >
-                <HiOutlinePlus size={20} />
-              </button>
-              <button
-                type="button"
-                aria-label="Emoji"
-                className="inline-flex items-center justify-center"
-              >
-                <BsEmojiSmile size={18} />
-              </button>
-            </div>
-          }
           endContent={
             <button
               type="submit"
               aria-label="Send message"
               disabled={!isValid || isSubmitting}
-              className="inline-flex items-center justify-center text-default-700 pr-1 disabled:text-default-400"
+              className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-default-200 text-default-700 transition hover:bg-default-300 disabled:bg-default-200 disabled:text-default-400"
             >
-              <HiOutlineMicrophone size={20} />
+              <HiPaperAirplane size={14} />
             </button>
           }
           {...register("text")}
