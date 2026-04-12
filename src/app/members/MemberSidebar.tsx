@@ -34,7 +34,7 @@ export default function MemberSidebar({
     membersId.indexOf(member.userId) !== -1;
 
   return (
-    <Card className="w-full overflow-hidden border border-default-200 bg-white shadow-sm lg:sticky lg:top-6">
+    <Card className="w-full overflow-hidden border border-default-200 bg-white shadow-sm lg:sticky lg:top-24">
       <div className="relative h-24 bg-gradient-to-r from-indigo-600 via-violet-600 to-slate-700">
         <div className="absolute left-1/2 -bottom-10 -translate-x-1/2">
           <div className="relative rounded-full bg-white p-1 shadow-sm">

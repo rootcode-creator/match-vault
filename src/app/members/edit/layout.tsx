@@ -51,9 +51,7 @@ export default async function Layout({
         </aside>
 
         <main className="col-span-12 lg:col-span-9 h-full">
-          <div className="rounded-2xl border border-default-200 bg-white shadow-sm h-full">
-            {children}
-          </div>
+          {children}
         </main>
       </div>
     </div>
