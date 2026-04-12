@@ -121,7 +121,7 @@ export default function TopNav({
                 as={Link}
                 href="/login"
                 variant="bordered"
-                className="h-9 min-w-[84px] rounded-xl border border-default-300 bg-white px-4 text-sm font-semibold text-slate-900 transition hover:bg-default-100 sm:h-10 sm:min-w-[96px] sm:px-6 sm:text-base"
+                className="h-9 min-w-[84px] rounded-xl border border-default-300 bg-white px-4 text-sm font-semibold text-slate-900 transition hover:bg-default-100 active:border-indigo-600 active:bg-indigo-600 active:text-white sm:h-10 sm:min-w-[96px] sm:px-6 sm:text-base"
               >
                 Login
               </Button>
@@ -129,7 +129,7 @@ export default function TopNav({
                 as={Link}
                 href="/register"
                 variant="bordered"
-                className="h-9 min-w-[98px] rounded-xl border border-indigo-600 bg-indigo-600 px-4 text-sm font-semibold text-white transition hover:bg-indigo-700 sm:h-10 sm:min-w-[112px] sm:px-6 sm:text-base"
+                className="h-9 min-w-[98px] rounded-xl border border-default-300 bg-white px-4 text-sm font-semibold text-slate-900 transition hover:bg-default-100 active:border-indigo-600 active:bg-indigo-600 active:text-white sm:h-10 sm:min-w-[112px] sm:px-6 sm:text-base"
               >
                 Register
               </Button>
