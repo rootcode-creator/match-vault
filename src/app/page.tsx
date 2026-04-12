@@ -3,6 +3,7 @@ import Link from "next/link";
 
 export default async function Home() {
   const session = await auth();
+  const currentYear = new Date().getFullYear();
 
   return (
     <div className="relative overflow-hidden">
@@ -60,9 +61,9 @@ export default async function Home() {
           )}
         </div>
 
-        <div className="mt-12 w-full border-t border-default-200 pt-6 sm:mt-14 sm:pt-8">
+        <div className="mt-12 w-full pt-6 sm:mt-14 sm:pt-8">
           <p className="text-center text-sm text-default-500">
-            Trusted by fast-growing companies around the world
+            © Kawser Ahmad, {currentYear}
           </p>
         </div>
       </section>
