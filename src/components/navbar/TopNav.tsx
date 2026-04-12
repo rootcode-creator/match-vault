@@ -48,8 +48,8 @@ export default function TopNav({
     isAdmin ? adminLinks : memberLinks;
 
   const navbarClassName = isHomePage
-    ? "h-16 sm:h-20 border-b border-default-200 bg-white"
-    : "h-16 sm:h-20 border-b border-default-200 bg-white";
+    ? "sticky top-0 z-50 h-16 sm:h-20 border-b border-default-200 bg-white"
+    : "sticky top-0 z-50 h-16 sm:h-20 border-b border-default-200 bg-white";
 
   const navbarItemClassName = isHomePage
     ? [
@@ -79,6 +79,8 @@ export default function TopNav({
         maxWidth="full"
         className={navbarClassName}
         classNames={{
+          base: "z-50",
+          wrapper: "bg-white",
           item: navbarItemClassName,
         }}
       >
