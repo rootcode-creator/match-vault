@@ -6,7 +6,7 @@ export default async function Home() {
 
   return (
     <div className="relative overflow-hidden">
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(59,130,246,0.12),transparent_52%)]" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(79,70,229,0.12),transparent_52%)]" />
       <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-default-200" />
 
       <section className="mx-auto flex min-h-[calc(100vh-80px)] w-full max-w-6xl flex-col items-center justify-center px-5 pb-14 pt-10 text-default sm:px-6 sm:pb-16 sm:pt-12 md:pb-20 md:pt-20">
@@ -31,7 +31,7 @@ export default async function Home() {
             <>
               <Link
                 href="/members"
-                className="inline-flex min-w-[160px] items-center justify-center rounded-xl bg-blue-600 px-7 py-3 text-base font-semibold text-white transition hover:bg-blue-700 sm:min-w-[170px] sm:px-8 sm:text-lg"
+                className="inline-flex min-w-[160px] items-center justify-center rounded-xl bg-indigo-600 px-7 py-3 text-base font-semibold text-white transition hover:bg-indigo-700 sm:min-w-[170px] sm:px-8 sm:text-lg"
               >
                 Start matching
               </Link>
@@ -46,7 +46,7 @@ export default async function Home() {
             <>
               <Link
                 href="/register"
-                className="inline-flex min-w-[160px] items-center justify-center rounded-xl bg-blue-600 px-7 py-3 text-base font-semibold text-white transition hover:bg-blue-700 sm:min-w-[170px] sm:px-8 sm:text-lg"
+                className="inline-flex min-w-[160px] items-center justify-center rounded-xl bg-indigo-600 px-7 py-3 text-base font-semibold text-white transition hover:bg-indigo-700 sm:min-w-[170px] sm:px-8 sm:text-lg"
               >
                 Join free
               </Link>

@@ -78,15 +78,15 @@ export default function LoginForm() {
   // match the Register form input feel
   const inputWrapper =
     "rounded-xl bg-white/90 border-2 border-slate-400 shadow-sm transition-all duration-200 ease-out " +
-    "hover:shadow-md focus-within:bg-white focus-within:border-pink-500/70 " +
-    "focus-within:ring-2 focus-within:ring-pink-300/60 focus-within:shadow-[0_8px_24px_-8px_rgba(236,72,153,0.35)]";
+    "hover:shadow-md focus-within:bg-white focus-within:border-indigo-500/70 " +
+    "focus-within:ring-2 focus-within:ring-indigo-300/60 focus-within:shadow-[0_8px_24px_-8px_rgba(79,70,229,0.35)]";
   const inputBase =
     "text-base placeholder:text-gray-400 outline-none focus:outline-none focus-visible:outline-none focus:ring-0";
 
   return (
     <Card className="relative w-full max-w-md mx-auto py-6 px-6 rounded-2xl bg-white/95 backdrop-blur
-      ring-1 ring-pink-100 border border-white/60
-      shadow-[0_18px_50px_-12px_rgba(236,72,153,0.45),0_25px_55px_-25px_rgba(0,0,0,0.35)]">
+      ring-1 ring-indigo-100 border border-white/60
+      shadow-[0_18px_50px_-12px_rgba(79,70,229,0.35),0_25px_55px_-25px_rgba(0,0,0,0.3)]">
       <CardHeader className="flex flex-col items-center justify-center mb-4">
         <div className="flex flex-col gap-2 items-center text-default">
           <div className="flex flex-row items-center gap-3">
@@ -191,7 +191,7 @@ export default function LoginForm() {
                 disableRipple
                 color="default"
                 type="submit"
-                className="mt-2 mb-4 h-10 rounded-lg bg-gradient-to-r from-pink-500 to-rose-500 text-white font-semibold shadow-md hover:shadow-lg active:translate-y-px focus:outline-none focus-visible:outline-none"
+                className="mt-2 mb-4 h-10 rounded-lg bg-gradient-to-r from-indigo-600 to-violet-600 text-white font-semibold shadow-md hover:shadow-lg active:translate-y-px focus:outline-none focus-visible:outline-none"
               >
                 Login
               </Button>

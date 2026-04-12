@@ -41,9 +41,9 @@ export default function MessageBox({
   const messageContentClasses = clsx(
     "flex flex-col w-[92%] sm:w-[72%] md:w-[56%] lg:w-[42%] px-3 py-2 overflow-hidden",
     {
-      "rounded-l-xl rounded-tr-xl text-white bg-blue-100":
+      "rounded-l-xl rounded-tr-xl text-white bg-indigo-100":
         isCurrentUserSender,
-      "rounded-r-xl rounded-tl-xl border-gray-200 bg-green-100":
+      "rounded-r-xl rounded-tl-xl border-gray-200 bg-slate-100":
         !isCurrentUserSender,
     }
   );

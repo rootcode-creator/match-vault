@@ -11,7 +11,7 @@ export default function Filters() {
 const { gender, ageRange, orderBy, withPhoto } = filters;
 
 return (
-    <div className='w-full bg-white shadow-sm border-b border-default-200 border-t-4 border-rose-500 relative z-20'>
+    <div className='w-full bg-white shadow-sm border-b border-default-200 border-t-4 border-indigo-600 relative z-20'>
         <div className='flex flex-wrap items-center gap-3 py-3 px-3 sm:gap-4 md:gap-6'>
 
             <div className='flex items-center min-w-[90px]'>
@@ -37,7 +37,7 @@ return (
                         className={
                             gender.includes(value)
                                 ? "min-w-7 w-7 h-7 bg-white text-black border-2 border-foreground rounded-md"
-                                : "min-w-7 w-7 h-7 bg-transparent text-pink-600 border-0"
+                                : "min-w-7 w-7 h-7 bg-transparent text-indigo-600 border-0"
                         }
                         
                         onClick={() => SelectGender(value)}
@@ -66,10 +66,10 @@ return (
                     aria-label="Age range"
                     color="foreground"
                     classNames={{
-                        track: "h-1 bg-pink-600 rounded-full",
-                        filler: "h-1 bg-pink-600 rounded-full",
+                        track: "h-1 bg-indigo-600 rounded-full",
+                        filler: "h-1 bg-indigo-600 rounded-full",
                         step: "w-1 h-1 bg-default-400 rounded-full data-[in-range=true]:bg-default-400",
-                        thumb: "w-5 h-5 bg-white border-2 border-pink-600 shadow-sm",
+                        thumb: "w-5 h-5 bg-white border-2 border-indigo-600 shadow-sm",
                     }}
 
                     onChangeEnd={(values) => selectAge(values as number[])}
@@ -94,7 +94,7 @@ return (
                     aria-label='Filter: with photo'
                     classNames={{
                         base: "rounded-full",
-                        wrapper: "w-14 h-7 p-[3px] rounded-full overflow-hidden bg-white border-2 border-default-300 before:rounded-full after:rounded-full group-data-[selected=true]:bg-pink-600 group-data-[selected=true]:border-pink-600",
+                        wrapper: "w-14 h-7 p-[3px] rounded-full overflow-hidden bg-white border-2 border-default-300 before:rounded-full after:rounded-full group-data-[selected=true]:bg-indigo-600 group-data-[selected=true]:border-indigo-600",
                         thumb: "!w-5 !h-5 aspect-square shrink-0 rounded-full bg-white shadow-sm group-data-[selected=true]:!ms-[1.875rem] group-data-[pressed=true]:!w-5 group-data-[pressed=true]:!h-5",
                         thumbIcon: "rounded-full",
                     }}

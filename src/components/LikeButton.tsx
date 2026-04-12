@@ -42,7 +42,7 @@ export default function LikeButton({
         size={24}
         className={
           hasLiked
-            ? "fill-rose-500"
+            ? "fill-indigo-600"
             : "fill-neutral-500/70"
         }
       />

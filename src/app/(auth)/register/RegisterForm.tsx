@@ -115,8 +115,8 @@ export default function RegisterForm() {
   return (
     <Card
       className="relative w-full max-w-md mx-auto py-7 px-6 rounded-2xl bg-white/95 backdrop-blur
-      ring-1 ring-pink-100 border border-white/60
-      shadow-[0_18px_50px_-12px_rgba(236,72,153,0.45),0_25px_55px_-25px_rgba(0,0,0,0.35)]"
+      ring-1 ring-indigo-100 border border-white/60
+      shadow-[0_18px_50px_-12px_rgba(79,70,229,0.35),0_25px_55px_-25px_rgba(0,0,0,0.3)]"
     >
       <CardHeader className="flex flex-col items-center justify-center mb-2">
         <div className="flex flex-col gap-2 items-center text-default">
@@ -161,7 +161,7 @@ export default function RegisterForm() {
                   isDisabled={!isValid}
                   fullWidth
                   disableRipple
-                  className="h-10 rounded-lg bg-gradient-to-r from-pink-500 to-rose-500 text-white font-semibold shadow-md hover:shadow-lg active:translate-y-px"
+                  className="h-10 rounded-lg bg-gradient-to-r from-indigo-600 to-violet-600 text-white font-semibold shadow-md hover:shadow-lg active:translate-y-px"
                   type="submit"
                 >
                   {activeStep ===

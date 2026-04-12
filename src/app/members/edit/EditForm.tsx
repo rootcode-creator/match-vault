@@ -23,7 +23,7 @@ export default function EditForm({ member, }: Props) {
         base: "w-full",
         // Matches the login screenshot: light border + subtle shadow + compact height
         inputWrapper:
-            "bg-white border border-slate-200 rounded-xl shadow-sm h-12 px-4 transition focus-within:border-fuchsia-400 focus-within:ring-2 focus-within:ring-fuchsia-200/60",
+            "bg-white border border-slate-200 rounded-xl shadow-sm h-12 px-4 transition focus-within:border-indigo-500 focus-within:ring-2 focus-within:ring-indigo-200/60",
         input: "text-neutral-900 placeholder:text-slate-400",
         label: "text-sm font-medium text-neutral-700",
     } as const;
@@ -175,7 +175,7 @@ export default function EditForm({ member, }: Props) {
                 variant='solid'
                 isDisabled={!isValid || !isDirty}
                 isLoading={isSubmitting}
-                className="h-12 w-full rounded-xl font-semibold text-white shadow-sm bg-gradient-to-r from-fuchsia-500 via-pink-500 to-rose-500 hover:opacity-95 transition-opacity"
+                className="h-12 w-full rounded-xl font-semibold text-white shadow-sm bg-gradient-to-r from-indigo-600 via-violet-600 to-slate-700 hover:opacity-95 transition-opacity"
             >
                 Update profile
             </Button>

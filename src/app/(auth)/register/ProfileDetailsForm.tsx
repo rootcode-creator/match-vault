@@ -33,8 +33,8 @@ export default function ProfileDetailsForm() {
 
   const inputWrapper =
     "rounded-xl bg-white/90 border-2 border-slate-400 shadow-sm transition-all duration-200 ease-out " +
-    "hover:shadow-md focus-within:bg-white focus-within:border-pink-500/70 " +
-    "focus-within:ring-2 focus-within:ring-pink-300/60 focus-within:shadow-[0_8px_24px_-8px_rgba(236,72,153,0.35)]";
+    "hover:shadow-md focus-within:bg-white focus-within:border-indigo-500/70 " +
+    "focus-within:ring-2 focus-within:ring-indigo-300/60 focus-within:shadow-[0_8px_24px_-8px_rgba(79,70,229,0.35)]";
   const inputBase =
     "text-base placeholder:text-gray-400 outline-none focus:outline-none focus-visible:outline-none focus:ring-0";
 

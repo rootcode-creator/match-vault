@@ -49,29 +49,29 @@ export default function TopNav({
 
   const navbarClassName = isHomePage
     ? "h-16 sm:h-20 border-b border-default-200 bg-white"
-    : "h-16 sm:h-20 bg-gradient-to-r from-pink-400 via-red-400 to-pink-600";
+    : "h-16 sm:h-20 border-b border-default-200 bg-white";
 
   const navbarItemClassName = isHomePage
     ? [
         "text-sm sm:text-base",
         "text-default-700",
         "uppercase",
-        "data-[active=true]:text-default-900",
+        "data-[active=true]:text-indigo-700",
       ]
     : [
         "text-sm sm:text-base md:text-lg",
-        "text-white",
+        "text-default-700",
         "uppercase",
-        "data-[active=true]:text-yellow-200",
+        "data-[active=true]:text-indigo-700",
       ];
 
   const brandIconClassName = isHomePage
     ? "text-default-800"
-    : "text-gray-200";
+    : "text-default-800";
 
   const brandTextClassName = isHomePage
     ? "text-default-900"
-    : "text-gray-200";
+    : "text-default-900";
 
   return (
     <>
@@ -121,7 +121,7 @@ export default function TopNav({
                 as={Link}
                 href="/login"
                 variant="bordered"
-                className="h-9 min-w-[84px] rounded-xl border border-white/80 bg-white/95 px-4 text-sm font-semibold text-slate-900 transition hover:bg-white/90 sm:h-10 sm:min-w-[96px] sm:px-6 sm:text-base"
+                className="h-9 min-w-[84px] rounded-xl border border-default-300 bg-white px-4 text-sm font-semibold text-slate-900 transition hover:bg-default-100 sm:h-10 sm:min-w-[96px] sm:px-6 sm:text-base"
               >
                 Login
               </Button>
@@ -129,7 +129,7 @@ export default function TopNav({
                 as={Link}
                 href="/register"
                 variant="bordered"
-                className="h-9 min-w-[98px] rounded-xl border border-white/80 bg-white/95 px-4 text-sm font-semibold text-slate-900 transition hover:bg-white/90 sm:h-10 sm:min-w-[112px] sm:px-6 sm:text-base"
+                className="h-9 min-w-[98px] rounded-xl border border-indigo-600 bg-indigo-600 px-4 text-sm font-semibold text-white transition hover:bg-indigo-700 sm:h-10 sm:min-w-[112px] sm:px-6 sm:text-base"
               >
                 Register
               </Button>
