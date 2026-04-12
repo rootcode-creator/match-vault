@@ -6,11 +6,11 @@ export default async function Home() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <div className="relative overflow-hidden">
+    <div className="relative flex min-h-[calc(100vh-80px)] flex-col overflow-hidden">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(79,70,229,0.12),transparent_52%)]" />
       <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-default-200" />
 
-      <section className="mx-auto flex min-h-[calc(100vh-80px)] w-full max-w-6xl flex-col items-center justify-center px-5 pb-14 pt-10 text-default sm:px-6 sm:pb-16 sm:pt-12 md:pb-20 md:pt-20">
+      <section className="mx-auto flex w-full max-w-6xl flex-1 flex-col items-center justify-center px-5 pb-14 pt-10 text-default sm:px-6 sm:pb-16 sm:pt-12 md:pb-20 md:pt-20">
         <p className="text-xs font-semibold uppercase tracking-[0.22em] text-default-500 md:text-sm">
           Find your person
         </p>
@@ -61,12 +61,13 @@ export default async function Home() {
           )}
         </div>
 
-        <div className="mt-12 w-full pt-6 sm:mt-14 sm:pt-8">
-          <p className="text-center text-sm text-default-500">
-            © Kawser Ahmad, {currentYear}
-          </p>
-        </div>
       </section>
+
+      <footer className="w-full pb-6 sm:pb-8">
+        <p className="text-center text-sm text-default-500">
+          © Kawser Ahmad, {currentYear}
+        </p>
+      </footer>
     </div>
   );
 }
