@@ -29,7 +29,7 @@ export default function MessageTableCell({
     case "recipientName":
     case "senderName":
       return (
-        <div className="flex items-center gap-2 cursor-pointer">
+        <div className="flex min-w-0 items-center gap-2 cursor-pointer">
           <PresenceAvatar
             userId={
               isOutbox
@@ -42,12 +42,12 @@ export default function MessageTableCell({
                 : item.senderImage
             }
           />
-          <span>{cellValue}</span>
+          <span className="truncate">{cellValue}</span>
         </div>
       );
     case "text":
       return (
-        <div>{truncateString(cellValue, 80)}</div>
+        <div className="max-w-[220px] truncate sm:max-w-[360px]">{truncateString(cellValue, 80)}</div>
       );
     case "created":
       return cellValue;

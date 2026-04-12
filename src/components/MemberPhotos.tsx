@@ -68,7 +68,7 @@ export default function MemberPhotos({
   };
 
   return (
-    <div className="grid grid-cols-5 gap-3 p-5">
+    <div className="grid grid-cols-2 gap-3 p-3 sm:grid-cols-3 sm:p-4 md:grid-cols-4 lg:grid-cols-5 lg:p-5">
       {photos &&
         photos.map((photo) => (
           <div

@@ -55,7 +55,7 @@ export default function ResetPasswordForm() {
     "text-base placeholder:text-gray-400 outline-none focus:outline-none focus-visible:outline-none focus:ring-0";
 
   return (
-    <div className="flex items-start justify-center pt-14 pb-10 min-h-[calc(100dvh-80px)]">
+    <div className="flex items-start justify-center px-4 pt-14 pb-10 min-h-[calc(100dvh-80px)] sm:px-6">
       <Card
         className="relative h-fit w-full max-w-md mx-auto py-5 px-6 rounded-2xl bg-white/95 backdrop-blur
         ring-1 ring-pink-100 border border-white/60

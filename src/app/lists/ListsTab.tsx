@@ -76,12 +76,12 @@ export default function ListsTab({ members, likeIds }: Props) {
         className="w-full px-4 sm:px-6 lg:px-8"
         classNames={{
           tabList:
-            "mx-auto w-fit justify-center gap-2 p-1 rounded-2xl bg-white/80 backdrop-blur border border-default-200 shadow-lg ring-1 ring-black/5",
+            "mx-auto w-full max-w-full justify-start gap-2 overflow-x-auto p-1 rounded-2xl bg-white/80 backdrop-blur border border-default-200 shadow-lg ring-1 ring-black/5 sm:w-fit sm:justify-center",
           cursor: "hidden",
           tab:
-            "px-6 h-11 rounded-xl transition-colors ring-1 ring-black/5 data-[selected=true]:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-black/10",
+            "h-10 px-4 rounded-xl transition-colors ring-1 ring-black/5 data-[selected=true]:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-black/10 sm:h-11 sm:px-6",
           tabContent:
-            "text-sm font-semibold text-foreground-600 data-[selected=true]:text-foreground",
+            "text-xs font-semibold text-foreground-600 data-[selected=true]:text-foreground sm:text-sm",
         }}
       >
         {(item) => (
@@ -94,7 +94,7 @@ export default function ListsTab({ members, likeIds }: Props) {
               <LoadingComponent />
             ) : members.length > 0 ? (
               <div className="w-full mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-12 sm:pb-16">
-                <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-8">
+                <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3 xl:grid-cols-6 xl:gap-8">
                   {members.map((member) => (
                     <MemberCard key={member.id} member={member} likeIds={likeIds} />
                   ))}

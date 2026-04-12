@@ -29,15 +29,16 @@ export default function PaginationComponent({
   const resultText = `Showing ${start}-${end} of ${totalCount} results`;
    return (
         <div className='border-t border-default-200 w-full mt-5'>
-            <div className='flex flex-row justify-between items-center py-4'>
+            <div className='flex flex-col gap-3 py-4 sm:flex-row sm:justify-between sm:items-center'>
 
-                <div className='text-sm text-default-500'>{resultText}</div>
+                <div className='text-sm text-default-500 text-center sm:text-left'>{resultText}</div>
 
                 <Pagination
                     total={totalPages}
                     color='default'
                     page={pageNumber}
                     variant='bordered'
+                    size='sm'
                     classNames={{
                         item: "min-w-7 w-7 h-7 text-xs border-2 border-foreground rounded-md",
                         cursor: "min-w-7 w-7 h-7 text-xs border-2 border-foreground rounded-md bg-white text-foreground",
@@ -45,7 +46,7 @@ export default function PaginationComponent({
                     onChange={setPage}
                 />
 
-                <div className='flex flex-row gap-1.5 items-center text-sm text-default-500'>
+                <div className='flex flex-row gap-1.5 items-center text-sm text-default-500 justify-center sm:justify-end'>
                     <span className='mr-0.5'>Page size:</span>
                     {[3, 6, 12].map((size) => (
                         <div

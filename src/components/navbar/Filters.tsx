@@ -12,7 +12,7 @@ const { gender, ageRange, orderBy, withPhoto } = filters;
 
 return (
     <div className='w-full bg-white shadow-sm border-b border-default-200 border-t-4 border-rose-500 relative z-20'>
-        <div className='flex items-center gap-6 py-2 px-3'>
+        <div className='flex flex-wrap items-center gap-3 py-3 px-3 sm:gap-4 md:gap-6'>
 
             <div className='flex items-center min-w-[90px]'>
                 <div className='text-sm text-default-600 font-normal whitespace-nowrap'>
@@ -50,7 +50,7 @@ return (
 
             </div>
 
-            <div className='flex items-center gap-3 w-80'>
+            <div className='flex items-center gap-3 w-full sm:w-80'>
                 <div className='text-sm text-default-700 font-semibold whitespace-nowrap'>Age range:</div>
 
                 <Slider
@@ -103,7 +103,7 @@ return (
             </div>
 
 
-            <div className='w-56 ml-auto'>
+            <div className='w-full sm:w-56 sm:ml-auto'>
 
                 <Select
                     size="sm"

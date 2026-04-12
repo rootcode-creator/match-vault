@@ -54,8 +54,8 @@ export default function MessageTable({ initialMessages,
 
 
     return (
-    <div className="flex flex-col h-[80vh]">
-      <Card>
+    <div className="flex min-h-[60vh] flex-col lg:h-[80vh]">
+      <Card className="h-full">
         <Table
           aria-label="Table with messages"
           selectionMode="single"
@@ -63,11 +63,15 @@ export default function MessageTable({ initialMessages,
             selectRow(key)
           }
           shadow="none"
-          className="flex flex-col gap-3 h-[80vh] overflow-auto"
+          className="flex h-[60vh] min-w-full flex-col gap-3 overflow-auto md:h-[68vh] lg:h-[80vh]"
+          removeWrapper={false}
+          classNames={{
+            wrapper: "overflow-x-auto",
+          }}
         >
           <TableHeader columns={columns}>
             {(column) => (
-              <TableColumn
+                <TableColumn
                 key={column.key}
                 width={
                   column.key === "text"
@@ -122,7 +126,7 @@ export default function MessageTable({ initialMessages,
             color="default"
             variant="bordered"
             radius="md"
-            className="rounded-xl border border-black/20 bg-default-50 px-6 py-2 text-base font-semibold text-black hover:bg-black/5 min-w-36 disabled:bg-default-100 disabled:border-black/10 disabled:text-default-400"
+            className="min-w-36 rounded-xl border border-black/20 bg-default-50 px-5 py-2 text-sm font-semibold text-black hover:bg-black/5 sm:px-6 sm:text-base disabled:bg-default-100 disabled:border-black/10 disabled:text-default-400"
             isLoading={loadingMore}
             isDisabled={!hasMore}
             onClick={loadMore}
