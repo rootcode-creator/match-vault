@@ -6,9 +6,10 @@ export default async function Home() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <div className="relative flex min-h-[calc(100vh-80px)] flex-col overflow-hidden">
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(79,70,229,0.12),transparent_52%)]" />
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-default-200" />
+    <div className="relative flex min-h-[calc(100vh-80px)] flex-col overflow-hidden rounded-[1.5rem] border border-white/70 bg-white/55 shadow-[0_20px_60px_rgba(15,23,42,0.08)] backdrop-blur-sm">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(79,70,229,0.16),transparent_52%)]" />
+      <div className="pointer-events-none absolute -left-14 top-[30%] h-44 w-44 rounded-3xl bg-white/65 shadow-[0_15px_45px_rgba(15,23,42,0.08)] blur-[1px]" />
+      <div className="pointer-events-none absolute -right-14 bottom-[24%] h-48 w-52 rounded-3xl bg-white/65 shadow-[0_15px_45px_rgba(15,23,42,0.08)] blur-[1px]" />
 
       <section className="mx-auto flex w-full max-w-6xl flex-1 flex-col items-center justify-center px-5 pb-14 pt-10 text-default sm:px-6 sm:pb-16 sm:pt-12 md:pb-20 md:pt-20">
         <p className="text-xs font-semibold uppercase tracking-[0.22em] text-default-500 md:text-sm">

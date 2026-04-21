@@ -1,8 +1,36 @@
 @import "tailwindcss";
 
+:root {
+  color-scheme: light;
+}
+
+html,
+body {
+  min-height: 100%;
+}
+
+body {
+  background:
+    radial-gradient(1200px 500px at 10% -10%, rgba(99, 102, 241, 0.22), transparent 55%),
+    radial-gradient(900px 420px at 90% 8%, rgba(16, 185, 129, 0.14), transparent 55%),
+    linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
+}
+
 @layer components {
   .vertical-center {
   min-height: calc(100vh - 80px);
+  }
+
+  .app-shell {
+    @apply relative mx-auto w-full max-w-[1220px] px-2 pb-6 pt-3 sm:px-4 sm:pt-4;
+  }
+
+  .app-panel {
+    @apply rounded-3xl border border-white/70 bg-white/65 shadow-[0_12px_40px_rgba(15,23,42,0.08)] backdrop-blur-md;
+  }
+
+  .glass-card {
+    @apply border border-white/70 bg-white/75 shadow-[0_10px_30px_rgba(15,23,42,0.08)] backdrop-blur-md;
   }
 }
 

@@ -48,8 +48,8 @@ export default function TopNav({
     isAdmin ? adminLinks : memberLinks;
 
   const navbarClassName = isHomePage
-    ? "sticky top-0 z-50 h-16 sm:h-20 border-b border-default-200 bg-white"
-    : "sticky top-0 z-50 h-16 sm:h-20 border-b border-default-200 bg-white";
+    ? "sticky top-0 z-50 mt-1 h-14 rounded-2xl border border-white/70 bg-white/70 backdrop-blur-md sm:mt-2 sm:h-16"
+    : "sticky top-0 z-50 mt-1 h-14 rounded-2xl border border-white/70 bg-white/70 backdrop-blur-md sm:mt-2 sm:h-16";
 
   const navbarItemClassName = isHomePage
     ? [
@@ -80,7 +80,7 @@ export default function TopNav({
         className={navbarClassName}
         classNames={{
           base: "z-50",
-          wrapper: "bg-white px-2 sm:px-4 gap-2",
+          wrapper: "gap-2 rounded-2xl bg-transparent px-2 sm:px-4",
           item: navbarItemClassName,
         }}
       >
@@ -93,7 +93,7 @@ export default function TopNav({
             size={26}
             className={brandIconClassName}
           />
-          <div className="flex font-bold text-lg sm:text-2xl md:text-3xl">
+          <div className="flex font-bold text-lg sm:text-xl md:text-2xl">
             <span className={brandTextClassName}>
               MatchVault
             </span>
