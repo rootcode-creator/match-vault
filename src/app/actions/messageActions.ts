@@ -258,14 +258,16 @@ export async function getMessagesByContainer(container?: string|null,cursor?:str
         });
 
         let nextCursor: string | undefined;
+        let messagesToReturnRaw = messages;
 
-        if(messages.length> limit){
-            const nextItem = messages.pop();
-            nextCursor = nextItem?.id;
+        if(messages.length > limit){
+            messagesToReturnRaw = messages.slice(0, limit);
+            nextCursor = messagesToReturnRaw[messagesToReturnRaw.length - 1]?.id;
         }else {
             nextCursor = undefined;
         }
-        const messagesToReturn = messages.map(message => mapMessageToMessageDto(message));
+
+        const messagesToReturn = messagesToReturnRaw.map(message => mapMessageToMessageDto(message));
         return {messages: messagesToReturn, nextCursor};
 
     } catch (error) {
