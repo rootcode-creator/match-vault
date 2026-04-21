@@ -48,8 +48,8 @@ export default function TopNav({
     isAdmin ? adminLinks : memberLinks;
 
   const navbarClassName = isHomePage
-    ? "sticky top-0 z-50 mt-1 h-14 rounded-2xl border border-white/70 bg-white/70 backdrop-blur-md sm:mt-2 sm:h-16"
-    : "sticky top-0 z-50 mt-1 h-14 rounded-2xl border border-white/70 bg-white/70 backdrop-blur-md sm:mt-2 sm:h-16";
+    ? "sticky top-0 z-50 h-14 border-b border-white/70 bg-transparent sm:h-16"
+    : "sticky top-0 z-50 h-14 border-b border-white/70 bg-transparent sm:h-16";
 
   const navbarItemClassName = isHomePage
     ? [
@@ -80,7 +80,7 @@ export default function TopNav({
         className={navbarClassName}
         classNames={{
           base: "z-50",
-          wrapper: "gap-2 rounded-2xl bg-transparent px-2 sm:px-4",
+          wrapper: "gap-2 bg-transparent px-2 sm:px-4",
           item: navbarItemClassName,
         }}
       >

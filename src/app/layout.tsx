@@ -35,10 +35,10 @@ export default async function RootLayout({
       <body>
         <Providers profileComplete={profileComplete} userId={userId}>
           <div className="app-shell">
-            <TopNav userInfo={userInfo} isLoggedIn={isLoggedIn} isAdmin={isAdmin} />
-            <main className="app-panel mt-2 overflow-hidden sm:mt-3">
-              {children}
-            </main>
+            <div className="app-panel overflow-hidden">
+              <TopNav userInfo={userInfo} isLoggedIn={isLoggedIn} isAdmin={isAdmin} />
+              <main>{children}</main>
+            </div>
           </div>
         </Providers>
       </body>
