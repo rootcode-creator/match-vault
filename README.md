@@ -7,25 +7,25 @@
 <p align="center"><i>Role-aware matchmaking app powered by Next.js, Prisma, Auth.js, and Pusher.</i></p>
 
 <p align="center">
-	<img src="https://img.shields.io/badge/version-1.0.0-ef4444?style=for-the-badge" alt="Version 1.0.0" />
-	<img src="https://img.shields.io/badge/license-MIT-84cc16?style=for-the-badge" alt="MIT License" />
-	<img src="https://img.shields.io/badge/type-Matchmaking-8b5cf6?style=for-the-badge" alt="Matchmaking app" />
+	<img src="https://img.shields.io/badge/VERSION-1.0.0-E11D48?style=for-the-badge&logo=semanticrelease&logoColor=white&labelColor=7F1D1D" alt="Version 1.0.0" />
+	<img src="https://img.shields.io/badge/LICENSE-MIT-84CC16?style=for-the-badge&logo=opensourceinitiative&logoColor=white&labelColor=14532D" alt="MIT License" />
+	<img src="https://img.shields.io/badge/TYPE-MATCHMAKING-8B5CF6?style=for-the-badge&labelColor=4C1D95" alt="Matchmaking app" />
 </p>
 
 <p align="center">
-	<img src="https://img.shields.io/badge/Next.js-16-black?style=flat-square&logo=next.js" alt="Next.js" />
-	<img src="https://img.shields.io/badge/React-19-0ea5e9?style=flat-square&logo=react&logoColor=white" alt="React" />
-	<img src="https://img.shields.io/badge/TypeScript-5-2563eb?style=flat-square&logo=typescript&logoColor=white" alt="TypeScript" />
-	<img src="https://img.shields.io/badge/Prisma-ORM-1f2937?style=flat-square&logo=prisma" alt="Prisma" />
-	<img src="https://img.shields.io/badge/PostgreSQL-Database-0f766e?style=flat-square&logo=postgresql&logoColor=white" alt="PostgreSQL" />
-	<img src="https://img.shields.io/badge/Auth.js-v5-4f46e5?style=flat-square" alt="Auth.js" />
-	<img src="https://img.shields.io/badge/Pusher-Realtime-9333ea?style=flat-square" alt="Pusher" />
+	<img src="https://img.shields.io/badge/NEXT.JS-16-14B8A6?style=for-the-badge&logo=next.js&logoColor=white&labelColor=0F766E" alt="Next.js" />
+	<img src="https://img.shields.io/badge/REACT-19-06B6D4?style=for-the-badge&logo=react&logoColor=white&labelColor=155E75" alt="React" />
+	<img src="https://img.shields.io/badge/TYPESCRIPT-5-3B82F6?style=for-the-badge&logo=typescript&logoColor=white&labelColor=1E3A8A" alt="TypeScript" />
+	<img src="https://img.shields.io/badge/PRISMA-ORM-6366F1?style=for-the-badge&logo=prisma&logoColor=white&labelColor=4338CA" alt="Prisma" />
+	<img src="https://img.shields.io/badge/POSTGRESQL-DATABASE-0EA5E9?style=for-the-badge&logo=postgresql&logoColor=white&labelColor=1E40AF" alt="PostgreSQL" />
+	<img src="https://img.shields.io/badge/AUTH.JS-V5-7C3AED?style=for-the-badge&logo=auth0&logoColor=white&labelColor=5B21B6" alt="Auth.js" />
+	<img src="https://img.shields.io/badge/PUSHER-REALTIME-A855F7?style=for-the-badge&logo=pusher&logoColor=white&labelColor=6D28D9" alt="Pusher" />
 </p>
 
 <p align="center">
-	<a href="#-project-intro"><img src="https://img.shields.io/badge/Explore-Project%20Intro-111827?style=for-the-badge" alt="Project intro" /></a>
-	<a href="#-install-methods"><img src="https://img.shields.io/badge/Setup-Install%20Guide-0f766e?style=for-the-badge" alt="Install guide" /></a>
-	<a href="#-available-scripts"><img src="https://img.shields.io/badge/Run-Scripts-7c3aed?style=for-the-badge" alt="Scripts" /></a>
+	<a href="#-project-intro"><img src="https://img.shields.io/badge/EXPLORE-PROJECT%20INTRO-6366F1?style=for-the-badge&logo=gitbook&logoColor=white&labelColor=4F46E5" alt="Project intro" /></a>
+	<a href="#-install-methods"><img src="https://img.shields.io/badge/SETUP-INSTALL%20GUIDE-14B8A6?style=for-the-badge&logo=readme&logoColor=white&labelColor=0F766E" alt="Install guide" /></a>
+	<a href="#-available-scripts"><img src="https://img.shields.io/badge/RUN-SCRIPTS-A855F7?style=for-the-badge&logo=files&logoColor=white&labelColor=7E22CE" alt="Scripts" /></a>
 </p>
 
 ## match-vault — README

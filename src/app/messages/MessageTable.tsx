@@ -54,8 +54,8 @@ export default function MessageTable({ initialMessages,
 
 
     return (
-    <div className="flex min-h-[60vh] min-w-0 flex-col lg:h-[80vh]">
-      <Card className="h-full min-w-0 overflow-hidden">
+    <div className="flex min-h-[60vh] min-w-0 flex-col">
+      <Card className="h-full min-w-0 overflow-hidden rounded-2xl border border-default-200 bg-white/95 shadow-[0_12px_35px_rgba(15,23,42,0.08)]">
         <Table
           aria-label="Table with messages"
           selectionMode="single"
@@ -63,11 +63,15 @@ export default function MessageTable({ initialMessages,
             selectRow(key)
           }
           shadow="none"
-          className="flex h-[58vh] min-w-full flex-col gap-3 overflow-auto sm:h-[60vh] md:h-[68vh] lg:h-[80vh]"
+          className="flex h-[58vh] min-w-full flex-col gap-2 overflow-auto sm:h-[60vh] md:h-[66vh] lg:h-[72vh]"
           removeWrapper={false}
           classNames={{
-            wrapper: "overflow-x-auto",
+            wrapper: "overflow-x-auto px-2 pt-2 sm:px-3 sm:pt-3",
             table: "min-w-[640px] sm:min-w-full",
+            thead: "bg-default-50/80",
+            tr: "border-b border-default-100",
+            th: "px-4 py-3 text-xs font-semibold uppercase tracking-wide text-default-600",
+            td: "px-4 py-3 text-sm text-default-800",
           }}
         >
           <TableHeader columns={columns}>
@@ -122,12 +126,12 @@ export default function MessageTable({ initialMessages,
           </TableBody>
         </Table>
 
-        <div className="sticky bottom-0 flex justify-stretch px-3 pb-3 sm:justify-end">
+        <div className="sticky bottom-0 flex justify-stretch border-t border-default-100 bg-white/95 px-3 pb-3 pt-3 sm:justify-end sm:px-4">
           <Button
             color="default"
             variant="bordered"
             radius="md"
-            className="w-full rounded-xl border border-black/20 bg-default-50 px-5 py-2 text-sm font-semibold text-black hover:bg-black/5 sm:w-auto sm:min-w-36 sm:px-6 sm:text-base disabled:bg-default-100 disabled:border-black/10 disabled:text-default-400"
+            className="w-full rounded-full border border-black/20 bg-default-50 px-5 py-2 text-sm font-semibold text-black hover:bg-black/5 sm:w-auto sm:min-w-40 sm:px-6 sm:text-base disabled:bg-default-100 disabled:border-black/10 disabled:text-default-400"
             isLoading={loadingMore}
             isDisabled={!hasMore}
             onClick={loadMore}

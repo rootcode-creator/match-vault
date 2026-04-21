@@ -29,12 +29,17 @@ export default function NavLink({
       isActive={pathname === href}
       as={Link}
       href={href}
+      className={`rounded-full px-3 py-1.5 text-sm font-semibold transition-colors sm:px-4 sm:text-base ${
+        pathname === href
+          ? "bg-black text-white"
+          : "text-default-700 hover:bg-black/5"
+      }`}
     >
-       <span>{label}</span>
+      <span>{label}</span>
       {href === "/messages" &&
-        unreadCount > 0 && (
+        safeUnreadCount > 0 && (
           <span className="ml-1">
-            ({unreadCount})
+            ({safeUnreadCount})
           </span>
       )}
     </NavbarItem>

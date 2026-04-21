@@ -42,15 +42,15 @@ export default function MessageTableCell({
                 : item.senderImage
             }
           />
-          <span className="truncate">{cellValue}</span>
+          <span className="truncate font-medium text-default-900">{cellValue}</span>
         </div>
       );
     case "text":
       return (
-        <div className="max-w-[220px] truncate sm:max-w-[360px]">{truncateString(cellValue, 80)}</div>
+        <div className="max-w-[220px] truncate text-default-700 sm:max-w-[420px]">{truncateString(cellValue, 80)}</div>
       );
     case "created":
-      return cellValue;
+      return <span className="whitespace-nowrap text-default-600">{cellValue}</span>;
     default:
       return (
         <Button
