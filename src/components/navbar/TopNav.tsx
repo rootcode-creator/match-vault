@@ -48,21 +48,19 @@ export default function TopNav({
     isAdmin ? adminLinks : memberLinks;
 
   const navbarClassName = isHomePage
-    ? "sticky top-0 z-50 h-14 border-b border-white/70 bg-transparent sm:h-16"
-    : "sticky top-0 z-50 h-14 border-b border-white/70 bg-transparent sm:h-16";
+    ? "sticky top-0 z-50 h-14 bg-transparent sm:h-16"
+    : "sticky top-0 z-50 h-14 bg-transparent sm:h-16";
 
   const navbarItemClassName = isHomePage
     ? [
         "text-sm sm:text-base",
-        "text-default-700",
-        "uppercase",
-        "data-[active=true]:text-indigo-700",
+        "text-default-700 font-medium",
+        "data-[active=true]:text-default-900",
       ]
     : [
-        "text-sm sm:text-base md:text-lg",
-        "text-default-700",
-        "uppercase",
-        "data-[active=true]:text-indigo-700",
+        "text-sm sm:text-base",
+        "text-default-700 font-medium",
+        "data-[active=true]:text-default-900",
       ];
 
   const brandIconClassName = isHomePage
@@ -80,7 +78,7 @@ export default function TopNav({
         className={navbarClassName}
         classNames={{
           base: "z-50",
-          wrapper: "gap-2 bg-transparent px-2 sm:px-4",
+          wrapper: "mx-auto w-full max-w-6xl gap-3 bg-transparent px-4 sm:px-6",
           item: navbarItemClassName,
         }}
       >
@@ -90,10 +88,10 @@ export default function TopNav({
           className="min-w-0 flex-none sm:flex-1"
         >
           <GiSelfLove
-            size={26}
+            size={24}
             className={brandIconClassName}
           />
-          <div className="flex font-bold text-lg sm:text-xl md:text-2xl">
+          <div className="flex font-bold text-lg sm:text-2xl">
             <span className={brandTextClassName}>
               MatchVault
             </span>
@@ -125,16 +123,16 @@ export default function TopNav({
               <Button
                 as={Link}
                 href="/login"
-                variant="bordered"
-                className="h-8 min-w-[72px] rounded-xl border border-default-300 bg-white px-3 text-xs font-semibold text-slate-900 transition hover:bg-default-100 sm:h-10 sm:min-w-[96px] sm:px-6 sm:text-base"
+                variant="light"
+                className="h-8 min-w-[72px] rounded-full px-3 text-xs font-semibold text-slate-900 transition hover:bg-black/5 sm:h-10 sm:min-w-[96px] sm:px-5 sm:text-sm"
               >
                 Login
               </Button>
               <Button
                 as={Link}
                 href="/register"
-                variant="bordered"
-                className="h-8 min-w-[84px] rounded-xl border border-indigo-600 bg-indigo-600 px-3 text-xs font-semibold text-white transition hover:bg-indigo-700 sm:h-10 sm:min-w-[112px] sm:px-6 sm:text-base"
+                variant="solid"
+                className="h-8 min-w-[84px] rounded-full border border-black bg-black px-3 text-xs font-semibold text-white transition hover:bg-zinc-800 sm:h-10 sm:min-w-[112px] sm:px-6 sm:text-sm"
               >
                 Register
               </Button>
