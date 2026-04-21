@@ -14,14 +14,14 @@ return (
     <div className='w-full bg-white shadow-sm border-b border-default-200 border-t-4 border-indigo-600 relative z-20'>
         <div className='flex flex-wrap items-center gap-3 py-3 px-3 sm:gap-4 md:gap-6'>
 
-            <div className='flex items-center min-w-[90px]'>
+            <div className='flex items-center min-w-0'>
                 <div className='text-sm text-default-600 font-normal whitespace-nowrap'>
                 Results:{totalCount}
                 </div>
             </div>
 
 
-            <div className='flex gap-2 items-center min-w-[150px]'>
+            <div className='flex gap-2 items-center min-w-0 flex-wrap'>
 
                 <div className='text-sm text-default-700 font-semibold whitespace-nowrap'>Gender:</div>
 
@@ -50,7 +50,7 @@ return (
 
             </div>
 
-            <div className='flex items-center gap-3 w-full sm:w-80'>
+            <div className='flex items-center gap-3 w-full md:max-w-[380px]'>
                 <div className='text-sm text-default-700 font-semibold whitespace-nowrap'>Age range:</div>
 
                 <Slider
@@ -80,7 +80,7 @@ return (
                 </div>
             </div>
 
-                        <div className='flex items-center gap-2 min-w-[130px]'>
+                        <div className='flex items-center gap-2 min-w-0'>
 
                                 <p className='text-sm text-default-700 font-semibold whitespace-nowrap'>
                                     {withPhoto ? 'With photo' : 'Without photo'}

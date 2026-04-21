@@ -44,14 +44,14 @@ export default async function Layout({
   ];
 
   return (
-    <div className="container mx-auto px-4 sm:px-6 lg:px-8 mt-6 mb-10">
-      <div className="grid grid-cols-12 gap-6 items-stretch min-h-[72vh]">
-        <aside className="col-span-12 lg:col-span-3 h-full">
+    <div className="container mx-auto mt-4 mb-8 px-3 sm:mt-6 sm:mb-10 sm:px-6 lg:px-8">
+      <div className="grid grid-cols-12 items-stretch gap-4 sm:gap-6 sm:min-h-[72vh]">
+        <aside className="col-span-12 lg:col-span-3 lg:h-full">
           <MemberSidebar member={member} navLinks={navLinks}/>
         </aside>
 
-        <main className="col-span-12 lg:col-span-9 h-full">
-          <div className="rounded-2xl border border-default-200 bg-white shadow-sm h-full">
+        <main className="col-span-12 lg:col-span-9 lg:h-full">
+          <div className="h-full rounded-2xl border border-default-200 bg-white shadow-sm">
             {children}
           </div>
         </main>

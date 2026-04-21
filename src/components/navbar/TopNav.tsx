@@ -80,26 +80,29 @@ export default function TopNav({
         className={navbarClassName}
         classNames={{
           base: "z-50",
-          wrapper: "bg-white",
+          wrapper: "bg-white px-2 sm:px-4 gap-2",
           item: navbarItemClassName,
         }}
       >
         <NavbarBrand
           as={Link}
           href="/"
-          className="flex-1"
+          className="min-w-0 flex-none sm:flex-1"
         >
           <GiSelfLove
-            size={32}
+            size={26}
             className={brandIconClassName}
           />
-          <div className="flex font-bold text-xl sm:text-2xl md:text-3xl">
+          <div className="flex font-bold text-lg sm:text-2xl md:text-3xl">
             <span className={brandTextClassName}>
               MatchVault
             </span>
           </div>
         </NavbarBrand>
-        <NavbarContent justify="center" className="max-w-[45vw] overflow-x-auto whitespace-nowrap [&::-webkit-scrollbar]:hidden">
+        <NavbarContent
+          justify="center"
+          className="min-w-0 flex-1 max-w-[52vw] justify-start overflow-x-auto whitespace-nowrap [scrollbar-width:none] sm:max-w-[45vw] sm:justify-center [&::-webkit-scrollbar]:hidden"
+        >
           {isLoggedIn &&
             links.map((item) => (
               <NavLink
@@ -111,19 +114,19 @@ export default function TopNav({
         </NavbarContent>
         <NavbarContent
           justify="end"
-          className="flex-1"
+          className="flex flex-none items-center"
         >
           {isLoggedIn ? (
             <div className="ml-auto">
               <UserMenu userInfo={userInfo} />
             </div>
           ) : !isHomePage ? (
-            <div className="ml-auto flex items-center gap-3">
+            <div className="ml-auto flex items-center gap-2 sm:gap-3">
               <Button
                 as={Link}
                 href="/login"
                 variant="bordered"
-                className="h-9 min-w-[84px] rounded-xl border border-default-300 bg-white px-4 text-sm font-semibold text-slate-900 transition hover:bg-default-100 sm:h-10 sm:min-w-[96px] sm:px-6 sm:text-base"
+                className="h-8 min-w-[72px] rounded-xl border border-default-300 bg-white px-3 text-xs font-semibold text-slate-900 transition hover:bg-default-100 sm:h-10 sm:min-w-[96px] sm:px-6 sm:text-base"
               >
                 Login
               </Button>
@@ -131,7 +134,7 @@ export default function TopNav({
                 as={Link}
                 href="/register"
                 variant="bordered"
-                className="h-9 min-w-[98px] rounded-xl border border-indigo-600 bg-indigo-600 px-4 text-sm font-semibold text-white transition hover:bg-indigo-700 sm:h-10 sm:min-w-[112px] sm:px-6 sm:text-base"
+                className="h-8 min-w-[84px] rounded-xl border border-indigo-600 bg-indigo-600 px-3 text-xs font-semibold text-white transition hover:bg-indigo-700 sm:h-10 sm:min-w-[112px] sm:px-6 sm:text-base"
               >
                 Register
               </Button>

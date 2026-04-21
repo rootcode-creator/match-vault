@@ -30,14 +30,14 @@ export default async function MessagesPage({
 
 
   return (
-    <div className="mt-6 mb-10 grid grid-cols-1 gap-4 px-4 pb-4 sm:mt-8 sm:px-6 lg:mt-10 lg:grid-cols-12 lg:gap-5 lg:px-6 lg:pb-6">
+    <div className="mt-4 mb-8 grid grid-cols-1 gap-3 px-3 pb-3 sm:mt-6 sm:mb-10 sm:gap-4 sm:px-6 sm:pb-4 lg:mt-10 lg:grid-cols-12 lg:gap-5 lg:px-6 lg:pb-6">
 
       <div className="lg:col-span-3 xl:col-span-2">
 
         <MessageSidebar />
       </div>
 
-      <div className="lg:col-span-9 xl:col-span-10">
+      <div className="min-w-0 lg:col-span-9 xl:col-span-10">
 
         <MessageTable
           initialMessages={messages}

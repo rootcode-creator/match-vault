@@ -54,8 +54,8 @@ export default function MessageTable({ initialMessages,
 
 
     return (
-    <div className="flex min-h-[60vh] flex-col lg:h-[80vh]">
-      <Card className="h-full">
+    <div className="flex min-h-[60vh] min-w-0 flex-col lg:h-[80vh]">
+      <Card className="h-full min-w-0 overflow-hidden">
         <Table
           aria-label="Table with messages"
           selectionMode="single"
@@ -63,10 +63,11 @@ export default function MessageTable({ initialMessages,
             selectRow(key)
           }
           shadow="none"
-          className="flex h-[60vh] min-w-full flex-col gap-3 overflow-auto md:h-[68vh] lg:h-[80vh]"
+          className="flex h-[58vh] min-w-full flex-col gap-3 overflow-auto sm:h-[60vh] md:h-[68vh] lg:h-[80vh]"
           removeWrapper={false}
           classNames={{
             wrapper: "overflow-x-auto",
+            table: "min-w-[640px] sm:min-w-full",
           }}
         >
           <TableHeader columns={columns}>
@@ -121,12 +122,12 @@ export default function MessageTable({ initialMessages,
           </TableBody>
         </Table>
 
-        <div className="sticky bottom-0 pb-3 px-3 flex justify-end">
+        <div className="sticky bottom-0 flex justify-stretch px-3 pb-3 sm:justify-end">
           <Button
             color="default"
             variant="bordered"
             radius="md"
-            className="min-w-36 rounded-xl border border-black/20 bg-default-50 px-5 py-2 text-sm font-semibold text-black hover:bg-black/5 sm:px-6 sm:text-base disabled:bg-default-100 disabled:border-black/10 disabled:text-default-400"
+            className="w-full rounded-xl border border-black/20 bg-default-50 px-5 py-2 text-sm font-semibold text-black hover:bg-black/5 sm:w-auto sm:min-w-36 sm:px-6 sm:text-base disabled:bg-default-100 disabled:border-black/10 disabled:text-default-400"
             isLoading={loadingMore}
             isDisabled={!hasMore}
             onClick={loadMore}

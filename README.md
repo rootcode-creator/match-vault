@@ -1,17 +1,34 @@
 <p align="center">
-	<img src="./src/app/favicon.ico" alt="match-me logo" width="120" height="120" />
+	<img src="./src/app/favicon.ico" alt="match-vault logo" width="92" height="92" />
 </p>
 
-<h1 align="center">match-me</h1>
+<h1 align="center">match-vault</h1>
+
+<p align="center"><i>Role-aware matchmaking app powered by Next.js, Prisma, Auth.js, and Pusher.</i></p>
 
 <p align="center">
-	<img src="https://img.shields.io/badge/APP-match--me-black?style=for-the-badge" alt="match-me app" />
-	<img src="https://img.shields.io/badge/VERSION-v0.1.0-CB3837?style=for-the-badge" alt="Version v0.1.0" />
-	<img src="https://img.shields.io/badge/LICENSE-MIT-97CA00?style=for-the-badge" alt="MIT License" />
-	<img src="https://img.shields.io/badge/TYPE-MATCHMAKING-7B42F6?style=for-the-badge" alt="Matchmaking app" />
+	<img src="https://img.shields.io/badge/version-1.0.0-ef4444?style=for-the-badge" alt="Version 1.0.0" />
+	<img src="https://img.shields.io/badge/license-MIT-84cc16?style=for-the-badge" alt="MIT License" />
+	<img src="https://img.shields.io/badge/type-Matchmaking-8b5cf6?style=for-the-badge" alt="Matchmaking app" />
 </p>
 
-# match-me — README
+<p align="center">
+	<img src="https://img.shields.io/badge/Next.js-16-black?style=flat-square&logo=next.js" alt="Next.js" />
+	<img src="https://img.shields.io/badge/React-19-0ea5e9?style=flat-square&logo=react&logoColor=white" alt="React" />
+	<img src="https://img.shields.io/badge/TypeScript-5-2563eb?style=flat-square&logo=typescript&logoColor=white" alt="TypeScript" />
+	<img src="https://img.shields.io/badge/Prisma-ORM-1f2937?style=flat-square&logo=prisma" alt="Prisma" />
+	<img src="https://img.shields.io/badge/PostgreSQL-Database-0f766e?style=flat-square&logo=postgresql&logoColor=white" alt="PostgreSQL" />
+	<img src="https://img.shields.io/badge/Auth.js-v5-4f46e5?style=flat-square" alt="Auth.js" />
+	<img src="https://img.shields.io/badge/Pusher-Realtime-9333ea?style=flat-square" alt="Pusher" />
+</p>
+
+<p align="center">
+	<a href="#-project-intro"><img src="https://img.shields.io/badge/Explore-Project%20Intro-111827?style=for-the-badge" alt="Project intro" /></a>
+	<a href="#-install-methods"><img src="https://img.shields.io/badge/Setup-Install%20Guide-0f766e?style=for-the-badge" alt="Install guide" /></a>
+	<a href="#-available-scripts"><img src="https://img.shields.io/badge/Run-Scripts-7c3aed?style=for-the-badge" alt="Scripts" /></a>
+</p>
+
+## match-vault — README
 
 Modern full-stack matchmaking application built with Next.js App Router, Prisma, PostgreSQL, NextAuth v5, and real-time messaging/notifications with Pusher.
 
@@ -33,7 +50,7 @@ Modern full-stack matchmaking application built with Next.js App Router, Prisma,
 
 ## 🚀 Project intro
 
-`match-me` is a role-aware matchmaking platform with:
+`match-vault` is a role-aware matchmaking platform with:
 
 - Email/password + social authentication (Google/GitHub)
 - Profile onboarding and completion flow
@@ -47,7 +64,7 @@ It is designed as an MVP-friendly production-ready foundation for social/match a
 ## 📁 Project structure
 
 ```txt
-match-me/
+match-vault/
 ├── prisma/
 │   ├── schema.prisma
 │   ├── seed.ts
@@ -130,8 +147,8 @@ Prerequisites:
 - PostgreSQL database (local or hosted, e.g. Neon)
 
 ```bash
-git clone <your-repo-url> match-me
-cd match-me
+git clone <your-repo-url> match-vault
+cd match-vault
 npm install
 ```
 

@@ -48,8 +48,8 @@ export default function MessageSidebar() {
     : 0;
 
   return (
-    <div className="flex flex-row flex-wrap items-center gap-2 rounded-2xl border border-default-200 bg-white/90 p-2 shadow-lg backdrop-blur md:flex-col md:items-stretch md:gap-0">
-      <div className="w-full px-3 pt-2 pb-1 md:pb-3">
+    <div className="flex flex-row flex-nowrap items-center gap-2 overflow-x-auto rounded-2xl border border-default-200 bg-white/90 p-2 shadow-lg backdrop-blur [scrollbar-width:none] md:flex-col md:items-stretch md:gap-0 md:overflow-visible [&::-webkit-scrollbar]:hidden">
+      <div className="shrink-0 px-3 pt-2 pb-1 md:w-full md:pb-3">
         <p className="text-xs font-semibold uppercase tracking-wide text-default-500">
           Messages
         </p>
@@ -60,6 +60,7 @@ export default function MessageSidebar() {
             key={key}
             className={clsx(
               "flex min-w-[140px] flex-1 items-center gap-2 rounded-xl border px-3 py-2 transition-colors md:min-w-0 md:flex-none md:gap-3",
+              "shrink-0",
               {
                 "border-primary/30 bg-primary/5 text-primary font-semibold":
                   selected === key,
