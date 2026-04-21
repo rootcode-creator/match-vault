@@ -1,3 +1,16 @@
+<p align="center">
+	<img src="./src/app/favicon.ico" alt="match-me logo" width="120" height="120" />
+</p>
+
+<h1 align="center">match-me</h1>
+
+<p align="center">
+	<img src="https://img.shields.io/badge/APP-match--me-black?style=for-the-badge" alt="match-me app" />
+	<img src="https://img.shields.io/badge/VERSION-v0.1.0-CB3837?style=for-the-badge" alt="Version v0.1.0" />
+	<img src="https://img.shields.io/badge/LICENSE-MIT-97CA00?style=for-the-badge" alt="MIT License" />
+	<img src="https://img.shields.io/badge/TYPE-MATCHMAKING-7B42F6?style=for-the-badge" alt="Matchmaking app" />
+</p>
+
 # match-me — README
 
 Modern full-stack matchmaking application built with Next.js App Router, Prisma, PostgreSQL, NextAuth v5, and real-time messaging/notifications with Pusher.
@@ -241,5 +254,5 @@ Utility scripts:
 
 ## 📄 License
 
-No license file is currently present in this repository.
-If you want this project open-source, add a `LICENSE` file (for example MIT).
+This project is licensed under the MIT License.
+See the `LICENSE` file for details.
