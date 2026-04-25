@@ -9,9 +9,8 @@ import {
   DropdownSection,
   DropdownTrigger,
 } from "@heroui/react";
-import { Session } from "next-auth";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React from "react";
 
 type Props = {
   userInfo:{
@@ -23,25 +22,6 @@ type Props = {
 export default function UserMenu({
   userInfo,
 }: Props) {
-  const [isMounted, setIsMounted] = useState(false);
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
-  if (!isMounted) {
-    return (
-      <Avatar
-        className="nav-avatar nav-avatar--shift"
-        color="default"
-        name={userInfo?.name || "user avatar"}
-        size="sm"
-        src={userInfo?.image || "/images/user.png"}
-      />
-    );
-  }
-
-   
   return (
     <Dropdown placement="bottom-end">
       <DropdownTrigger>
@@ -58,6 +38,9 @@ export default function UserMenu({
         variant="flat"
         aria-label="User actions menu"
         className="user-menu"
+        itemClasses={{
+          base: "rounded-full",
+        }}
       >
         <DropdownSection showDivider>
           <DropdownItem
@@ -79,7 +62,6 @@ export default function UserMenu({
           Edit profile
         </DropdownItem>
         <DropdownItem key="3"
-          color="danger"
           onClick={async () => signOutUser()}
           className="user-menu__item user-menu__item--danger"
         >

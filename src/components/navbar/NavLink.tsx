@@ -29,10 +29,10 @@ export default function NavLink({
       isActive={pathname === href}
       as={Link}
       href={href}
-      className={`rounded-full px-3 py-1.5 text-sm font-semibold transition-colors sm:px-4 sm:text-base ${
+      className={`rounded-full border px-3 py-1.5 text-sm font-normal sm:px-4 sm:text-base ${
         pathname === href
-          ? "bg-black text-white"
-          : "text-default-700 hover:bg-black/5"
+          ? "border-black bg-black text-white"
+          : "border-neutral-200 bg-transparent text-neutral-700 hover:bg-neutral-100"
       }`}
     >
       <span>{label}</span>

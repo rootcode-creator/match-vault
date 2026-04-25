@@ -7,24 +7,15 @@ import {
   Textarea,
 } from "@heroui/react";
 import { format, subYears } from "date-fns";
-import { useEffect, useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 
 export default function ProfileDetailsForm() {
-  const [isMounted, setIsMounted] = useState(false);
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
   const {
     register,
     control,
     getValues,
     formState: { errors },
   } = useFormContext();
-
-  if (!isMounted) return null;
 
   const genderList = [
     { label: "Male", value: "male" },
