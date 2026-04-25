@@ -1,7 +1,6 @@
 "use client";
 
-import { auth } from "@/auth";
-import { Photo, Role } from "@prisma/client";
+import { Photo } from "@prisma/client";
 import { CldImage } from "next-cloudinary";
 import React from "react";
 import { Button, Image } from "@heroui/react";
@@ -35,8 +34,12 @@ export default function MemberImage({
     try {
       await approvePhoto(photoId);
       router.refresh();
-    } catch (error: any) {
-      toast.error(error.message);
+    } catch (error: unknown) {
+      const message =
+        error instanceof Error
+          ? error.message
+          : "Failed to approve photo";
+      toast.error(message);
     }
   };
 
@@ -44,8 +47,12 @@ export default function MemberImage({
     try {
       await rejectPhoto(photo);
       router.refresh();
-    } catch (error: any) {
-      toast.error(error.message);
+    } catch (error: unknown) {
+      const message =
+        error instanceof Error
+          ? error.message
+          : "Failed to reject photo";
+      toast.error(message);
     }
   };
 

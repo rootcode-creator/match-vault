@@ -40,8 +40,12 @@ export default function MemberPhotos({
     try {
       await setMainImage(photo);
       router.refresh();
-    } catch (error: any) {
-      toast.error(error.message);
+    } catch (error: unknown) {
+      const message =
+        error instanceof Error
+          ? error.message
+          : "Failed to set main image";
+      toast.error(message);
     } finally {
       setLoading({
         isLoading: false,

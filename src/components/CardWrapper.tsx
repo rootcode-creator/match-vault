@@ -33,10 +33,10 @@ export default function CardWrapper({
     <div className="flex items-center justify-center vertical-center px-4 py-6 sm:px-6">
       <Card className="glass-card mx-auto w-full max-w-md p-4 sm:p-5">
         <CardHeader className="flex flex-col items-center justify-center">
-          <div className="flex flex-col gap-2 items-center text-default">
+          <div className="flex flex-col items-center gap-2 text-neutral-800">
             <div className="flex flex-row items-center gap-3">
-              <Icon size={30} />
-              <h1 className="text-2xl font-semibold sm:text-3xl">
+              <Icon size={30} className="text-black" />
+              <h1 className="text-2xl font-medium text-black sm:text-3xl">
                 {headerText}
               </h1>
             </div>
@@ -55,6 +55,7 @@ export default function CardWrapper({
               fullWidth
               color="default"
               variant="bordered"
+              className="rounded-full border border-neutral-300 bg-white px-6 py-2.5 text-[15px] font-normal text-neutral-700"
             >
               {actionLabel}
             </Button>

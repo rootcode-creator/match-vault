@@ -1,11 +1,6 @@
 "use client";
 
-import {
-  Button,
-  Navbar,
-  NavbarBrand,
-  NavbarContent,
-} from "@heroui/react";
+import { Button, Navbar, NavbarBrand, NavbarContent } from "@heroui/react";
 import Link from "next/link";
 import React from "react";
 import { GiSelfLove } from "react-icons/gi";
@@ -47,29 +42,7 @@ export default function TopNav({
   const links =
     isAdmin ? adminLinks : memberLinks;
 
-  const navbarClassName = isHomePage
-    ? "sticky top-0 z-50 h-14 bg-transparent sm:h-16"
-    : "sticky top-0 z-50 h-14 bg-transparent sm:h-16";
-
-  const navbarItemClassName = isHomePage
-    ? [
-        "text-sm sm:text-base",
-        "text-default-700 font-medium",
-        "data-[active=true]:text-default-900",
-      ]
-    : [
-        "text-sm sm:text-base",
-        "text-default-700 font-medium",
-        "data-[active=true]:text-default-900",
-      ];
-
-  const brandIconClassName = isHomePage
-    ? "text-default-800"
-    : "text-default-800";
-
-  const brandTextClassName = isHomePage
-    ? "text-default-900"
-    : "text-default-900";
+  const navbarClassName = "sticky top-0 z-50 h-14 border-b border-neutral-200 bg-white sm:h-16";
 
   return (
     <>
@@ -79,7 +52,11 @@ export default function TopNav({
         classNames={{
           base: "z-50",
           wrapper: "mx-auto w-full max-w-6xl gap-3 bg-transparent px-4 sm:px-6",
-          item: navbarItemClassName,
+          item: [
+            "text-sm sm:text-base",
+            "text-neutral-700 font-normal",
+            "data-[active=true]:text-black",
+          ],
         }}
       >
         <NavbarBrand
@@ -89,10 +66,10 @@ export default function TopNav({
         >
           <GiSelfLove
             size={24}
-            className={brandIconClassName}
+            className="text-black"
           />
-          <div className="flex font-bold text-lg sm:text-2xl">
-            <span className={brandTextClassName}>
+          <div className="flex text-lg font-medium text-black sm:text-2xl">
+            <span>
               MatchVault
             </span>
           </div>
@@ -124,7 +101,7 @@ export default function TopNav({
                 as={Link}
                 href="/login"
                 variant="light"
-                className="h-8 min-w-[72px] rounded-full px-3 text-xs font-semibold text-slate-900 transition hover:bg-black/5 sm:h-10 sm:min-w-[96px] sm:px-5 sm:text-sm"
+                className="h-8 min-w-[72px] rounded-full border border-neutral-300 bg-white px-5 text-xs font-normal text-neutral-700 sm:h-10 sm:min-w-[96px] sm:text-sm"
               >
                 Login
               </Button>
@@ -132,7 +109,7 @@ export default function TopNav({
                 as={Link}
                 href="/register"
                 variant="solid"
-                className="h-8 min-w-[84px] rounded-full border border-black bg-black px-3 text-xs font-semibold text-white transition hover:bg-zinc-800 sm:h-10 sm:min-w-[112px] sm:px-6 sm:text-sm"
+                className="h-8 min-w-[84px] rounded-full border border-black bg-black px-6 text-xs font-normal text-white sm:h-10 sm:min-w-[112px] sm:text-sm"
               >
                 Register
               </Button>

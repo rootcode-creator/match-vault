@@ -11,11 +11,11 @@ export default function Filters() {
 const { gender, ageRange, orderBy, withPhoto } = filters;
 
 return (
-    <div className='w-full bg-white shadow-sm border-b border-default-200 border-t-4 border-indigo-600 relative z-20'>
+    <div className='relative z-20 w-full border-b border-t border-neutral-200 bg-white'>
         <div className='flex flex-wrap items-center gap-3 py-3 px-3 sm:gap-4 md:gap-6'>
 
             <div className='flex items-center min-w-0'>
-                <div className='text-sm text-default-600 font-normal whitespace-nowrap'>
+                <div className='text-sm font-normal whitespace-nowrap text-neutral-500'>
                 Results:{totalCount}
                 </div>
             </div>
@@ -23,7 +23,7 @@ return (
 
             <div className='flex gap-2 items-center min-w-0 flex-wrap'>
 
-                <div className='text-sm text-default-700 font-semibold whitespace-nowrap'>Gender:</div>
+                <div className='text-sm font-normal whitespace-nowrap text-neutral-700'>Gender:</div>
 
                 {genderList.map(({ icon: Icon, value }) => (
 
@@ -31,13 +31,13 @@ return (
                         key={value}
                         size="sm"
                         isIconOnly
-                        radius="sm"
+                        radius="full"
                         variant="bordered"
                         color="default"
                         className={
                             gender.includes(value)
-                                ? "min-w-7 w-7 h-7 bg-white text-black border-2 border-foreground rounded-md"
-                                : "min-w-7 w-7 h-7 bg-transparent text-indigo-600 border-0"
+                            ? "h-7 w-7 min-w-7 rounded-full border border-black bg-black text-white"
+                            : "h-7 w-7 min-w-7 rounded-full border border-neutral-200 bg-white text-neutral-700"
                         }
                         
                         onClick={() => SelectGender(value)}
@@ -51,7 +51,7 @@ return (
             </div>
 
             <div className='flex items-center gap-3 w-full md:max-w-[380px]'>
-                <div className='text-sm text-default-700 font-semibold whitespace-nowrap'>Age range:</div>
+                <div className='text-sm font-normal whitespace-nowrap text-neutral-700'>Age range:</div>
 
                 <Slider
                     className="flex-1"
@@ -66,23 +66,23 @@ return (
                     aria-label="Age range"
                     color="foreground"
                     classNames={{
-                        track: "h-1 bg-indigo-600 rounded-full",
-                        filler: "h-1 bg-indigo-600 rounded-full",
+                        track: "h-1 bg-neutral-200 rounded-full",
+                        filler: "h-1 bg-black rounded-full",
                         step: "w-1 h-1 bg-default-400 rounded-full data-[in-range=true]:bg-default-400",
-                        thumb: "w-5 h-5 bg-white border-2 border-indigo-600 shadow-sm",
+                        thumb: "w-5 h-5 bg-white border border-black",
                     }}
 
                     onChangeEnd={(values) => selectAge(values as number[])}
                 />
 
-                <div className='text-sm text-default-700 font-semibold tabular-nums min-w-[56px] text-right'>
+                <div className='text-sm font-normal tabular-nums min-w-[56px] text-right text-neutral-700'>
                     {ageRange[0]}-{ageRange[1]}
                 </div>
             </div>
 
                         <div className='flex items-center gap-2 min-w-0'>
 
-                                <p className='text-sm text-default-700 font-semibold whitespace-nowrap'>
+                                <p className='text-sm font-normal whitespace-nowrap text-neutral-700'>
                                     {withPhoto ? 'With photo' : 'Without photo'}
                                 </p>
 
@@ -94,8 +94,8 @@ return (
                     aria-label='Filter: with photo'
                     classNames={{
                         base: "rounded-full",
-                        wrapper: "w-14 h-7 p-[3px] rounded-full overflow-hidden bg-white border-2 border-default-300 before:rounded-full after:rounded-full group-data-[selected=true]:bg-indigo-600 group-data-[selected=true]:border-indigo-600",
-                        thumb: "!w-5 !h-5 aspect-square shrink-0 rounded-full bg-white shadow-sm group-data-[selected=true]:!ms-[1.875rem] group-data-[pressed=true]:!w-5 group-data-[pressed=true]:!h-5",
+                        wrapper: "w-14 h-7 overflow-hidden rounded-full border border-neutral-300 bg-white p-[3px] before:rounded-full after:rounded-full group-data-[selected=true]:border-black group-data-[selected=true]:bg-black",
+                        thumb: "!h-5 !w-5 aspect-square shrink-0 rounded-full bg-white group-data-[selected=true]:!ms-[1.875rem] group-data-[pressed=true]:!h-5 group-data-[pressed=true]:!w-5",
                         thumbIcon: "rounded-full",
                     }}
                 />
@@ -112,10 +112,10 @@ return (
                     color='default'
                     className="w-full"
                     classNames={{
-                        trigger: "h-8 min-h-8 border-2 border-foreground rounded-md",
-                        value: "text-sm text-default-700",
+                        trigger: "h-8 min-h-8 rounded-full border border-neutral-300 bg-white",
+                        value: "text-sm text-neutral-700",
                         selectorIcon: "hidden",
-                        popoverContent: "p-2 rounded-xl shadow-lg border border-default-200 bg-white z-50",
+                        popoverContent: "z-50 rounded-xl border border-neutral-200 bg-white p-2",
                         listbox: "gap-1",
                     }}
                     selectedKeys={new Set([orderBy])}
