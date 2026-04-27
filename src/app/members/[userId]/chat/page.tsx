@@ -30,6 +30,7 @@ export default async function ChatPage({
           chatId={chatId}
         />
       }
+      compactFooter
       footer={<ChatForm />}
     />
   );

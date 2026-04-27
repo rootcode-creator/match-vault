@@ -92,7 +92,7 @@ export default function CompleteProfileForm() {
                   isDisabled={!isValid}
                   fullWidth
                   disableRipple
-                  className="h-10 rounded-lg bg-gradient-to-r from-indigo-600 to-violet-600 text-white font-semibold shadow-md hover:shadow-lg active:translate-y-px"
+                  className="h-10 rounded-lg bg-black text-white font-semibold shadow-md hover:shadow-lg active:translate-y-px"
                   type="submit"
                 >
                   Submit

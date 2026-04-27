@@ -69,7 +69,7 @@ export default function ChatForm() {
               type="submit"
               aria-label="Send message"
               disabled={!isValid || isSubmitting}
-              className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-black text-white transition hover:bg-zinc-800 disabled:bg-default-300 disabled:text-default-500"
+              className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-transparent text-black transition hover:bg-black/5 disabled:text-default-400"
             >
               <HiPaperAirplane size={15} className="-rotate-12" />
             </button>
