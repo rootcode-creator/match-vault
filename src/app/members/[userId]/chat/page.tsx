@@ -6,7 +6,6 @@ import { getMessageThread } from "@/app/actions/messageActions";
 import { getAuthUserId } from "@/app/actions/authActions";
 import MessageList from "./MessageList";
 import { createChatId } from "@/lib/util";
-import { IoInformationCircleOutline } from "react-icons/io5";
 
 export default async function ChatPage({
   params,
@@ -48,14 +47,6 @@ export default async function ChatPage({
               </p>
             </div>
           </div>
-
-          <button
-            type="button"
-            aria-label="Conversation info"
-            className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[#cdd9df] bg-white/90 text-[#344a5a] transition hover:bg-[#f2f7fa]"
-          >
-            <IoInformationCircleOutline size={18} />
-          </button>
         </div>
       }
       body={
