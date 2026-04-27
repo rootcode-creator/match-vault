@@ -30,7 +30,7 @@ export default function CardInnerWrapper({
       <CardBody
         className={
           compactFooter && footer
-            ? "mt-3 mb-0 bg-transparent px-3 sm:mt-4 sm:px-5"
+            ? "mt-3 mb-0 !flex-none bg-transparent px-3 sm:mt-4 sm:px-5"
             : "my-3 px-3 sm:my-4 sm:px-5"
         }
       >
