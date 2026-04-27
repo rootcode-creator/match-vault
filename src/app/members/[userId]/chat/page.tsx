@@ -1,5 +1,4 @@
 import CardInnerWrapper from "@/components/CardInnerWrapper";
-import PresenceAvatar from "@/components/PresenceAvatar";
 import { getMemberByUserId } from "@/app/actions/memberActions";
 import React from "react";
 import ChatForm from "./ChatForm";
@@ -29,10 +28,17 @@ export default async function ChatPage({
       header={
         <div className="flex w-full items-center justify-between rounded-2xl border border-[#dce7eb] bg-[linear-gradient(180deg,#f9fdfd_0%,#edf5f8_100%)] px-3 py-2.5 sm:px-4">
           <div className="flex items-center gap-2.5">
-            <PresenceAvatar
-              userId={targetUserId}
-              src={member?.image}
-            />
+            <div className="relative inline-flex h-10 w-10 shrink-0 overflow-hidden rounded-full border border-[#d7e3e9] bg-white shadow-sm sm:h-11 sm:w-11">
+              <img
+                src={member?.image || "/images/user.png"}
+                alt="Conversation avatar"
+                className="h-full w-full object-cover"
+              />
+              <span
+                className="absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full border-2 border-white bg-[#30c86f]"
+                aria-label="Online"
+              />
+            </div>
             <div className="leading-tight">
               <p className="text-base font-semibold text-[#101f2f] sm:text-lg">
                 {member?.name || "Conversation"}
