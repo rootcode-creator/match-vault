@@ -1,18 +1,18 @@
 import { Button } from "@heroui/react";
 import { FaGithub } from "react-icons/fa";
-import {FcGoogle} from "react-icons/fc";
+import { FaGoogle } from "react-icons/fa";
 import { signIn, signOut } from "next-auth/react";
 
 export default function SocialLogin() {
   const providers = [
     {
       name: "google",
-      icon: <FcGoogle size={20} />,
+      icon: <FaGoogle size={22} />,
       text: "Google",
     },
     {
       name: "github",
-      icon: <FaGithub size={20} />,
+      icon: <FaGithub size={22} />,
       text: "GitHub",
     },
   ];
@@ -33,21 +33,22 @@ export default function SocialLogin() {
   };
 
   return (
-    <div className="mt-3 flex w-full flex-col items-center justify-center gap-3 sm:flex-row sm:gap-5">
+    <div className="mt-3 flex w-full items-center justify-center gap-6">
       {providers.map((provider) => (
         <Button
           key={provider.name}
-          size="md"
+          aria-label={provider.text}
+          isIconOnly
+          size="sm"
           variant="bordered"
-          className="h-9 w-full rounded-lg border-2 border-slate-400 bg-white text-slate-800 font-medium hover:bg-slate-50 sm:w-[44%]"
+          className="h-14 w-14 min-w-14 rounded-2xl border border-slate-200 bg-transparent text-slate-700 shadow-[0_4px_12px_-6px_rgba(15,23,42,0.35)] transition hover:-translate-y-0.5 hover:border-slate-300 hover:bg-black/5 hover:text-slate-900 hover:shadow-[0_10px_22px_-10px_rgba(15,23,42,0.45)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/20"
           onClick={() =>
             onClick(
               provider.name as "google" | "github"
             )
           }
         >
-          {provider.icon}
-          <span>{provider.text}</span>
+          <span className="shrink-0">{provider.icon}</span>
         </Button>
       ))}
     </div>

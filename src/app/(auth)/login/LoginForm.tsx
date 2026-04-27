@@ -191,7 +191,7 @@ export default function LoginForm() {
                 disableRipple
                 color="default"
                 type="submit"
-                className="mt-2 mb-4 h-10 rounded-lg bg-gradient-to-r from-indigo-600 to-violet-600 text-white font-semibold shadow-md hover:shadow-lg active:translate-y-px focus:outline-none focus-visible:outline-none"
+                className="mt-2 mb-4 h-10 rounded-lg bg-black text-white font-semibold shadow-md hover:bg-zinc-800 hover:shadow-lg active:translate-y-px focus:outline-none focus-visible:outline-none"
               >
                 Login
               </Button>

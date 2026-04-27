@@ -123,8 +123,8 @@ export default function TopNav({
               <Button
                 as={Link}
                 href="/login"
-                variant="light"
-                className="h-8 min-w-[72px] rounded-full px-3 text-xs font-semibold text-slate-900 transition hover:bg-black/5 sm:h-10 sm:min-w-[96px] sm:px-5 sm:text-sm"
+                variant="bordered"
+                className="h-8 min-w-[84px] rounded-full border border-black bg-transparent px-3 text-xs font-semibold text-black transition hover:bg-black/5 sm:h-10 sm:min-w-[112px] sm:px-6 sm:text-sm"
               >
                 Login
               </Button>

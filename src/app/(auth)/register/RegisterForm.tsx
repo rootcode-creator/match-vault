@@ -151,7 +151,7 @@ export default function RegisterForm() {
                   <Button
                     onClick={onBack}
                     fullWidth
-                    className="h-10 rounded-lg bg-slate-300 border border-slate-400 text-slate-950 font-semibold hover:bg-slate-400"
+                    className="h-10 rounded-lg bg-transparent border border-black text-black font-semibold hover:bg-black/5"
                   >
                     Back
                   </Button>
@@ -161,7 +161,7 @@ export default function RegisterForm() {
                   isDisabled={!isValid}
                   fullWidth
                   disableRipple
-                  className="h-10 rounded-lg bg-gradient-to-r from-indigo-600 to-violet-600 text-white font-semibold shadow-md hover:shadow-lg active:translate-y-px"
+                  className="h-10 rounded-lg bg-black text-white font-semibold shadow-md hover:bg-zinc-800 hover:shadow-lg active:translate-y-px"
                   type="submit"
                 >
                   {activeStep ===

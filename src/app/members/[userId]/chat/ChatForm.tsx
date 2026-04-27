@@ -61,7 +61,7 @@ export default function ChatForm() {
             inputWrapper:
               "h-12 rounded-xl border border-default-200 bg-default-100 px-3 shadow-none data-[hover=true]:bg-default-100 group-data-[focus=true]:border-default-300",
             input:
-              "text-sm text-default-700 placeholder:text-default-500",
+              "border-0 bg-transparent text-sm text-default-700 placeholder:text-default-500 outline-none ring-0 focus:outline-none focus:ring-0",
             innerWrapper: "gap-2",
           }}
           endContent={
@@ -69,9 +69,9 @@ export default function ChatForm() {
               type="submit"
               aria-label="Send message"
               disabled={!isValid || isSubmitting}
-              className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-default-200 text-default-700 transition hover:bg-default-300 disabled:bg-default-200 disabled:text-default-400"
+              className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-black text-white transition hover:bg-zinc-800 disabled:bg-default-300 disabled:text-default-500"
             >
-              <HiPaperAirplane size={14} />
+              <HiPaperAirplane size={15} className="-rotate-12" />
             </button>
           }
           {...register("text")}
