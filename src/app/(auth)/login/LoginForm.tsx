@@ -84,11 +84,11 @@ export default function LoginForm() {
     "text-base placeholder:text-gray-400 outline-none focus:outline-none focus-visible:outline-none focus:ring-0";
 
   return (
-    <Card className="relative w-full max-w-md mx-auto py-6 px-6 rounded-2xl bg-white/95 backdrop-blur
+    <Card className="relative w-full max-w-[30rem] mx-auto mb-8 pt-4 pb-8 px-6 rounded-2xl bg-white/95 backdrop-blur
       ring-1 ring-indigo-100 border border-white/60
       shadow-[0_18px_50px_-12px_rgba(79,70,229,0.35),0_25px_55px_-25px_rgba(0,0,0,0.3)]">
-      <CardHeader className="flex flex-col items-center justify-center mb-4">
-        <div className="flex flex-col gap-2 items-center text-default">
+      <CardHeader className="flex flex-col items-center justify-center mb-2">
+        <div className="flex flex-col gap-1.5 items-center text-default">
           <div className="flex flex-row items-center gap-3">
             <GiPadlock size={30} />
             <h1 className="text-3xl font-semibold">Login</h1>
@@ -99,7 +99,7 @@ export default function LoginForm() {
 
       <CardBody>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="space-y-5">
+          <div className="space-y-3.5">
             {/* Email */}
             <div className="w-full max-w-lg mx-auto">
               <label
@@ -198,11 +198,17 @@ export default function LoginForm() {
 
               <SocialLogin />
 
-             <div className="mt-4 flex justify-center hover:underline text-sm">
-              <Link href="/forgot-password">
-                Forgot password?
-              </Link>
-            </div>
+              <div className="mt-3 flex items-center justify-between gap-14 px-3 text-sm text-default-700">
+                <Link href="/forgot-password" className="text-sky-600 hover:underline">
+                  Forgot password?
+                </Link>
+                <div>
+                  New User?{" "}
+                  <Link href="/register" className="font-medium text-sky-600 hover:underline">
+                    Sign Up
+                  </Link>
+                </div>
+              </div>
 
             </div>
           </div>

@@ -3,7 +3,7 @@ import LoginFormClient from "./LoginFormClient";
 
 export default function Login() {
   return (
-    <div className="flex items-center justify-center h-[calc(100dvh-80px)] px-4">
+    <div className="flex h-[calc(100dvh-80px)] items-center justify-center overflow-hidden px-4 sm:px-6">
       <LoginFormClient />
     </div>
   );

@@ -25,6 +25,7 @@ import ProfileDetailsForm from "./ProfileDetailsForm";
 import { registerUser } from "@/app/actions/authActions";
 import { useRouter } from "next/navigation";
 import type { ZodIssue } from "zod";
+import Link from "next/link";
 
 const stepSchemas = [registerSchema, profileSchema]
 
@@ -114,7 +115,7 @@ export default function RegisterForm() {
 
   return (
     <Card
-      className="relative w-full max-w-md mx-auto py-7 px-6 rounded-2xl bg-white/95 backdrop-blur
+      className="relative w-full max-w-[30rem] mx-auto py-7 px-6 rounded-2xl bg-white/95 backdrop-blur
       ring-1 ring-indigo-100 border border-white/60
       shadow-[0_18px_50px_-12px_rgba(79,70,229,0.35),0_25px_55px_-25px_rgba(0,0,0,0.3)]"
     >
@@ -169,6 +170,13 @@ export default function RegisterForm() {
                     ? "Submit"
                     : "Continue"}
                 </Button>
+              </div>
+
+              <div className="mt-3 flex justify-center text-sm text-default-700">
+                Already have an account?{" "}
+                <Link href="/login" className="ml-1 font-medium text-sky-600 hover:underline">
+                  Login
+                </Link>
               </div>
             </div>
           </form>
