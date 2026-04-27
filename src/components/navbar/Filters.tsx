@@ -94,7 +94,7 @@ return (
                     aria-label='Filter: with photo'
                     classNames={{
                         base: "rounded-full",
-                        wrapper: "w-14 h-7 p-[3px] rounded-full overflow-hidden bg-white border-2 border-default-300 before:rounded-full after:rounded-full group-data-[selected=true]:bg-indigo-600 group-data-[selected=true]:border-indigo-600",
+                        wrapper: "w-14 h-7 p-[3px] rounded-full overflow-hidden bg-white border-2 border-default-300 before:rounded-full after:rounded-full group-data-[selected=true]:bg-black group-data-[selected=true]:border-black",
                         thumb: "!w-5 !h-5 aspect-square shrink-0 rounded-full bg-white shadow-sm group-data-[selected=true]:!ms-[1.875rem] group-data-[pressed=true]:!w-5 group-data-[pressed=true]:!h-5",
                         thumbIcon: "rounded-full",
                     }}
