@@ -89,12 +89,14 @@ useEffect(() => {
 
 
 return (
-    <div className="flex flex-col gap-3 overflow-y-auto overflow-x-hidden max-h-[70vh] pr-2">
+    <div className="max-h-[62vh] overflow-y-auto overflow-x-hidden rounded-[24px] border border-[#d6e5eb] bg-[linear-gradient(180deg,#fbfefe_0%,#f1f7fb_100%)] px-3 py-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.85)] sm:max-h-[66vh] sm:px-4">
 
         {messages.length === 0 ? (
-            "No messages yet"
+            <div className="flex min-h-[36vh] items-center justify-center text-sm font-medium text-[#67808f]">
+                No messages yet
+            </div>
         ) : (
-            <>
+            <div className="flex flex-col gap-3 sm:gap-4">
                 {messages.map((message) => (
                     <MessageBox
                         key={message.id}
@@ -102,7 +104,7 @@ return (
                         currentUserId={currentUserId}
                     />
                 ))}
-            </>
+            </div>
         )}
     </div>
 );
