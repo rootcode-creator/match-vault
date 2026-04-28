@@ -60,8 +60,6 @@ export const StableVideoGrid: React.FC<StableVideoGridProps> = ({
           <ParticipantView
             participant={participant}
             ParticipantViewUI={ParticipantViewUI}
-            muteAudio={false}
-            disableVideo={false}
           />
         </div>
       ))}
