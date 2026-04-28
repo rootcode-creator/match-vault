@@ -122,3 +122,5 @@ type GetMemberParams = {
     pageNumber?:string;
     pageSize?:string;
 }
+
+declare module "@stream-io/video-react-sdk/dist/css/styles.css";
