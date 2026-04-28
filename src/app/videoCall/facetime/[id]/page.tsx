@@ -33,15 +33,20 @@ export default function FaceTimePage() {
 			});
 
 			// The SDK's JoinCallData type doesn't accept an `audio` option.
-			// Toggle microphone after joining if the call object exposes a microphone API.
+			// Toggle microphone and camera after joining if the call object exposes those APIs.
 			try {
 				const c: any = call;
 				if (c.microphone && typeof c.microphone.enable === "function") {
 					if (microphoneEnabled) await c.microphone.enable();
 					else await c.microphone.disable();
 				}
+
+				if (c.camera && typeof c.camera.enable === "function") {
+					if (cameraEnabled) await c.camera.enable();
+					else await c.camera.disable();
+				}
 			} catch (err) {
-				console.warn("Microphone toggle not available on call object", err);
+				console.warn("Microphone/camera toggle not available on call object", err);
 			}
 
 			setConfirmJoin(true);
@@ -118,8 +123,10 @@ const MeetingRoom = () => {
 	return (
 		<section className='relative min-h-screen w-full overflow-hidden pt-4'>
 			<div className='relative flex size-full items-center justify-center'>
-				<div className='flex size-full max-w-[1000px] items-center'>
-					<CallLayout />
+				<div className='flex size-full w-full h-[calc(100vh-96px)] items-center'>
+					<div className='flex-1 h-full'>
+						<CallLayout />
+					</div>
 				</div>
 				<div className='fixed bottom-0 flex w-full items-center justify-center gap-5'>
 					<CallControls onLeave={handleLeave} />
