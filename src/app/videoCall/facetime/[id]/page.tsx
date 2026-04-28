@@ -3,11 +3,11 @@ import { useGetCallById } from "../../facetime-hooks/useGetCallById";
 import {
 	StreamCall,
 	StreamTheme,
-	PaginatedGridLayout,
 	CallControls,
 	Call,
 	useCallStateHooks
 } from "@stream-io/video-react-sdk";
+import StableVideoGrid from "../components/StableVideoGrid";
 import ParticipantPinOverlay from "../components/ParticipantPinOverlay";
 import { useQualityFallback } from "../hooks/useQualityFallback";
 import { useParams } from "next/navigation";
@@ -24,6 +24,27 @@ const isAlreadyLeftError = (error: unknown) => {
 	const message = error instanceof Error ? error.message : String(error ?? "");
 	return message.toLowerCase().includes("already been left");
 };
+
+// Suppress noisy but non-fatal Stream/Dynascale errors in console
+if (typeof window !== "undefined") {
+	const originalError = console.error;
+	console.error = function (...args: unknown[]) {
+		const message = String(args[0] ?? "");
+		const isDynascaleAbort =
+			message.includes("[DynascaleManager]") &&
+			message.includes("Failed to play stream");
+		const isSfuStatsReport =
+			message.includes("[SfuStatsReporter]") &&
+			message.includes("Failed to flush");
+
+		if (isDynascaleAbort || isSfuStatsReport) {
+			logCallLifecycle("stream:recovery:ignore-error", message);
+			return;
+		}
+
+		return originalError.apply(console, args as Parameters<typeof originalError>);
+	};
+}
 
 export default function FaceTimePage() {
 	const { id } = useParams<{ id: string }>();
@@ -191,15 +212,14 @@ const MeetingRoom = ({ call, onLeaveCall }: { call: Call; onLeaveCall: () => Pro
 	};
 
 	return (
-		<section className={`facetime-room relative flex h-[100dvh] w-full flex-col overflow-hidden bg-slate-950/95 ${hasMultipleParticipants ? "facetime-room--multi" : ""}`}>
+		<section className={`facetime-room relative flex h-[100dvh] w-full flex-col overflow-hidden bg-gradient-to-br from-slate-50 to-slate-100 ${hasMultipleParticipants ? "facetime-room--multi" : ""}`}>
 			<div className={`flex-1 min-h-0 w-full pb-24 pt-2 sm:pt-3 ${hasMultipleParticipants ? "px-0" : "px-4 sm:px-6"}`}>
-				<div className={`h-full w-full ${hasMultipleParticipants ? "bg-slate-950 p-0" : "rounded-2xl bg-slate-900/80 p-2 shadow-2xl shadow-black/40"}`}>
-					{/* Keep a stable tile grid to avoid active-speaker auto switching */}
-					<PaginatedGridLayout ParticipantViewUI={ParticipantPinOverlay} />
+				<div className={`h-full w-full ${hasMultipleParticipants ? "bg-slate-100 p-0" : "rounded-2xl bg-white/90 p-2 shadow-xl shadow-slate-200/50 border border-slate-200"}`}>
+					<StableVideoGrid ParticipantViewUI={ParticipantPinOverlay} />
 				</div>
 			</div>
-			<div className='pointer-events-none absolute bottom-6 left-0 right-0 flex w-full items-center justify-center'>
-				<div className='pointer-events-auto rounded-full bg-slate-900/90 px-4 py-2 shadow-xl shadow-black/40'>
+			<div className='pointer-events-none absolute bottom-8 left-0 right-0 z-50 flex w-full items-center justify-center'>
+				<div className='pointer-events-auto rounded-full bg-white/95 px-5 py-3 shadow-2xl shadow-slate-400/30 border border-slate-200 backdrop-blur-md'>
 					<CallControls onLeave={handleLeave} />
 				</div>
 			</div>
