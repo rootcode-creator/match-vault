@@ -4,14 +4,11 @@ import {
 	StreamCall,
 	StreamTheme,
 	PaginatedGridLayout,
-	SpeakerLayout,
 	CallControls
 } from "@stream-io/video-react-sdk";
 import { useParams } from "next/navigation";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-
-type CallLayoutType = "grid" | "speaker-left" | "speaker-right";
 
 export default function FaceTimePage() {
 	const { id } = useParams<{ id: string }>();
@@ -102,22 +99,10 @@ export default function FaceTimePage() {
 }
 
 const MeetingRoom = () => {
-	const [layout, setLayout] = useState<CallLayoutType>("grid");
 	const router = useRouter();
 
 	const handleLeave = () => {
 		confirm("Are you sure you want to leave the call?") && router.push("/");
-	};
-
-	const CallLayout = () => {
-		switch (layout) {
-			case "grid":
-				return <PaginatedGridLayout />;
-			case "speaker-right":
-				return <SpeakerLayout participantsBarPosition='left' />;
-			default:
-				return <SpeakerLayout participantsBarPosition='right' />;
-		}
 	};
 
 	return (
@@ -125,7 +110,8 @@ const MeetingRoom = () => {
 			<div className='relative flex size-full items-center justify-center'>
 				<div className='flex size-full w-full h-[calc(100vh-96px)] items-center'>
 					<div className='flex-1 h-full'>
-						<CallLayout />
+						{/* Keep a stable tile grid to avoid active-speaker auto switching */}
+						<PaginatedGridLayout />
 					</div>
 				</div>
 				<div className='fixed bottom-0 flex w-full items-center justify-center gap-5'>
