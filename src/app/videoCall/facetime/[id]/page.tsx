@@ -11,13 +11,19 @@ import {
 import ParticipantPinOverlay from "../components/ParticipantPinOverlay";
 import { useQualityFallback } from "../hooks/useQualityFallback";
 import { useParams } from "next/navigation";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
+
 const logCallLifecycle = (...args: unknown[]) => {
 	if (process.env.NODE_ENV !== "production") {
 		console.info("[FaceTime lifecycle]", ...args);
 	}
 };
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+
+const isAlreadyLeftError = (error: unknown) => {
+	const message = error instanceof Error ? error.message : String(error ?? "");
+	return message.toLowerCase().includes("already been left");
+};
 
 export default function FaceTimePage() {
 	const { id } = useParams<{ id: string }>();
@@ -26,19 +32,51 @@ export default function FaceTimePage() {
 	const [isJoining, setIsJoining] = useState<boolean>(false);
 	const [cameraEnabled, setCameraEnabled] = useState<boolean>(true);
 	const [microphoneEnabled, setMicrophoneEnabled] = useState<boolean>(true);
+	const leaveInFlightRef = useRef<Promise<void> | null>(null);
 	const router = useRouter();
+
+	const leaveCallSafely = useCallback(async (source: "manual" | "cleanup") => {
+		if (!call || typeof call.leave !== "function") return;
+
+		if (leaveInFlightRef.current) {
+			await leaveInFlightRef.current;
+			return;
+		}
+
+		const callingState = (call as any)?.state?.callingState;
+		if (callingState === "left" || callingState === "idle") {
+			logCallLifecycle(`leave:${source}:already-left`, { callId: call.id, callingState });
+			return;
+		}
+
+		const leavePromise = (async () => {
+			logCallLifecycle(`leave:${source}:start`, { callId: call.id, callingState });
+			try {
+				await call.leave();
+				logCallLifecycle(`leave:${source}:success`, { callId: call.id });
+			} catch (error) {
+				if (isAlreadyLeftError(error)) {
+					logCallLifecycle(`leave:${source}:already-left`, { callId: call.id });
+					return;
+				}
+
+				logCallLifecycle(`leave:${source}:error`, { callId: call.id, error });
+				console.warn("Error leaving call", error);
+			} finally {
+				leaveInFlightRef.current = null;
+			}
+		})();
+
+		leaveInFlightRef.current = leavePromise;
+		await leavePromise;
+	}, [call]);
 
 	useEffect(() => {
 		return () => {
 			if (!call || !confirmJoin) return;
-			logCallLifecycle("leave:cleanup:start", { callId: call.id });
-
-			void call.leave().catch((error) => {
-				logCallLifecycle("leave:cleanup:error", { callId: call.id, error });
-				console.warn("Error leaving call during cleanup", error);
-			});
+			void leaveCallSafely("cleanup");
 		};
-	}, [call, confirmJoin]);
+	}, [call, confirmJoin, leaveCallSafely]);
 
 	const handleJoin = async () => {
 		if (!call || isJoining) return;
@@ -97,7 +135,7 @@ export default function FaceTimePage() {
 		<main className='min-h-screen w-full items-center justify-center'>
 			<StreamCall call={call}>
 			<StreamTheme>
-				{confirmJoin ? <MeetingRoom call={call} /> : (
+				{confirmJoin ? <MeetingRoom call={call} onLeaveCall={() => leaveCallSafely("manual")} /> : (
 					<div className='flex flex-col items-center justify-center gap-5'>
 							<h1 className='text-3xl font-bold'>Join Call</h1>
 							<p className='text-lg'>Are you sure you want to join this call?</p>
@@ -132,7 +170,7 @@ export default function FaceTimePage() {
 
 }
 
-const MeetingRoom = ({ call }: { call: Call }) => {
+const MeetingRoom = ({ call, onLeaveCall }: { call: Call; onLeaveCall: () => Promise<void> }) => {
 	const router = useRouter();
 	const { useParticipants } = useCallStateHooks();
 	const participants = useParticipants();
@@ -142,15 +180,10 @@ const MeetingRoom = ({ call }: { call: Call }) => {
 
 	const handleLeave = async () => {
 		if (!confirm("Are you sure you want to leave the call?")) return;
-		logCallLifecycle("leave:manual:start", { callId: call.id });
 
 		try {
-			if (call && typeof call.leave === "function") {
-				await call.leave();
-			}
-			logCallLifecycle("leave:manual:success", { callId: call.id });
+			await onLeaveCall();
 		} catch (error) {
-			logCallLifecycle("leave:manual:error", { callId: call.id, error });
 			console.warn("Error leaving call", error);
 		} finally {
 			router.push("/");

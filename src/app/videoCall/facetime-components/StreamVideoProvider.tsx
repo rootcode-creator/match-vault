@@ -4,6 +4,11 @@ import { useState, ReactNode, useEffect } from "react";
 
 const apiKey = process.env.NEXT_PUBLIC_STREAM_API_KEY!;
 
+const isAlreadyLeftError = (error: unknown) => {
+    const message = error instanceof Error ? error.message : String(error ?? "");
+    return message.toLowerCase().includes("already been left");
+};
+
 export const StreamVideoProvider = ({ children }: { children: ReactNode }) => {
     const [videoClient, setVideoClient] = useState<StreamVideoClient>();
     const [isLoading, setIsLoading] = useState(true);
@@ -25,6 +30,7 @@ export const StreamVideoProvider = ({ children }: { children: ReactNode }) => {
                         try {
                             await call.leave();
                         } catch (error) {
+                            if (isAlreadyLeftError(error)) return;
                             console.warn("Error leaving call during provider cleanup", error);
                         }
                     })

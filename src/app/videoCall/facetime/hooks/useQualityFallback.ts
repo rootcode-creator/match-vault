@@ -2,7 +2,7 @@
 import { useEffect, useRef } from "react";
 import { useCall } from "@stream-io/video-react-bindings";
 
-const LOW_RESOLUTION = { width: 320, height: 180 };
+const LOW_RESOLUTION = { width: 480, height: 270 };
 const CALLING_STATE_JOINED = "joined";
 const CONNECTION_QUALITY = {
   UNSPECIFIED: 0,
@@ -11,12 +11,12 @@ const CONNECTION_QUALITY = {
   EXCELLENT: 3,
 } as const;
 
-// Quality fallback: when a participant reports POOR connectionQuality,
-// request a low incoming resolution for that participant. Only update when
-// the quality actually changes and the call is JOINED.
+// Quality fallback: only apply resolution downgrade on SUSTAINED poor quality
+// to avoid frequent video interruptions from constant resolution switching.
 export const useQualityFallback = () => {
   const call = useCall() as any;
-  const lastQualityBySession = useRef<Map<string, number>>(new Map());
+  const lastQualityBySession = useRef<Map<string, { quality: number; timestamp: number }>>(new Map());
+  const POOR_QUALITY_THRESHOLD_MS = 2000; // Wait 2s of sustained poor quality before downgrading
 
   useEffect(() => {
     if (!call || typeof call.on !== "function") return;
@@ -26,19 +26,30 @@ export const useQualityFallback = () => {
       if (call?.state?.callingState !== CALLING_STATE_JOINED) return;
 
       const updates = e?.connectionQualityUpdates || [];
+      const now = Date.now();
+
       for (const u of updates) {
         const sessionId = u?.sessionId;
         const quality = u?.connectionQuality;
         if (!sessionId || quality == null) continue;
 
-        const last = lastQualityBySession.current.get(sessionId);
-        if (last === quality) continue;
-        lastQualityBySession.current.set(sessionId, quality);
+        const lastEntry = lastQualityBySession.current.get(sessionId);
+        const qualityChanged = !lastEntry || lastEntry.quality !== quality;
+
+        if (qualityChanged) {
+          lastQualityBySession.current.set(sessionId, { quality, timestamp: now });
+          continue; // Reset timer on quality change
+        }
+
+        // Only apply resolution change if quality has been consistently poor for threshold
+        const timeSincePoor = now - (lastEntry?.timestamp || 0);
+        const shouldDowngrade = quality === CONNECTION_QUALITY.POOR && timeSincePoor > POOR_QUALITY_THRESHOLD_MS;
+        const shouldUpgrade = quality !== CONNECTION_QUALITY.POOR && lastEntry?.quality === CONNECTION_QUALITY.POOR;
 
         try {
-          if (quality === CONNECTION_QUALITY.POOR) {
+          if (shouldDowngrade) {
             call.setPreferredIncomingVideoResolution(LOW_RESOLUTION, [sessionId]);
-          } else {
+          } else if (shouldUpgrade) {
             call.setPreferredIncomingVideoResolution(undefined, [sessionId]);
           }
         } catch (err) {

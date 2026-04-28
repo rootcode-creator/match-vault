@@ -24,7 +24,7 @@ export const ParticipantPinOverlay = () => {
   };
 
   return (
-    <div className="relative">
+    <div className="relative h-full w-full">
       <DefaultParticipantViewUI />
       <button
         onClick={togglePin}
