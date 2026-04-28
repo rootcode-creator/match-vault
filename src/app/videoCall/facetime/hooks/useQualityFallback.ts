@@ -1,23 +1,29 @@
 "use client";
 import { useEffect, useRef } from "react";
 import { useCall } from "@stream-io/video-react-bindings";
-import { CallingState, ConnectionQuality } from "@stream-io/video-client";
 
 const LOW_RESOLUTION = { width: 320, height: 180 };
+const CALLING_STATE_JOINED = "joined";
+const CONNECTION_QUALITY = {
+  UNSPECIFIED: 0,
+  POOR: 1,
+  GOOD: 2,
+  EXCELLENT: 3,
+} as const;
 
 // Quality fallback: when a participant reports POOR connectionQuality,
 // request a low incoming resolution for that participant. Only update when
 // the quality actually changes and the call is JOINED.
 export const useQualityFallback = () => {
   const call = useCall() as any;
-  const lastQualityBySession = useRef<Map<string, ConnectionQuality>>(new Map());
+  const lastQualityBySession = useRef<Map<string, number>>(new Map());
 
   useEffect(() => {
     if (!call || typeof call.on !== "function") return;
 
     const handler = (e: any) => {
       if (typeof document !== "undefined" && document.hidden) return;
-      if (call?.state?.callingState !== CallingState.JOINED) return;
+      if (call?.state?.callingState !== CALLING_STATE_JOINED) return;
 
       const updates = e?.connectionQualityUpdates || [];
       for (const u of updates) {
@@ -30,7 +36,7 @@ export const useQualityFallback = () => {
         lastQualityBySession.current.set(sessionId, quality);
 
         try {
-          if (quality === ConnectionQuality.POOR) {
+          if (quality === CONNECTION_QUALITY.POOR) {
             call.setPreferredIncomingVideoResolution(LOW_RESOLUTION, [sessionId]);
           } else {
             call.setPreferredIncomingVideoResolution(undefined, [sessionId]);
