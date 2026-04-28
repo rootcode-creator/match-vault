@@ -30,8 +30,20 @@ export default function FaceTimePage() {
 			await call.join({
 				create: false,
 				video: cameraEnabled,
-				audio: microphoneEnabled,
 			});
+
+			// The SDK's JoinCallData type doesn't accept an `audio` option.
+			// Toggle microphone after joining if the call object exposes a microphone API.
+			try {
+				const c: any = call;
+				if (c.microphone && typeof c.microphone.enable === "function") {
+					if (microphoneEnabled) await c.microphone.enable();
+					else await c.microphone.disable();
+				}
+			} catch (err) {
+				console.warn("Microphone toggle not available on call object", err);
+			}
+
 			setConfirmJoin(true);
 		} catch (error) {
 			console.error(error);
