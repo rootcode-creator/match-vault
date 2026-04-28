@@ -6,6 +6,8 @@ import {
 	PaginatedGridLayout,
 	CallControls
 } from "@stream-io/video-react-sdk";
+import ParticipantPinOverlay from "../components/ParticipantPinOverlay";
+import { useQualityFallback } from "../hooks/useQualityFallback";
 import { useParams } from "next/navigation";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -111,6 +113,8 @@ export default function FaceTimePage() {
 const MeetingRoom = () => {
 	const router = useRouter();
 
+	useQualityFallback();
+
 	const handleLeave = () => {
 		confirm("Are you sure you want to leave the call?") && router.push("/");
 	};
@@ -121,7 +125,7 @@ const MeetingRoom = () => {
 				<div className='flex size-full w-full h-[calc(100vh-96px)] items-center'>
 					<div className='flex-1 h-full'>
 						{/* Keep a stable tile grid to avoid active-speaker auto switching */}
-						<PaginatedGridLayout />
+						<PaginatedGridLayout ParticipantViewUI={ParticipantPinOverlay} />
 					</div>
 				</div>
 				<div className='fixed bottom-0 flex w-full items-center justify-center gap-5'>
