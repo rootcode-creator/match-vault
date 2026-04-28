@@ -27,11 +27,13 @@ export async function GET() {
 
   const client = new StreamClient(apiKey, apiSecret);
 
-  await client.upsertUser({
-    id: user.id,
-    name: user.name ?? undefined,
-    image: user.image ?? undefined,
-  });
+  await client.upsertUsers([
+    {
+      id: user.id,
+      name: user.name ?? undefined,
+      image: user.image ?? undefined,
+    },
+  ]);
 
   const token = client.generateUserToken({ user_id: user.id });
 
