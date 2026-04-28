@@ -172,7 +172,7 @@ const MeetingLink = ({ facetimeLink }: { facetimeLink: string }) => {
 	const host = typeof window !== "undefined" && window.location?.origin
 		? window.location.origin.replace(/\/$/, "")
 		: envHost;
-	const basePath = host.endsWith("/facetime") ? host : `${host}/facetime`;
+	const basePath = host.endsWith("/videoCall/facetime") ? host : `${host}/videoCall/facetime`;
 	const meetingUrl = `${basePath}/${facetimeLink}`;
 
 	return (

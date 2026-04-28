@@ -79,7 +79,7 @@ const MeetingForm = () => {
 		}
 
 		if (!callId) return;
-		router.push(`/facetime/${callId}`);
+		router.push(`/videoCall/facetime/${callId}`);
 	};
 
 	return (

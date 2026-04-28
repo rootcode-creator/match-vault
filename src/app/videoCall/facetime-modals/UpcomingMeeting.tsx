@@ -102,7 +102,7 @@ const MeetingList = () => {
                     </div>
                     
 						<Link className='bg-green-500 text-sm px-4 py-2 hover:bg-green-700 text-white rounded-md shadow-sm'
-						href={`/facetime/${call.id}`}
+						href={`/videoCall/facetime/${call.id}`}
 						>
                        Start now
                     </Link>
