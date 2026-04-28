@@ -2,9 +2,10 @@
 import LikeButton from "@/components/LikeButton";
 import PresenceDot from "@/components/PresenceDot";
 import { calculateAge } from "@/lib/util";
-import { Card, CardBody, CardFooter, Image } from "@heroui/react";
+import { Card, CardBody, CardFooter } from "@heroui/react";
 
 import type { Member } from "@prisma/client";
+import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
@@ -34,16 +35,15 @@ export default function MemberCard({
                 <Link
                     href={`/members/${member.userId}`}
                     aria-label={`View ${member.name}'s profile`}
-                    className="block rounded-2xl overflow-hidden transform-gpu transition-transform duration-200 hover:scale-[1.01] active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+                    className="relative block aspect-[4/3] overflow-hidden rounded-2xl transform-gpu transition-transform duration-200 hover:scale-[1.01] active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
                 >
                     <Image
                         draggable={false}
                         alt={`${member.name}'s photo`}
                         src={member.image || "/images/user.png"}
-                        classNames={{
-                            wrapper: "w-full aspect-[4/3] overflow-hidden",
-                            img: "w-full h-full object-cover rounded-2xl",
-                        }}
+                        fill
+                        sizes="(min-width: 1536px) 16vw, (min-width: 1280px) 20vw, (min-width: 1024px) 30vw, (min-width: 640px) 45vw, 100vw"
+                        className="object-cover"
                     />
                 </Link>
 
