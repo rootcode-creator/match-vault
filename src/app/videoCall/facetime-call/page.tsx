@@ -16,40 +16,49 @@ export default function Dashboard() {
 
     return (
         <>
-            <button
-                className=' top-5 right-5 text-sm fixed bg-green-500 px-2 w-[150px] hover:bg-green-600 py-3 flex flex-col items-center text-white rounded-md shadow-sm cursor-pointer z-10'
-                onClick={() => setJoinMeeting(true)}
-            >
-                <FaVideo className='mb-[3px] text-white' />
-                Join FaceTime
-            </button>
-
-            <main className='w-full h-screen flex flex-col items-center justify-center'>
-                <h1 className='font-bold text-2xl text-center'>FaceTime</h1>
-                <div className='flex flex-col'>
+            <main className='min-h-screen w-full bg-gradient-to-b from-slate-50 via-white to-emerald-50 px-4 py-10 sm:px-8'>
+                <div className='mx-auto flex w-full max-w-4xl flex-col items-center justify-center gap-6 rounded-2xl border border-emerald-100 bg-white/80 p-8 text-center shadow-xl shadow-emerald-100/40 backdrop-blur sm:p-12'>
+                    <div className='flex items-center gap-3 rounded-full bg-emerald-50 px-4 py-1 text-emerald-700'>
+                        <span className='text-xs font-semibold uppercase tracking-[0.2em]'>Live</span>
+                        <span className='text-xs'>Instant video chat</span>
+                    </div>
+                    <div className='space-y-2'>
+                        <h1 className='text-3xl font-bold text-slate-900 sm:text-4xl'>FaceTime</h1>
+                        <p className='text-sm text-slate-500 sm:text-base'>Create a link, start a call now, or hop into an invite.</p>
+                    </div>
                     <button
-                        className='text-green-500 underline text-sm text-center cursor-pointer'
+                        className='text-emerald-700 underline-offset-4 hover:underline text-sm'
                         onClick={() => setShowUpcomingMeetings(true)}
                     >
                         Upcoming FaceTime
                     </button>
-                </div>
 
-                <div className='flex items-center justify-center space-x-4 mt-6'>
-                    <button
-                        className='bg-gray-500 px-4 w-[200px] py-3 flex flex-col items-center hover:bg-gray-600 text-white rounded-md shadow-sm'
-                        onClick={() => setShowCreateLink(true)}
-                    >
-                        <FaLink className='mb-[3px] text-gray-300' />
-                        Create link
-                    </button>
-                    <button
-                        className='bg-green-500 px-4 w-[200px] hover:bg-green-600 py-3 flex flex-col items-center text-white rounded-md shadow-sm'
-                        onClick={() => setStartInstantMeeting(true)}
-                    >
-                        <FaVideo className='mb-[3px] text-white' />
-                        New FaceTime
-                    </button>
+                    <div className='grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3'>
+                        <button
+                            className='group flex min-h-[96px] w-full flex-col items-center justify-center rounded-xl border border-slate-200 bg-white px-4 py-4 text-slate-700 shadow-sm transition hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-md'
+                            onClick={() => setShowCreateLink(true)}
+                        >
+                            <FaLink className='mb-2 text-slate-500 transition group-hover:text-slate-700' />
+                            <span className='text-sm font-semibold'>Create link</span>
+                            <span className='text-xs text-slate-400'>Share later</span>
+                        </button>
+                        <button
+                            className='group flex min-h-[96px] w-full flex-col items-center justify-center rounded-xl bg-emerald-500 px-4 py-4 text-white shadow-md transition hover:-translate-y-0.5 hover:bg-emerald-600 hover:shadow-lg'
+                            onClick={() => setStartInstantMeeting(true)}
+                        >
+                            <FaVideo className='mb-2 text-white/90' />
+                            <span className='text-sm font-semibold'>New FaceTime</span>
+                            <span className='text-xs text-emerald-100'>Start now</span>
+                        </button>
+                        <button
+                            className='group flex min-h-[96px] w-full flex-col items-center justify-center rounded-xl bg-emerald-500 px-4 py-4 text-white shadow-md transition hover:-translate-y-0.5 hover:bg-emerald-600 hover:shadow-lg'
+                            onClick={() => setJoinMeeting(true)}
+                        >
+                            <FaVideo className='mb-2 text-white/90' />
+                            <span className='text-sm font-semibold'>Join FaceTime</span>
+                            <span className='text-xs text-emerald-100'>Use a link</span>
+                        </button>
+                    </div>
                 </div>
             </main>
 

@@ -120,15 +120,15 @@ const MeetingRoom = () => {
 	};
 
 	return (
-		<section className='relative min-h-screen w-full overflow-hidden pt-4'>
-			<div className='relative flex size-full items-center justify-center'>
-				<div className='flex size-full w-full h-[calc(100vh-96px)] items-center'>
-					<div className='flex-1 h-full'>
-						{/* Keep a stable tile grid to avoid active-speaker auto switching */}
-						<PaginatedGridLayout ParticipantViewUI={ParticipantPinOverlay} />
-					</div>
+		<section className='relative flex min-h-screen w-full flex-col overflow-hidden bg-slate-950/95'>
+			<div className='flex-1 min-h-0 w-full px-4 pb-24 pt-4 sm:px-6'>
+				<div className='h-full w-full rounded-2xl bg-slate-900/80 p-2 shadow-2xl shadow-black/40'>
+					{/* Keep a stable tile grid to avoid active-speaker auto switching */}
+					<PaginatedGridLayout ParticipantViewUI={ParticipantPinOverlay} />
 				</div>
-				<div className='fixed bottom-0 flex w-full items-center justify-center gap-5'>
+			</div>
+			<div className='pointer-events-none absolute bottom-6 left-0 right-0 flex w-full items-center justify-center'>
+				<div className='pointer-events-auto rounded-full bg-slate-900/90 px-4 py-2 shadow-xl shadow-black/40'>
 					<CallControls onLeave={handleLeave} />
 				</div>
 			</div>
