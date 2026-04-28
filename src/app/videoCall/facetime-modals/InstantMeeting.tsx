@@ -151,7 +151,10 @@ const MeetingForm = ({
 const MeetingLink = ({ facetimeLink }: { facetimeLink: string }) => {
 	const [copied, setCopied] = useState<boolean>(false);
 	const handleCopy = () => setCopied(true);
-	const host = process.env.NEXT_PUBLIC_BASE_URL?.replace(/\/$/, "") ?? "";
+	const envHost = process.env.NEXT_PUBLIC_BASE_URL?.replace(/\/$/, "") ?? "";
+	const host = typeof window !== "undefined" && window.location?.origin
+		? window.location.origin.replace(/\/$/, "")
+		: envHost;
 	const basePath = host.endsWith("/facetime") ? host : `${host}/facetime`;
 	const meetingUrl = `${basePath}/${facetimeLink}`;
 

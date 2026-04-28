@@ -1,47 +1,57 @@
 "use client";
-import { tokenProvider } from "../facetime-actions/stream.actions";
 import { StreamVideo, StreamVideoClient } from "@stream-io/video-react-sdk";
 import { useState, ReactNode, useEffect } from "react";
 
 const apiKey = process.env.NEXT_PUBLIC_STREAM_API_KEY!;
 
 export const StreamVideoProvider = ({ children }: { children: ReactNode }) => {
-    const [guestUserId, setGuestUserId] = useState<string>();
     const [videoClient, setVideoClient] = useState<StreamVideoClient>();
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        const existingGuestId = window.localStorage.getItem("facetime_guest_id");
-        if (existingGuestId) {
-            setGuestUserId(existingGuestId);
-            return;
-        }
+        const setupClient = async () => {
+            try {
+                const response = await fetch("/api/stream/token", {
+                    cache: "no-store",
+                });
 
-        const newGuestId = `guest-${crypto.randomUUID()}`;
-        window.localStorage.setItem("facetime_guest_id", newGuestId);
-        setGuestUserId(newGuestId);
+                if (!response.ok) {
+                    throw new Error("Failed to fetch Stream token");
+                }
+
+                const data: {
+                    token: string;
+                    user: { id: string; name: string | null; image: string | null };
+                } = await response.json();
+
+                const client = new StreamVideoClient({
+                    apiKey,
+                    user: {
+                        id: data.user.id,
+                        name: data.user.name ?? undefined,
+                        image: data.user.image ?? undefined,
+                    },
+                    tokenProvider: async () => data.token,
+                });
+
+                setVideoClient(client);
+            } catch (error) {
+                console.error(error);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        setupClient();
     }, []);
 
     useEffect(() => {
-        if (!guestUserId || !apiKey) return;
-
-        const client = new StreamVideoClient({
-            apiKey,
-            user: {
-                id: guestUserId,
-                name: `Guest ${guestUserId.slice(-6)}`,
-            },
-            tokenProvider: () => tokenProvider(guestUserId),
-        });
-
-        setVideoClient(client);
-
         return () => {
-            client.disconnectUser();
-            setVideoClient(undefined);
+            videoClient?.disconnectUser();
         };
-    }, [guestUserId]);
+    }, [videoClient]);
 
-    if (!videoClient) return null;
+    if (isLoading || !videoClient) return null;
 
     return <StreamVideo client={videoClient}>{children}</StreamVideo>;
 };
