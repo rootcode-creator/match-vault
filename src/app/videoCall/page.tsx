@@ -16,14 +16,6 @@ export default function Dashboard() {
 
     return (
         <>
-            <button
-                className=' top-5 right-5 text-sm fixed bg-green-500 px-2 w-[150px] hover:bg-green-600 py-3 flex flex-col items-center text-white rounded-md shadow-sm cursor-pointer z-10'
-                onClick={() => setJoinMeeting(true)}
-            >
-                <FaVideo className='mb-[3px] text-white' />
-                Join FaceTime
-            </button>
-
             <main className='w-full h-screen flex flex-col items-center justify-center'>
                 <h1 className='font-bold text-2xl text-center'>FaceTime</h1>
                 <div className='flex flex-col'>
@@ -49,6 +41,13 @@ export default function Dashboard() {
                     >
                         <FaVideo className='mb-[3px] text-white' />
                         New FaceTime
+                    </button>
+                    <button
+                        className='bg-green-500 px-4 w-[200px] hover:bg-green-600 py-3 flex flex-col items-center text-white rounded-md shadow-sm'
+                        onClick={() => setJoinMeeting(true)}
+                    >
+                        <FaVideo className='mb-[3px] text-white' />
+                        Join FaceTime
                     </button>
                 </div>
             </main>

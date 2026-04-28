@@ -19,7 +19,7 @@ export default function RootLayout({
         <html lang='en'>
             <body className={inter.className}>
                 <StreamVideoProvider>
-                    <nav className='w-full py-4 md:px-8 px-4 text-center flex items-center justify-end sticky top-0 bg-white '>
+                    <nav className='w-full py-4 md:px-8 px-4 text-center flex items-center justify-end sticky top-0 bg-white border-0'>
                         <span className='text-sm text-gray-500'>Guest mode</span>
                     </nav>
 
