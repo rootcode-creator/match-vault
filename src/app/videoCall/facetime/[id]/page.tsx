@@ -34,13 +34,23 @@ export default function FaceTimePage() {
 			try {
 				const c: any = call;
 				if (c.microphone && typeof c.microphone.enable === "function") {
-					if (microphoneEnabled) await c.microphone.enable();
-					else await c.microphone.disable();
+					try {
+						const isEnabled = !!c.microphone.enabled;
+						if (microphoneEnabled && !isEnabled) await c.microphone.enable();
+						else if (!microphoneEnabled && isEnabled) await c.microphone.disable();
+					} catch (e) {
+						console.warn("Error toggling microphone", e);
+					}
 				}
 
 				if (c.camera && typeof c.camera.enable === "function") {
-					if (cameraEnabled) await c.camera.enable();
-					else await c.camera.disable();
+					try {
+						const isCamEnabled = !!c.camera.enabled;
+						if (cameraEnabled && !isCamEnabled) await c.camera.enable();
+						else if (!cameraEnabled && isCamEnabled) await c.camera.disable();
+					} catch (e) {
+						console.warn("Error toggling camera", e);
+					}
 				}
 			} catch (err) {
 				console.warn("Microphone/camera toggle not available on call object", err);
