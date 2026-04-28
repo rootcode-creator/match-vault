@@ -18,6 +18,8 @@ export default function FaceTimePage() {
 	const { call, isCallLoading } = useGetCallById(id);
 	const [confirmJoin, setConfirmJoin] = useState<boolean>(false);
 	const [isJoining, setIsJoining] = useState<boolean>(false);
+	const [cameraEnabled, setCameraEnabled] = useState<boolean>(true);
+	const [microphoneEnabled, setMicrophoneEnabled] = useState<boolean>(true);
 	const router = useRouter();
 
 	const handleJoin = async () => {
@@ -25,8 +27,11 @@ export default function FaceTimePage() {
 		setIsJoining(true);
 
 		try {
-			await call.join({ create: false, video: false });
-			await call.camera.disable();
+			await call.join({
+				create: false,
+				video: cameraEnabled,
+				audio: microphoneEnabled,
+			});
 			setConfirmJoin(true);
 		} catch (error) {
 			console.error(error);
@@ -48,6 +53,22 @@ export default function FaceTimePage() {
 					<div className='flex flex-col items-center justify-center gap-5'>
 							<h1 className='text-3xl font-bold'>Join Call</h1>
 							<p className='text-lg'>Are you sure you want to join this call?</p>
+							<div className='flex flex-wrap items-center justify-center gap-3'>
+								<button
+									type='button'
+									onClick={() => setCameraEnabled((current) => !current)}
+									className={`rounded-full px-4 py-2 text-sm font-semibold transition ${cameraEnabled ? "bg-green-600 text-white" : "bg-slate-200 text-slate-700"}`}
+								>
+									Camera {cameraEnabled ? "On" : "Off"}
+								</button>
+								<button
+									type='button'
+									onClick={() => setMicrophoneEnabled((current) => !current)}
+									className={`rounded-full px-4 py-2 text-sm font-semibold transition ${microphoneEnabled ? "bg-green-600 text-white" : "bg-slate-200 text-slate-700"}`}
+								>
+									Mic {microphoneEnabled ? "On" : "Off"}
+								</button>
+							</div>
 							<div className='flex gap-5'>
 								<button onClick={handleJoin} disabled={isJoining} className='px-4 py-3 bg-green-600 text-green-50 disabled:opacity-50'>
 									{isJoining ? "Joining..." : "Join"}
