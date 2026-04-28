@@ -9,6 +9,37 @@ export const StreamVideoProvider = ({ children }: { children: ReactNode }) => {
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
+        let isMounted = true;
+        let clientForCleanup: StreamVideoClient | undefined;
+
+        const cleanupClient = async (client: StreamVideoClient) => {
+            try {
+                const unsafeClient = client as any;
+                const possibleCalls = unsafeClient?.state?.calls ?? unsafeClient?.calls ?? [];
+                const calls = Array.isArray(possibleCalls) ? possibleCalls : [];
+
+                await Promise.allSettled(
+                    calls.map(async (call: any) => {
+                        if (!call || typeof call.leave !== "function") return;
+
+                        try {
+                            await call.leave();
+                        } catch (error) {
+                            console.warn("Error leaving call during provider cleanup", error);
+                        }
+                    })
+                );
+            } catch (error) {
+                console.warn("Error while collecting active calls for cleanup", error);
+            } finally {
+                try {
+                    await client.disconnectUser();
+                } catch (error) {
+                    console.warn("Error disconnecting Stream user", error);
+                }
+            }
+        };
+
         const setupClient = async () => {
             try {
                 const response = await fetch("/api/stream/token", {
@@ -34,22 +65,32 @@ export const StreamVideoProvider = ({ children }: { children: ReactNode }) => {
                     tokenProvider: async () => data.token,
                 });
 
+                clientForCleanup = client;
+
+                if (!isMounted) {
+                    await cleanupClient(client);
+                    return;
+                }
+
                 setVideoClient(client);
             } catch (error) {
                 console.error(error);
             } finally {
-                setIsLoading(false);
+                if (isMounted) {
+                    setIsLoading(false);
+                }
             }
         };
 
         setupClient();
-    }, []);
 
-    useEffect(() => {
         return () => {
-            videoClient?.disconnectUser();
+            isMounted = false;
+
+            if (!clientForCleanup) return;
+            void cleanupClient(clientForCleanup);
         };
-    }, [videoClient]);
+    }, []);
 
     if (isLoading || !videoClient) return null;
 

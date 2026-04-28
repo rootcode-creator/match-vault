@@ -4,12 +4,19 @@ import {
 	StreamCall,
 	StreamTheme,
 	PaginatedGridLayout,
-	CallControls
+	CallControls,
+	Call,
+	useCallStateHooks
 } from "@stream-io/video-react-sdk";
 import ParticipantPinOverlay from "../components/ParticipantPinOverlay";
 import { useQualityFallback } from "../hooks/useQualityFallback";
 import { useParams } from "next/navigation";
-import { useState } from "react";
+const logCallLifecycle = (...args: unknown[]) => {
+	if (process.env.NODE_ENV !== "production") {
+		console.info("[FaceTime lifecycle]", ...args);
+	}
+};
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 export default function FaceTimePage() {
@@ -21,9 +28,22 @@ export default function FaceTimePage() {
 	const [microphoneEnabled, setMicrophoneEnabled] = useState<boolean>(true);
 	const router = useRouter();
 
+	useEffect(() => {
+		return () => {
+			if (!call || !confirmJoin) return;
+			logCallLifecycle("leave:cleanup:start", { callId: call.id });
+
+			void call.leave().catch((error) => {
+				logCallLifecycle("leave:cleanup:error", { callId: call.id, error });
+				console.warn("Error leaving call during cleanup", error);
+			});
+		};
+	}, [call, confirmJoin]);
+
 	const handleJoin = async () => {
 		if (!call || isJoining) return;
 		setIsJoining(true);
+		logCallLifecycle("join:start", { callId: call.id, cameraEnabled, microphoneEnabled });
 
 		try {
 			await call.join({
@@ -58,8 +78,10 @@ export default function FaceTimePage() {
 				console.warn("Microphone/camera toggle not available on call object", err);
 			}
 
+			logCallLifecycle("join:success", { callId: call.id });
 			setConfirmJoin(true);
 		} catch (error) {
+			logCallLifecycle("join:error", { callId: call.id, error });
 			console.error(error);
 			alert("Failed to join call. Please check camera/microphone permissions and try again.");
 		} finally {
@@ -75,7 +97,7 @@ export default function FaceTimePage() {
 		<main className='min-h-screen w-full items-center justify-center'>
 			<StreamCall call={call}>
 			<StreamTheme>
-				{confirmJoin ? <MeetingRoom /> : (
+				{confirmJoin ? <MeetingRoom call={call} /> : (
 					<div className='flex flex-col items-center justify-center gap-5'>
 							<h1 className='text-3xl font-bold'>Join Call</h1>
 							<p className='text-lg'>Are you sure you want to join this call?</p>
@@ -110,19 +132,35 @@ export default function FaceTimePage() {
 
 }
 
-const MeetingRoom = () => {
+const MeetingRoom = ({ call }: { call: Call }) => {
 	const router = useRouter();
+	const { useParticipants } = useCallStateHooks();
+	const participants = useParticipants();
+	const hasMultipleParticipants = participants.length >= 2;
 
 	useQualityFallback();
 
-	const handleLeave = () => {
-		confirm("Are you sure you want to leave the call?") && router.push("/");
+	const handleLeave = async () => {
+		if (!confirm("Are you sure you want to leave the call?")) return;
+		logCallLifecycle("leave:manual:start", { callId: call.id });
+
+		try {
+			if (call && typeof call.leave === "function") {
+				await call.leave();
+			}
+			logCallLifecycle("leave:manual:success", { callId: call.id });
+		} catch (error) {
+			logCallLifecycle("leave:manual:error", { callId: call.id, error });
+			console.warn("Error leaving call", error);
+		} finally {
+			router.push("/");
+		}
 	};
 
 	return (
-		<section className='relative flex min-h-screen w-full flex-col overflow-hidden bg-slate-950/95'>
-			<div className='flex-1 min-h-0 w-full px-4 pb-24 pt-4 sm:px-6'>
-				<div className='h-full w-full rounded-2xl bg-slate-900/80 p-2 shadow-2xl shadow-black/40'>
+		<section className={`facetime-room relative flex h-[100dvh] w-full flex-col overflow-hidden bg-slate-950/95 ${hasMultipleParticipants ? "facetime-room--multi" : ""}`}>
+			<div className={`flex-1 min-h-0 w-full pb-24 pt-2 sm:pt-3 ${hasMultipleParticipants ? "px-0" : "px-4 sm:px-6"}`}>
+				<div className={`h-full w-full ${hasMultipleParticipants ? "bg-slate-950 p-0" : "rounded-2xl bg-slate-900/80 p-2 shadow-2xl shadow-black/40"}`}>
 					{/* Keep a stable tile grid to avoid active-speaker auto switching */}
 					<PaginatedGridLayout ParticipantViewUI={ParticipantPinOverlay} />
 				</div>
