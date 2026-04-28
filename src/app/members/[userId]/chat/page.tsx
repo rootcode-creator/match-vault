@@ -50,7 +50,7 @@ export default async function ChatPage({
             </div>
           </div>
           <Link
-            href="/videoCall/facetime-call"
+            href="/videoCall"
             aria-label="Open video call"
             className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[#c7dce8] bg-white text-[#35576b] shadow-sm transition hover:bg-[#eef6fb] hover:text-[#173042]"
           >
