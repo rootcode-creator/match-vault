@@ -2,13 +2,13 @@
 "use client";
 import { signOutUser } from "@/app/actions/authActions";
 import {
-  Avatar,
   Dropdown,
   DropdownItem,
   DropdownMenu,
   DropdownSection,
   DropdownTrigger,
 } from "@heroui/react";
+import Image from "next/image";
 import { Session } from "next-auth";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
@@ -31,13 +31,15 @@ export default function UserMenu({
 
   if (!isMounted) {
     return (
-      <Avatar
-        className="nav-avatar nav-avatar--shift"
-        color="default"
-        name={userInfo?.name || "user avatar"}
-        size="sm"
-        src={userInfo?.image || "/images/user.png"}
-      />
+      <div className="nav-avatar nav-avatar--shift relative">
+        <Image
+          src={userInfo?.image || "/images/user.png"}
+          alt={userInfo?.name || "user avatar"}
+          width={34}
+          height={34}
+          className="rounded-full"
+        />
+      </div>
     );
   }
 
@@ -45,14 +47,15 @@ export default function UserMenu({
   return (
     <Dropdown placement="bottom-end">
       <DropdownTrigger>
-        <Avatar
-          as="button"
-          className="nav-avatar nav-avatar--shift"
-          color="default"
-          name={userInfo?.name || "user avatar"}
-          size="sm"
-          src={userInfo?.image || "/images/user.png"}
-        />
+        <button className="nav-avatar nav-avatar--shift relative cursor-pointer">
+          <Image
+            src={userInfo?.image || "/images/user.png"}
+            alt={userInfo?.name || "user avatar"}
+            width={34}
+            height={34}
+            className="rounded-full"
+          />
+        </button>
       </DropdownTrigger>
       <DropdownMenu
         variant="flat"

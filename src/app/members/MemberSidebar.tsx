@@ -8,12 +8,12 @@ import {
   CardBody,
   CardFooter,
   Divider,
-  Image,
 } from "@heroui/react";
 import { Member } from "@prisma/client";
 import clsx from "clsx";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import Image from "next/image";
 import React from "react";
 
 type Props = {
@@ -38,16 +38,15 @@ export default function MemberSidebar({
       <div className="relative h-24 bg-gradient-to-r from-indigo-600 via-violet-600 to-slate-700">
         <div className="absolute left-1/2 -bottom-10 -translate-x-1/2">
           <div className="relative rounded-full bg-white p-1 shadow-sm">
-            <Image
-              height={120}
-              width={120}
-              src={member.image || "/images/user.png"}
-              alt="User profile main image"
-              classNames={{
-                wrapper: "rounded-full overflow-hidden",
-                img: "rounded-full aspect-square object-cover",
-              }}
-            />
+            <div className="relative h-[120px] w-[120px] overflow-hidden rounded-full">
+              <Image
+                height={120}
+                width={120}
+                src={member.image || "/images/user.png"}
+                alt="User profile main image"
+                className="h-full w-full object-cover rounded-full"
+              />
+            </div>
 
             <span
               className={clsx(
