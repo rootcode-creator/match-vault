@@ -1,5 +1,5 @@
 "use client";
-import { tokenProvider } from "@/app/facetime-actions/stream.actions";
+import { tokenProvider } from "../facetime-actions/stream.actions";
 import { StreamVideo, StreamVideoClient } from "@stream-io/video-react-sdk";
 import { useState, ReactNode, useEffect } from "react";
 

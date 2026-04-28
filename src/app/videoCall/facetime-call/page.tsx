@@ -1,10 +1,10 @@
 "use client";
 import { useState } from "react";
 import { FaLink, FaVideo } from "react-icons/fa";
-import InstantMeeting from "@/app/facetime-modals/InstantMeeting";
-import UpcomingMeeting from "@/app/facetime-modals/UpcomingMeeting";
-import CreateLink from "@/app/facetime-modals/CreateLink";
-import JoinMeeting from "@/app/facetime-modals/JoinMeeting";
+import InstantMeeting from "../facetime-modals/InstantMeeting";
+import UpcomingMeeting from "../facetime-modals/UpcomingMeeting";
+import CreateLink from "../facetime-modals/CreateLink";
+import JoinMeeting from "../facetime-modals/JoinMeeting";
 
 export default function Dashboard() {
     const [startInstantMeeting, setStartInstantMeeting] =

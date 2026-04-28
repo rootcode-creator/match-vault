@@ -1,5 +1,5 @@
 "use client";
-import { useGetCallById } from "@/app/facetime-hooks/useGetCallById";
+import { useGetCallById } from "../../facetime-hooks/useGetCallById";
 import {
 	StreamCall,
 	StreamTheme,

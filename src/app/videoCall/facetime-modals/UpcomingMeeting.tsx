@@ -7,7 +7,7 @@ import {
 	TransitionChild,
 } from "@headlessui/react";
 import { Fragment } from "react";
-import { useGetCalls } from "@/app/facetime-hooks/useGetCalls";
+import { useGetCalls } from "../facetime-hooks/useGetCalls";
 import { Call } from '@stream-io/video-react-sdk';
 import { formatDateTime } from "../facetime-lib/util";
 import Link from "next/link";
