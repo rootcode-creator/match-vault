@@ -39,12 +39,8 @@ model User {
   accounts      Account[]
   member        Member?
   role          Role     @default(MEMBER)
-
-
-
-
-
   facetimeMeetings FacetimeMeeting[]
+  facetimeMeetingParticipants FacetimeMeetingParticipant[]
 
 }
 
@@ -58,8 +54,22 @@ model FacetimeMeeting {
 
   creatorId   String
   creator     User     @relation(fields: [creatorId], references: [id], onDelete: Cascade)
+  participants FacetimeMeetingParticipant[]
 
   @@index([creatorId, startsAt])
+}
+
+model FacetimeMeetingParticipant {
+  id          String   @id @default(cuid())
+  meetingId   String
+  meeting     FacetimeMeeting @relation(fields: [meetingId], references: [id], onDelete: Cascade)
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  joinedAt    DateTime?
+  createdAt   DateTime @default(now())
+
+  @@unique([meetingId, userId])
+  @@index([userId, meetingId])
 }
 
 model Member {

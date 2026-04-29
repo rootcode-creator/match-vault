@@ -93,38 +93,62 @@ const MeetingList = () => {
     return (
         <>
 			<div className='flex flex-col space-y-4'>
-				{upcomingCalls?.map((call) => (
-					 <div className='bg-gray-100 py-3 px-4 rounded flex items-center justify-between' key={call.id}>
-                    <div className="w-2/3 flex items-center space-x-4 justify-between">
-							<p className='text-sm'>{call.description}</p>
-							<p className='text-xs'>{formatDateTime(new Date(call.startsAt).toLocaleString())}</p>
-                    </div>
+				{upcomingCalls?.map((call: any) => (
+					 <div className='bg-gray-100 py-4 px-4 rounded flex flex-col gap-3' key={call.id}>
+						<div className="space-y-2">
+							<p className='text-sm font-semibold text-gray-800'>{call.description}</p>
+							<div className='flex items-center gap-2'>
+								{call.creatorImage && (
+									<img 
+										src={call.creatorImage} 
+										alt={call.creatorName}
+										className='h-6 w-6 rounded-full object-cover'
+									/>
+								)}
+								<p className='text-xs text-gray-600'>
+									<span className='font-medium'>Scheduled by:</span> {call.creatorName || 'Unknown'}
+								</p>
+							</div>
+							<p className='text-xs text-gray-600'>
+								<span className='font-medium'>Date:</span> {formatDateTime(new Date(call.startsAt).toLocaleString())}
+							</p>
+						</div>
                     
 						<div className="flex items-center gap-2">
-							<button
-								type="button"
-								className='bg-slate-700 text-sm px-4 py-2 hover:bg-slate-800 text-white rounded-md shadow-sm'
-								onClick={async () => {
-									const res = await fetch(`/api/facetime/meetings/${encodeURIComponent(call.callId)}`, {
-										method: "DELETE",
-										credentials: "include",
-									});
-									if (res.ok) {
-										removeUpcomingCall(call.callId);
-										return;
-									}
+							{call.isCreator ? (
+								<>
+									<button
+										type="button"
+										className='bg-slate-700 text-sm px-4 py-2 hover:bg-slate-800 text-white rounded-md shadow-sm'
+										onClick={async () => {
+											const res = await fetch(`/api/facetime/meetings/${encodeURIComponent(call.callId)}`, {
+												method: "DELETE",
+												credentials: "include",
+											});
+											if (res.ok) {
+												removeUpcomingCall(call.callId);
+												return;
+											}
 
-									const payload = await res.json().catch(() => ({} as any));
-									alert(payload?.error ?? "Failed to complete meeting");
-								}}
-							>
-								Complete
-							</button>
-							<Link className='bg-green-500 text-sm px-4 py-2 hover:bg-green-700 text-white rounded-md shadow-sm'
-							href={`/videoCall/facetime/${call.callId}`}
-							>
-								Start now
-							</Link>
+											const payload = await res.json().catch(() => ({} as any));
+											alert(payload?.error ?? "Failed to complete meeting");
+										}}
+									>
+										Complete
+									</button>
+									<Link className='bg-green-500 text-sm px-4 py-2 hover:bg-green-700 text-white rounded-md shadow-sm'
+									href={`/videoCall/facetime/${call.callId}`}
+									>
+										Start now
+									</Link>
+								</>
+							) : (
+								<Link className='bg-blue-500 text-sm px-4 py-2 hover:bg-blue-700 text-white rounded-md shadow-sm w-full text-center'
+								href={`/videoCall/facetime/${call.callId}`}
+								>
+									Join Meeting
+								</Link>
+							)}
 						</div>
                 </div>
 

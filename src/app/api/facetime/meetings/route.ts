@@ -6,7 +6,8 @@ export async function GET() {
   try {
     const userId = await getAuthUserId();
 
-    const meetings = await prisma.facetimeMeeting.findMany({
+    // Get meetings created by the user
+    const createdMeetings = await prisma.facetimeMeeting.findMany({
       where: {
         creatorId: userId,
       },
@@ -16,17 +17,60 @@ export async function GET() {
         callId: true,
         description: true,
         startsAt: true,
+        creatorId: true,
+        creator: {
+          select: {
+            name: true,
+            image: true,
+          },
+        },
       },
       take: 50,
     });
 
+    // Get meetings where user is a participant (but not the creator)
+    const participantMeetings = await prisma.facetimeMeeting.findMany({
+      where: {
+        participants: {
+          some: {
+            userId: userId,
+          },
+        },
+        creatorId: {
+          not: userId,
+        },
+      },
+      orderBy: { startsAt: "asc" },
+      select: {
+        id: true,
+        callId: true,
+        description: true,
+        startsAt: true,
+        creatorId: true,
+        creator: {
+          select: {
+            name: true,
+            image: true,
+          },
+        },
+      },
+      take: 50,
+    });
+
+    // Combine and format all meetings
+    const allMeetings = [...createdMeetings, ...participantMeetings].map((m) => ({
+      id: m.id,
+      callId: m.callId,
+      description: m.description,
+      startsAt: m.startsAt.toISOString(),
+      creatorId: m.creatorId,
+      creatorName: m.creator?.name,
+      creatorImage: m.creator?.image,
+      isCreator: m.creatorId === userId,
+    }));
+
     return NextResponse.json({
-      meetings: meetings.map((m) => ({
-        id: m.id,
-        callId: m.callId,
-        description: m.description,
-        startsAt: m.startsAt.toISOString(),
-      })),
+      meetings: allMeetings.sort((a, b) => new Date(a.startsAt).getTime() - new Date(b.startsAt).getTime()),
     });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Unknown error";
@@ -42,6 +86,7 @@ export async function POST(request: Request) {
     const callId = String(body?.callId ?? "");
     const description = String(body?.description ?? "");
     const startsAtRaw = String(body?.startsAt ?? "");
+    const recipientUserIds = Array.isArray(body?.recipientUserIds) ? body.recipientUserIds : [];
 
     if (!callId) {
       return NextResponse.json({ error: "Missing callId" }, { status: 400 });
@@ -65,6 +110,12 @@ export async function POST(request: Request) {
         description,
         startsAt,
         creatorId: userId,
+        participants: {
+          create: [
+            { userId },
+            ...recipientUserIds.map((id: string) => ({ userId: id })),
+          ],
+        },
       },
       update: {
         description,
@@ -75,6 +126,13 @@ export async function POST(request: Request) {
         callId: true,
         description: true,
         startsAt: true,
+        creatorId: true,
+        creator: {
+          select: {
+            name: true,
+            image: true,
+          },
+        },
       },
     });
 
@@ -84,6 +142,10 @@ export async function POST(request: Request) {
         callId: meeting.callId,
         description: meeting.description,
         startsAt: meeting.startsAt.toISOString(),
+        creatorId: meeting.creatorId,
+        creatorName: meeting.creator?.name,
+        creatorImage: meeting.creator?.image,
+        isCreator: true,
       },
     });
   } catch (error) {
