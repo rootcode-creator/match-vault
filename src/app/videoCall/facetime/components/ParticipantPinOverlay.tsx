@@ -1,18 +1,18 @@
 "use client";
-import React from "react";
+import React, { useCallback } from "react";
 import {
   DefaultParticipantViewUI,
   useParticipantViewContext,
 } from "@stream-io/video-react-sdk";
 import { useCall } from "@stream-io/video-react-bindings";
 
-export const ParticipantPinOverlay = () => {
+const ParticipantPinOverlayComponent = () => {
   const { participant } = useParticipantViewContext() as any;
   const call = useCall() as any;
 
   const isPinned = !!participant?.pin;
 
-  const togglePin = async (e: React.MouseEvent) => {
+  const togglePin = useCallback(async (e: React.MouseEvent) => {
     e.stopPropagation();
     if (!call || !participant) return;
     try {
@@ -21,7 +21,7 @@ export const ParticipantPinOverlay = () => {
     } catch (err) {
       console.warn("Pin toggle failed", err);
     }
-  };
+  }, [call, participant, isPinned]);
 
   return (
     <div className="relative h-full w-full">
@@ -36,5 +36,7 @@ export const ParticipantPinOverlay = () => {
     </div>
   );
 };
+
+export const ParticipantPinOverlay = React.memo(ParticipantPinOverlayComponent);
 
 export default ParticipantPinOverlay;

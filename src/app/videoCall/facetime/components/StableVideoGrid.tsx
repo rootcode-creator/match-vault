@@ -15,7 +15,7 @@ interface StableVideoGridProps {
  * Custom stable video grid that prevents aggressive remounting of participant views.
  * Key differences from PaginatedGridLayout:
  * - Maintains stable participant order to prevent DOM thrashing
- * - Memoizes participant list to avoid re-renders on call state changes
+ * - Only re-renders when participants actually join/leave
  * - Ensures video elements are reused, not recreated
  * - Prevents Dynascale stream abort errors from element detachment
  */
@@ -27,16 +27,27 @@ export const StableVideoGrid: React.FC<StableVideoGridProps> = ({
   const participants = useParticipants();
   const localParticipant = useLocalParticipant();
 
+  // Create a stable key based on participant count and sorted session IDs
+  // This only changes when participants actually join/leave
+  const participantStabilityKey = React.useMemo(() => {
+    const ids = participants
+      .map((p) => p.sessionId)
+      .sort()
+      .join(",");
+    return `${participants.length}:${ids}`;
+  }, [participants.length]);
+
   // Memoize the participant list to prevent re-ordering/remounting
+  // Use participantStabilityKey (based on count and sorted IDs) instead of full participants object
   const memoizedParticipants = useMemo(() => {
     if (!localParticipant) return participants;
-    
+
     // Always keep local participant first for stability
     const remote = participants.filter(
       (p) => p.sessionId !== localParticipant.sessionId
     );
     return [localParticipant, ...remote];
-  }, [participants, localParticipant?.sessionId]);
+  }, [participantStabilityKey, localParticipant?.sessionId]);
 
   if (!call) return null;
 
