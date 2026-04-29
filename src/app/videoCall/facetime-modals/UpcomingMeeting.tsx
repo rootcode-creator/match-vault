@@ -47,20 +47,22 @@ export default function UpcomingMeeting({ enable, setEnable }: Props) {
 								leaveFrom='opacity-100 scale-100'
 								leaveTo='opacity-0 scale-95'
 							>
-							<DialogPanel className='w-full max-w-2xl transform overflow-hidden rounded-2xl bg-white p-6 align-middle shadow-xl transition-all text-center relative'>
-								<button
-									onClick={closeModal}
-									className='absolute top-4 right-4 text-gray-500 hover:text-gray-700 hover:bg-gray-100 p-2 rounded-full transition-colors'
-									aria-label='Close modal'
-								>
-									<FaTimes size={20} />
-								</button>
+								<DialogPanel className='relative w-full max-w-2xl transform overflow-hidden rounded-2xl bg-white p-6 align-middle text-center shadow-xl transition-all'>
+									<button
+										onClick={closeModal}
+										className='absolute right-4 top-4 rounded-full p-2 text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-700'
+										aria-label='Close modal'
+									>
+										<FaTimes size={20} />
+									</button>
 									<DialogTitle
 										as='h3'
-									className='text-lg font-bold leading-6 text-green-600 mb-4 pt-8'
+										className='mb-4 pt-8 text-lg font-bold leading-6 text-green-600'
+									>
+										Upcoming FaceTime
 									</DialogTitle>
 
-                                    <MeetingList />
+									<MeetingList />
 								</DialogPanel>
 							</TransitionChild>
 						</div>
