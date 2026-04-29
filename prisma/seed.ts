@@ -4,6 +4,18 @@ import { hash } from 'bcryptjs';
 
 const prisma = new PrismaClient();
 
+async function clearSeedData() {
+    await prisma.facetimeMeetingParticipant.deleteMany();
+    await prisma.facetimeMeeting.deleteMany();
+    await prisma.message.deleteMany();
+    await prisma.like.deleteMany();
+    await prisma.photo.deleteMany();
+    await prisma.member.deleteMany();
+    await prisma.account.deleteMany();
+    await prisma.token.deleteMany();
+    await prisma.user.deleteMany();
+}
+
 async function seedMembers() {
     return Promise.all(membersData.map(async member => prisma.user.create({
         data: {
@@ -127,6 +139,7 @@ async function seedFacetimeMeetings() {
 }
 
 async function main() {
+    await clearSeedData();
     await seedMembers();
     await seedAdmin();
     await seedFacetimeMeetings();
