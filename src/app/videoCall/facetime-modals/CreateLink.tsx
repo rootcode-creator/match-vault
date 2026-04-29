@@ -50,25 +50,35 @@ export default function CreateLink({ enable, setEnable, recipientUserIds }: Prop
 								leaveFrom='opacity-100 scale-100'
 								leaveTo='opacity-0 scale-95'
 							>
-							<DialogPanel className='w-full max-w-lg transform rounded-2xl bg-white max-h-[85vh] overflow-y-auto align-middle shadow-xl transition-all text-center relative'>
-								<button
-									onClick={closeModal}
-									className='absolute top-4 right-4 text-gray-500 hover:text-gray-700 hover:bg-gray-100 p-2 rounded-full transition-colors z-10'
-									aria-label='Close modal'
-								>
-									<FaTimes size={20} />
-								</button>
-									<div className='p-4 pt-12'>
-										{showMeetingLink ? (
-											<MeetingLink facetimeLink={facetimeLink} />
-										) : (
-											<MeetingForm
-												setShowMeetingLink={setShowMeetingLink}
-												setFacetimeLink={setFacetimeLink}
-												recipientUserIds={recipientUserIds}
-											/>
-										)}
+							<DialogPanel className='w-full max-w-lg transform rounded-2xl bg-white max-h-[85vh] overflow-y-auto align-middle shadow-xl transition-all text-center'>
+								<div className='flex items-start justify-between gap-4 px-4 pt-4'>
+									<div className='text-left'>
+										<DialogTitle as='h3' className='text-lg font-bold leading-6 text-green-600'>
+											Create Link
+										</DialogTitle>
+										<Description className='mt-1 text-xs opacity-40'>
+											Generate a shareable FaceTime invite.
+										</Description>
 									</div>
+									<button
+										onClick={closeModal}
+										className='rounded-full p-2 text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-700'
+										aria-label='Close modal'
+									>
+										<FaTimes size={20} />
+									</button>
+								</div>
+								<div className='px-4 pb-4 pt-6'>
+									{showMeetingLink ? (
+										<MeetingLink facetimeLink={facetimeLink} />
+									) : (
+										<MeetingForm
+											setShowMeetingLink={setShowMeetingLink}
+											setFacetimeLink={setFacetimeLink}
+											recipientUserIds={recipientUserIds}
+										/>
+									)}
+								</div>
 								</DialogPanel>
 							</TransitionChild>
 						</div>
