@@ -35,8 +35,11 @@ export const StableVideoGrid: React.FC<StableVideoGridProps> = ({
     const remote = participants.filter(
       (p) => p.sessionId !== localParticipant.sessionId
     );
-    return [localParticipant, ...remote];
-  }, [participants.length, localParticipant]);
+    const orderedParticipants = [localParticipant, ...remote];
+    return orderedParticipants.filter((participant, index, list) => {
+      return list.findIndex((item) => item.sessionId === participant.sessionId) === index;
+    });
+  }, [participants, localParticipant?.sessionId]);
 
   if (!call) return null;
 
