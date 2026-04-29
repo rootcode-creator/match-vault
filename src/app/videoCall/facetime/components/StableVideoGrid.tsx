@@ -41,8 +41,6 @@ export const StableVideoGrid: React.FC<StableVideoGridProps> = ({
 
   if (!call) return null;
 
-  const remoteParticipants = participants.filter((participant) => !participant.isLocalParticipant);
-  const showLocalPreview = remoteParticipants.length > 1 && !!localParticipant;
   const participantCount = memoizedParticipants.length;
 
   // Determine grid layout based on participant count
@@ -72,14 +70,6 @@ export const StableVideoGrid: React.FC<StableVideoGridProps> = ({
           />
         </div>
       ))}
-      {showLocalPreview && localParticipant && (
-        <div className="pointer-events-none absolute bottom-3 right-3 z-20 h-36 w-52 overflow-hidden rounded-xl border border-slate-300 bg-slate-900 shadow-2xl shadow-slate-400/25 sm:h-44 sm:w-64">
-          <ParticipantView
-            participant={localParticipant}
-            ParticipantViewUI={ParticipantViewUI}
-          />
-        </div>
-      )}
     </div>
   );
 };
