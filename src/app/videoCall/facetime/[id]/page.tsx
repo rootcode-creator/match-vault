@@ -105,6 +105,11 @@ export default function FaceTimePage() {
 		logCallLifecycle("join:start", { callId: call.id, cameraEnabled, microphoneEnabled });
 
 		try {
+			// Ensure we're listening to call state updates
+			const unsubscribe = call.on("call.updated", (payload: any) => {
+				logCallLifecycle("call:updated", { callId: call.id, payload });
+			});
+
 			await call.join({
 				create: false,
 				video: cameraEnabled,
@@ -198,6 +203,20 @@ const MeetingRoom = ({ call, onLeaveCall }: { call: Call; onLeaveCall: () => Pro
 	const hasMultipleParticipants = participants.length >= 2;
 
 	useQualityFallback();
+
+	// Debug logging for participants
+	useEffect(() => {
+		console.debug("[MeetingRoom] Participants updated:", {
+			count: participants.length,
+			participants: participants.map((p) => ({
+				sessionId: p.sessionId,
+				name: p.name,
+				isLocalParticipant: p.isLocalParticipant,
+				hasVideo: p.videoStream !== undefined,
+				isSpeaking: p.isSpeaking,
+			})),
+		});
+	}, [participants.length, participants]);
 
 	const handleLeave = async () => {
 		if (!confirm("Are you sure you want to leave the call?")) return;

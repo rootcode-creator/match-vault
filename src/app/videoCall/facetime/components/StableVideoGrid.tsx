@@ -27,18 +27,7 @@ export const StableVideoGrid: React.FC<StableVideoGridProps> = ({
   const participants = useParticipants();
   const localParticipant = useLocalParticipant();
 
-  // Create a stable key based on participant count and sorted session IDs
-  // This only changes when participants actually join/leave
-  const participantStabilityKey = React.useMemo(() => {
-    const ids = participants
-      .map((p) => p.sessionId)
-      .sort()
-      .join(",");
-    return `${participants.length}:${ids}`;
-  }, [participants.length]);
-
-  // Memoize the participant list to prevent re-ordering/remounting
-  // Use participantStabilityKey (based on count and sorted IDs) instead of full participants object
+  // Create an ordered participant list with local participant first
   const memoizedParticipants = useMemo(() => {
     if (!localParticipant) return participants;
 
@@ -47,11 +36,24 @@ export const StableVideoGrid: React.FC<StableVideoGridProps> = ({
       (p) => p.sessionId !== localParticipant.sessionId
     );
     return [localParticipant, ...remote];
-  }, [participantStabilityKey, localParticipant?.sessionId]);
+  }, [participants.length, localParticipant]);
 
   if (!call) return null;
 
   const participantCount = memoizedParticipants.length;
+
+  // Log participant info for debugging
+  if (typeof window !== "undefined" && process.env.NODE_ENV !== "production") {
+    console.debug("[StableVideoGrid]", {
+      count: participantCount,
+      participants: memoizedParticipants.map((p) => ({
+        sessionId: p.sessionId,
+        name: p.name,
+        hasVideo: p.videoStream !== undefined,
+        isScreenSharing: p.isScreenSharing,
+      })),
+    });
+  }
 
   // Determine grid layout based on participant count
   let gridCols = "grid-cols-1";
@@ -63,10 +65,16 @@ export const StableVideoGrid: React.FC<StableVideoGridProps> = ({
     <div
       className={`stable-video-grid grid w-full h-full gap-1.5 sm:gap-2 p-1 sm:p-2 auto-rows-fr grid-cols-1 ${gridCols}`}
     >
+      {participantCount === 0 && (
+        <div className="flex items-center justify-center col-span-full text-slate-500 text-sm">
+          Waiting for participants...
+        </div>
+      )}
       {memoizedParticipants.map((participant) => (
         <div
           key={`participant-${participant.sessionId}`}
           className="relative w-full h-full min-h-0 overflow-hidden rounded-lg bg-gradient-to-br from-slate-100 to-slate-200 border border-slate-300"
+          data-testid={`participant-${participant.sessionId}`}
         >
           <ParticipantView
             participant={participant}

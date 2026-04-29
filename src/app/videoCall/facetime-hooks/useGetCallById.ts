@@ -14,7 +14,7 @@ export const useGetCallById = (id: string | string[]) => {
         const loadCall = async () => {
             try {
                 const callId = Array.isArray(id) ? id[0] : id;
-                
+
                 // Reuse cached call if same ID to prevent remounts
                 if (cachedCallRef.current?.id === callId) {
                     setCall(cachedCallRef.current);
@@ -23,6 +23,15 @@ export const useGetCallById = (id: string | string[]) => {
                 }
 
                 const callToGet = client.call("default", callId);
+
+                // Load call state to fetch current participants
+                try {
+                    await callToGet.get();
+                } catch (err) {
+                    // Call might not exist yet, which is fine if we're creating it on join
+                    console.debug("Call state not available yet:", err);
+                }
+
                 cachedCallRef.current = callToGet;
                 setCall(callToGet);
                 setIsCallLoading(false);
