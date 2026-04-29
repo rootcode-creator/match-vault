@@ -15,9 +15,10 @@ import { useStreamVideoClient, Call } from "@stream-io/video-react-sdk";
 interface Props {
 	enable: boolean;
 	setEnable: React.Dispatch<React.SetStateAction<boolean>>;
+	recipientUserIds?: string[] | undefined;
 }
 
-export default function CreateLink({ enable, setEnable }: Props) {
+export default function CreateLink({ enable, setEnable, recipientUserIds }: Props) {
 	const [showMeetingLink, setShowMeetingLink] = useState(false);
 	const [facetimeLink, setFacetimeLink] = useState<string>("");
 	const closeModal = () => setEnable(false);
@@ -123,6 +124,7 @@ const MeetingForm = ({
 					callId: call.id,
 					description,
 					startsAt: startsAtIso,
+					recipientUserIds: recipientUserIds ?? [],
 				}),
 			});
 			if (!saveRes.ok) {

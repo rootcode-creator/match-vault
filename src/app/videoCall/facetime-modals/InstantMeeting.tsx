@@ -16,9 +16,10 @@ import Link from "next/link";
 interface Props {
 	enable: boolean;
 	setEnable: React.Dispatch<React.SetStateAction<boolean>>;
+	recipientUserIds?: string[] | undefined;
 }
 
-export default function InstantMeeting({ enable, setEnable }: Props) {
+export default function InstantMeeting({ enable, setEnable, recipientUserIds }: Props) {
 	const [showMeetingLink, setShowMeetingLink] = useState(false);
 	const [facetimeLink, setFacetimeLink] = useState<string>("");
 
@@ -58,6 +59,7 @@ export default function InstantMeeting({ enable, setEnable }: Props) {
 										<MeetingForm
 											setShowMeetingLink={setShowMeetingLink}
 											setFacetimeLink={setFacetimeLink}
+											recipientUserIds={recipientUserIds}
 										/>
 									)}
 								</DialogPanel>
@@ -73,9 +75,11 @@ export default function InstantMeeting({ enable, setEnable }: Props) {
 const MeetingForm = ({
 	setShowMeetingLink,
 	setFacetimeLink,
+	recipientUserIds,
 }: {
 	setShowMeetingLink: Dispatch<SetStateAction<boolean>>;
 	setFacetimeLink: Dispatch<SetStateAction<string>>;
+	recipientUserIds?: string[] | undefined;
 }) => {
 	const [description, setDescription] = useState<string>("");
 	const [callDetail, setCallDetail] = useState<Call>();
@@ -102,6 +106,23 @@ const MeetingForm = ({
 			setCallDetail(call);
 			setFacetimeLink(`${call.id}`);
 			setShowMeetingLink(true);
+			// Persist meeting metadata with optional recipients so UpcomingMeeting can show it
+			try {
+				const startsAtIso = new Date(Date.now()).toISOString();
+				await fetch("/api/facetime/meetings", {
+					method: "POST",
+					headers: { "Content-Type": "application/json" },
+					credentials: "include",
+					body: JSON.stringify({
+						callId: call.id,
+						description,
+						startsAt: startsAtIso,
+						recipientUserIds: recipientUserIds ?? [],
+					}),
+				});
+			} catch (err) {
+				console.warn("Failed to save instant meeting metadata", err);
+			}
 			console.log("Meeting Created!");
 		} catch (error) {
 			console.error(error);

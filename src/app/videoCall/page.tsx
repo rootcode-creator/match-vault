@@ -1,10 +1,11 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FaCalendarAlt, FaLink, FaPlus, FaVideo } from "react-icons/fa";
 import InstantMeeting from "./facetime-modals/InstantMeeting";
 import UpcomingMeeting from "./facetime-modals/UpcomingMeeting";
 import CreateLink from "./facetime-modals/CreateLink";
 import JoinMeeting from "./facetime-modals/JoinMeeting";
+import { useSearchParams } from "next/navigation";
 
 export default function Dashboard() {
     const [startInstantMeeting, setStartInstantMeeting] =
@@ -13,6 +14,16 @@ export default function Dashboard() {
     const [showUpcomingMeetings, setShowUpcomingMeetings] =
         useState<boolean>(false);
     const [showCreateLink, setShowCreateLink] = useState<boolean>(false);
+    const [defaultRecipientUserIds, setDefaultRecipientUserIds] = useState<string[] | undefined>(undefined);
+    const searchParams = useSearchParams();
+
+    useEffect(() => {
+        const withId = searchParams?.get("with") ?? undefined;
+        if (withId) {
+            setDefaultRecipientUserIds([withId]);
+            setStartInstantMeeting(true);
+        }
+    }, [searchParams]);
 
     return (
         <>
@@ -83,6 +94,7 @@ export default function Dashboard() {
                 <InstantMeeting
                     enable={startInstantMeeting}
                     setEnable={setStartInstantMeeting}
+                    recipientUserIds={defaultRecipientUserIds}
                 />
             )}
             {showUpcomingMeetings && (
@@ -92,7 +104,7 @@ export default function Dashboard() {
                 />
             )}
             {showCreateLink && (
-                <CreateLink enable={showCreateLink} setEnable={setShowCreateLink} />
+                <CreateLink enable={showCreateLink} setEnable={setShowCreateLink} recipientUserIds={defaultRecipientUserIds} />
             )}
             {joinMeeting && (
                 <JoinMeeting enable={joinMeeting} setEnable={setJoinMeeting} />
