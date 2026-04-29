@@ -42,7 +42,7 @@ export const StableVideoGrid: React.FC<StableVideoGridProps> = ({
   if (!call) return null;
 
   const remoteParticipants = participants.filter((participant) => !participant.isLocalParticipant);
-  const showLocalPreview = remoteParticipants.length > 0 && !!localParticipant;
+  const showLocalPreview = remoteParticipants.length > 1 && !!localParticipant;
   const participantCount = memoizedParticipants.length;
 
   // Determine grid layout based on participant count
