@@ -80,7 +80,7 @@ export const StableVideoGrid: React.FC<StableVideoGridProps> = ({
       {memoizedParticipants.map((participant) => (
         <div
           key={`participant-${participant.sessionId}`}
-          className="relative w-full h-full min-h-0 overflow-hidden rounded-lg bg-gradient-to-br from-slate-100 to-slate-200 border border-slate-300"
+          className="relative w-full h-full min-h-0 overflow-hidden rounded-lg bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-300 [&_.str-video__participant-view]:w-full [&_.str-video__participant-view]:h-full [&_video]:object-cover"
           data-testid={`participant-${participant.sessionId}`}
         >
           <ParticipantView
