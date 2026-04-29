@@ -170,6 +170,44 @@ button[aria-label="Open HeroUI devtools"],
 .stable-video-grid .str-video__participant-view .str-video__video {
   position: absolute;
   inset: 0;
+  z-index: 0;
+}
+
+.stable-video-grid .str-video__participant-view {
+  position: relative;
+}
+
+/* Keep Stream's overlays (name/mic/menu) above the video */
+.stable-video-grid .str-video__participant-details,
+.stable-video-grid .str-video__call-controls__button,
+.stable-video-grid .str-video__screen-share-overlay {
+  z-index: 2;
+}
+
+/* Improve readability of participant details on bright backgrounds */
+.stable-video-grid .str-video__participant-details {
+  background-color: rgba(0, 0, 0, 0.55) !important;
+}
+
+.stable-video-grid .str-video__participant-details,
+.stable-video-grid .str-video__participant-details * {
+  color: #fff;
+}
+
+/* The mic/camera icons are CSS-mask based; make them visible on dark label */
+.stable-video-grid .str-video__participant-details__name--audio-muted,
+.stable-video-grid .str-video__participant-details__name--video-muted,
+.stable-video-grid .str-video__participant-details__name--track-paused,
+.stable-video-grid .str-video__participant-details__name--pinned,
+.stable-video-grid .str-video__participant-details__name--network-stats {
+  background-color: #fff !important;
+}
+
+/* Put the 2nd tile (right column) label on the right so it won't clash with center controls */
+.stable-video-grid .stable-video-tile:nth-child(even) .str-video__participant-details {
+  left: auto;
+  right: 0;
+  border-radius: var(--str-video__border-radius-xs) 0 var(--str-video__border-radius-sm) 0;
 }
 
 .facetime-room--multi .str-video__paginated-grid-layout {

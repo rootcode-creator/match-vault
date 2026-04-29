@@ -6,6 +6,7 @@ import {
   DefaultParticipantViewUI,
 } from "@stream-io/video-react-sdk";
 import { useCall } from "@stream-io/video-react-bindings";
+import { hasScreenShare } from "@stream-io/video-client";
 
 interface StableVideoGridProps {
   ParticipantViewUI?: React.ComponentType<any>;
@@ -107,6 +108,7 @@ export const StableVideoGrid: React.FC<StableVideoGridProps> = ({
           <ParticipantView
             participant={participant}
             ParticipantViewUI={ParticipantViewUI}
+            trackType={hasScreenShare(participant) ? "screenShareTrack" : "videoTrack"}
           />
         </div>
       ))}
