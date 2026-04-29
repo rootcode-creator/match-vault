@@ -51,11 +51,20 @@ export const StableVideoGrid: React.FC<StableVideoGridProps> = ({
       (participant) => !participant.isLocalParticipant
     );
 
-    if (remoteParticipants.length > 0) {
-      return remoteParticipants;
+    // Always include local self-view (Meet-style), even when remotes exist.
+    // Put it last so remotes appear first.
+    const local = localParticipant ?? uniqueParticipants.find((p) => p.isLocalParticipant);
+    const hasLocalAlready = !!local && remoteParticipants.some((p) => p.sessionId === local.sessionId);
+
+    if (remoteParticipants.length === 0) {
+      return local ? [local] : [];
     }
 
-    return localParticipant ? [localParticipant] : [];
+    if (local && !hasLocalAlready) {
+      return [...remoteParticipants, local];
+    }
+
+    return remoteParticipants;
   }, [participants, localParticipant?.sessionId]);
 
   if (!call) return null;
