@@ -50,16 +50,18 @@ export default function CreateLink({ enable, setEnable, recipientUserIds }: Prop
 								leaveFrom='opacity-100 scale-100'
 								leaveTo='opacity-0 scale-95'
 							>
-								<DialogPanel className='w-full max-w-2xl transform overflow-hidden rounded-2xl bg-white p-6 align-middle shadow-xl transition-all text-center'>
-									{showMeetingLink ? (
-										<MeetingLink facetimeLink={facetimeLink} />
-									) : (
-										<MeetingForm
-											setShowMeetingLink={setShowMeetingLink}
-											setFacetimeLink={setFacetimeLink}
-											recipientUserIds={recipientUserIds}
-										/>
-									)}
+								<DialogPanel className='w-full max-w-lg transform rounded-2xl bg-white max-h-[85vh] overflow-y-auto align-middle shadow-xl transition-all text-center'>
+									<div className='p-4'>
+										{showMeetingLink ? (
+											<MeetingLink facetimeLink={facetimeLink} />
+										) : (
+											<MeetingForm
+												setShowMeetingLink={setShowMeetingLink}
+												setFacetimeLink={setFacetimeLink}
+												recipientUserIds={recipientUserIds}
+											/>
+										)}
+									</div>
 								</DialogPanel>
 							</TransitionChild>
 						</div>
@@ -94,7 +96,6 @@ const MeetingForm = ({
 	recipientUserIds?: string[] | undefined;
 }) => {
 	const [description, setDescription] = useState<string>("");
-	const [dateTime, setDateTime] = useState<string>("");
 	const [callDetail, setCallDetail] = useState<Call>();
 	const client = useStreamVideoClient();
 
@@ -149,10 +150,36 @@ const MeetingForm = ({
 
 	// Parse current date and time for form
 	const today = new Date();
-	const [selectedDate, setSelectedDate] = useState<string>(
-		today.toISOString().split("T")[0]
-	);
+	const initialDate = today.toISOString().split("T")[0];
+	const [selectedDate, setSelectedDate] = useState<string>(initialDate);
 	const [selectedTime, setSelectedTime] = useState<string>("10:00");
+	const [dateTime, setDateTime] = useState<string>(`${initialDate}T10:00`);
+	const timeOptions = [
+		"08:00",
+		"08:30",
+		"09:00",
+		"09:30",
+		"10:00",
+		"10:30",
+		"11:00",
+		"11:30",
+		"12:00",
+		"12:30",
+		"13:00",
+		"13:30",
+		"14:00",
+		"14:30",
+		"15:00",
+		"15:30",
+		"16:00",
+		"16:30",
+		"17:00",
+		"17:30",
+		"18:00",
+		"18:30",
+		"19:00",
+		"19:30",
+	];
 
 	// Generate calendar days
 	const generateCalendarDays = () => {
@@ -346,15 +373,23 @@ const MeetingForm = ({
 				>
 					Time
 				</label>
-				<input
-					type="time"
+				<select
 					id="time"
 					name="time"
 					value={selectedTime}
 					onChange={(e) => handleTimeChange(e.target.value)}
-					className="block w-full text-sm py-3 px-4 border-gray-200 border-[1px] rounded mb-4"
+					className="block w-full text-sm py-3 px-4 border-gray-200 border-[1px] rounded mb-4 bg-white"
 					required
-				/>
+				>
+					{timeOptions.map((time) => (
+						<option key={time} value={time}>
+							{new Date(`1970-01-01T${time}:00`).toLocaleTimeString([], {
+								hour: "numeric",
+								minute: "2-digit",
+							})}
+						</option>
+					))}
+				</select>
 
 				<button className="w-full bg-green-600 text-white py-3 rounded mt-4 font-semibold hover:bg-green-700 transition">
 					Create FaceTime
