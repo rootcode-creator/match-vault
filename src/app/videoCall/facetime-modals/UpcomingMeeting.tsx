@@ -97,21 +97,52 @@ const MeetingList = () => {
 					 <div className='bg-gray-100 py-4 px-4 rounded flex flex-col gap-3' key={call.id}>
 						<div className="space-y-2">
 							<p className='text-sm font-semibold text-gray-800'>{call.description}</p>
-							<div className='flex items-center gap-2'>
-								{call.creatorImage && (
-									<img 
-										src={call.creatorImage} 
-										alt={call.creatorName}
-										className='h-6 w-6 rounded-full object-cover'
-									/>
-								)}
-								<p className='text-xs text-gray-600'>
-									<span className='font-medium'>Scheduled by:</span> {call.creatorName || 'Unknown'}
-								</p>
-							</div>
-							<p className='text-xs text-gray-600'>
-								<span className='font-medium'>Date:</span> {formatDateTime(new Date(call.startsAt).toLocaleString())}
-							</p>
+							
+							{call.isCreator ? (
+								<>
+									<p className='text-xs text-gray-600'>
+										<span className='font-medium'>Date:</span> {formatDateTime(new Date(call.startsAt).toLocaleString())}
+									</p>
+									
+									{call.recipients && call.recipients.length > 0 && (
+										<div className='space-y-2'>
+											<p className='text-xs font-medium text-gray-700'>Meeting with:</p>
+											<div className='flex flex-wrap gap-2'>
+												{call.recipients.map((recipient: any) => (
+													<div key={recipient.id} className='flex items-center gap-1 bg-white px-2 py-1 rounded text-xs border border-gray-300'>
+														{recipient.image && (
+															<img 
+																src={recipient.image} 
+																alt={recipient.name}
+																className='h-5 w-5 rounded-full object-cover'
+															/>
+														)}
+														<span className='text-gray-700'>{recipient.name}</span>
+													</div>
+												))}
+											</div>
+										</div>
+									)}
+								</>
+							) : (
+								<>
+									<div className='flex items-center gap-2'>
+										{call.creatorImage && (
+											<img 
+												src={call.creatorImage} 
+												alt={call.creatorName}
+												className='h-6 w-6 rounded-full object-cover'
+											/>
+										)}
+										<p className='text-xs text-gray-600'>
+											<span className='font-medium'>Scheduled by:</span> {call.creatorName || 'Unknown'}
+										</p>
+									</div>
+									<p className='text-xs text-gray-600'>
+										<span className='font-medium'>Date:</span> {formatDateTime(new Date(call.startsAt).toLocaleString())}
+									</p>
+								</>
+							)}
 						</div>
                     
 						<div className="flex items-center gap-2">

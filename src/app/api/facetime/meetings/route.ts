@@ -24,6 +24,23 @@ export async function GET() {
             image: true,
           },
         },
+        participants: {
+          select: {
+            userId: true,
+            user: {
+              select: {
+                id: true,
+                name: true,
+                image: true,
+              },
+            },
+          },
+          where: {
+            userId: {
+              not: userId,
+            },
+          },
+        },
       },
       take: 50,
     });
@@ -53,6 +70,23 @@ export async function GET() {
             image: true,
           },
         },
+        participants: {
+          select: {
+            userId: true,
+            user: {
+              select: {
+                id: true,
+                name: true,
+                image: true,
+              },
+            },
+          },
+          where: {
+            userId: {
+              not: userId,
+            },
+          },
+        },
       },
       take: 50,
     });
@@ -67,6 +101,11 @@ export async function GET() {
       creatorName: m.creator?.name,
       creatorImage: m.creator?.image,
       isCreator: m.creatorId === userId,
+      recipients: m.participants.map((p) => ({
+        id: p.user.id,
+        name: p.user.name,
+        image: p.user.image,
+      })),
     }));
 
     return NextResponse.json({
