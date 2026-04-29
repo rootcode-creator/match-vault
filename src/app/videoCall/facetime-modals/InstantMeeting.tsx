@@ -7,7 +7,7 @@ import {
 	Description,
 	TransitionChild,
 } from "@headlessui/react";
-import { FaCopy } from "react-icons/fa";
+import { FaCopy, FaTimes } from "react-icons/fa";
 import CopyToClipboard from "react-copy-to-clipboard";
 import { Fragment, useState, Dispatch, SetStateAction } from "react";
 import { useStreamVideoClient, Call } from "@stream-io/video-react-sdk";
@@ -52,7 +52,15 @@ export default function InstantMeeting({ enable, setEnable, recipientUserIds }: 
 								leaveFrom='opacity-100 scale-100'
 								leaveTo='opacity-0 scale-95'
 							>
-								<DialogPanel className='w-full max-w-2xl transform overflow-hidden rounded-2xl bg-white p-6 align-middle shadow-xl transition-all text-center'>
+							<DialogPanel className='w-full max-w-2xl transform overflow-hidden rounded-2xl bg-white p-6 align-middle shadow-xl transition-all text-center relative'>
+								<button
+									onClick={closeModal}
+									className='absolute top-4 right-4 text-gray-500 hover:text-gray-700 hover:bg-gray-100 p-2 rounded-full transition-colors'
+									aria-label='Close modal'
+								>
+									<FaTimes size={20} />
+								</button>
+								<div className='pt-8'>
 									{showMeetingLink ? (
 										<MeetingLink facetimeLink={facetimeLink} />
 									) : (
@@ -62,7 +70,8 @@ export default function InstantMeeting({ enable, setEnable, recipientUserIds }: 
 											recipientUserIds={recipientUserIds}
 										/>
 									)}
-								</DialogPanel>
+								</div>
+							</DialogPanel>
 							</TransitionChild>
 						</div>
 					</div>

@@ -7,7 +7,7 @@ import {
 	Description,
 	TransitionChild,
 } from "@headlessui/react";
-import { FaCopy } from "react-icons/fa";
+import { FaCopy, FaTimes } from "react-icons/fa";
 import CopyToClipboard from "react-copy-to-clipboard";
 import { Fragment, SetStateAction, useState, Dispatch } from "react";
 import { useStreamVideoClient, Call } from "@stream-io/video-react-sdk";
@@ -50,8 +50,15 @@ export default function CreateLink({ enable, setEnable, recipientUserIds }: Prop
 								leaveFrom='opacity-100 scale-100'
 								leaveTo='opacity-0 scale-95'
 							>
-								<DialogPanel className='w-full max-w-lg transform rounded-2xl bg-white max-h-[85vh] overflow-y-auto align-middle shadow-xl transition-all text-center'>
-									<div className='p-4'>
+							<DialogPanel className='w-full max-w-lg transform rounded-2xl bg-white max-h-[85vh] overflow-y-auto align-middle shadow-xl transition-all text-center relative'>
+								<button
+									onClick={closeModal}
+									className='absolute top-4 right-4 text-gray-500 hover:text-gray-700 hover:bg-gray-100 p-2 rounded-full transition-colors z-10'
+									aria-label='Close modal'
+								>
+									<FaTimes size={20} />
+								</button>
+									<div className='p-4 pt-12'>
 										{showMeetingLink ? (
 											<MeetingLink facetimeLink={facetimeLink} />
 										) : (

@@ -6,6 +6,7 @@ import {
 	Transition,
 	TransitionChild,
 } from "@headlessui/react";
+import { FaTimes } from "react-icons/fa";
 import { useRouter } from "next/navigation";
 import { Fragment, useState } from "react";
 
@@ -44,8 +45,17 @@ export default function JoinMeeting({ enable, setEnable }: Props) {
 								leaveFrom='opacity-100 scale-100'
 								leaveTo='opacity-0 scale-95'
 							>
-								<DialogPanel className='w-full max-w-2xl transform overflow-hidden rounded-2xl bg-white p-6 align-middle shadow-xl transition-all text-center'>
+							<DialogPanel className='w-full max-w-2xl transform overflow-hidden rounded-2xl bg-white p-6 align-middle shadow-xl transition-all text-center relative'>
+								<button
+									onClick={closeModal}
+									className='absolute top-4 right-4 text-gray-500 hover:text-gray-700 hover:bg-gray-100 p-2 rounded-full transition-colors'
+									aria-label='Close modal'
+								>
+									<FaTimes size={20} />
+								</button>
+								<div className='pt-8'>
 									<MeetingForm />
+								</div>
 								</DialogPanel>
 							</TransitionChild>
 						</div>

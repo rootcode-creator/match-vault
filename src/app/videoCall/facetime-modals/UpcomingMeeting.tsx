@@ -6,6 +6,7 @@ import {
 	Transition,
 	TransitionChild,
 } from "@headlessui/react";
+import { FaTimes } from "react-icons/fa";
 import { Fragment } from "react";
 import { useGetCalls } from "../facetime-hooks/useGetCalls";
 import { formatDateTime } from "../facetime-lib/util";
@@ -46,12 +47,17 @@ export default function UpcomingMeeting({ enable, setEnable }: Props) {
 								leaveFrom='opacity-100 scale-100'
 								leaveTo='opacity-0 scale-95'
 							>
-								<DialogPanel className='w-full max-w-2xl transform overflow-hidden rounded-2xl bg-white p-6 align-middle shadow-xl transition-all text-center'>
+							<DialogPanel className='w-full max-w-2xl transform overflow-hidden rounded-2xl bg-white p-6 align-middle shadow-xl transition-all text-center relative'>
+								<button
+									onClick={closeModal}
+									className='absolute top-4 right-4 text-gray-500 hover:text-gray-700 hover:bg-gray-100 p-2 rounded-full transition-colors'
+									aria-label='Close modal'
+								>
+									<FaTimes size={20} />
+								</button>
 									<DialogTitle
 										as='h3'
-										className='text-lg font-bold leading-6 text-green-600 mb-4'
-									>
-										Upcoming FaceTime
+									className='text-lg font-bold leading-6 text-green-600 mb-4 pt-8'
 									</DialogTitle>
 
                                     <MeetingList />
