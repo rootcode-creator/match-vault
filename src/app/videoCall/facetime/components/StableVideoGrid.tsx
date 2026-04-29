@@ -27,18 +27,15 @@ export const StableVideoGrid: React.FC<StableVideoGridProps> = ({
   const participants = useParticipants();
   const localParticipant = useLocalParticipant();
 
-  // Create an ordered participant list with local participant first
+  // Show remote participants first; fall back to local self-view when alone.
   const memoizedParticipants = useMemo(() => {
-    if (!localParticipant) return participants;
+    const remoteParticipants = participants.filter((participant) => !participant.isLocalParticipant);
 
-    // Always keep local participant first for stability
-    const remote = participants.filter(
-      (p) => p.sessionId !== localParticipant.sessionId
-    );
-    const orderedParticipants = [localParticipant, ...remote];
-    return orderedParticipants.filter((participant, index, list) => {
-      return list.findIndex((item) => item.sessionId === participant.sessionId) === index;
-    });
+    if (remoteParticipants.length > 0) {
+      return remoteParticipants;
+    }
+
+    return localParticipant ? [localParticipant] : [];
   }, [participants, localParticipant?.sessionId]);
 
   if (!call) return null;
