@@ -10,7 +10,6 @@ import { Fragment } from "react";
 import { useGetCalls } from "../facetime-hooks/useGetCalls";
 import { formatDateTime } from "../facetime-lib/util";
 import Link from "next/link";
-import { completeFacetimeMeeting } from "@/app/actions/facetimeActions";
 
 interface Props {
 	enable: boolean;
@@ -106,13 +105,17 @@ const MeetingList = () => {
 								type="button"
 								className='bg-slate-700 text-sm px-4 py-2 hover:bg-slate-800 text-white rounded-md shadow-sm'
 								onClick={async () => {
-									const result = await completeFacetimeMeeting(call.callId);
-									if (result.status === "success") {
+									const res = await fetch(`/api/facetime/meetings/${encodeURIComponent(call.callId)}`, {
+										method: "DELETE",
+										credentials: "include",
+									});
+									if (res.ok) {
 										removeUpcomingCall(call.callId);
 										return;
 									}
 
-									alert(result.error);
+									const payload = await res.json().catch(() => ({} as any));
+									alert(payload?.error ?? "Failed to complete meeting");
 								}}
 							>
 								Complete

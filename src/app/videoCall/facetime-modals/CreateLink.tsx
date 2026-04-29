@@ -11,7 +11,6 @@ import { FaCopy } from "react-icons/fa";
 import CopyToClipboard from "react-copy-to-clipboard";
 import { Fragment, SetStateAction, useState, Dispatch } from "react";
 import { useStreamVideoClient, Call } from "@stream-io/video-react-sdk";
-import { saveFacetimeMeeting } from "@/app/actions/facetimeActions";
 
 interface Props {
 	enable: boolean;
@@ -116,13 +115,19 @@ const MeetingForm = ({
 
 			// Store meeting metadata in our DB so the "Upcoming FaceTime" modal doesn't
 			// depend on Stream call queries.
-			const saveResult = await saveFacetimeMeeting({
-				callId: call.id,
-				description,
-				startsAt: startsAtIso,
+			const saveRes = await fetch("/api/facetime/meetings", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				credentials: "include",
+				body: JSON.stringify({
+					callId: call.id,
+					description,
+					startsAt: startsAtIso,
+				}),
 			});
-			if (saveResult.status === "error") {
-				console.warn("saveFacetimeMeeting failed", saveResult.error);
+			if (!saveRes.ok) {
+				const payload = await saveRes.json().catch(() => ({} as any));
+				console.warn("Failed to save meeting", payload?.error ?? saveRes.statusText);
 			}
 
 			setCallDetail(call);

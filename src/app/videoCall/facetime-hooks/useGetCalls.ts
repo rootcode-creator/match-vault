@@ -1,8 +1,5 @@
 import { useEffect, useState } from "react";
-import {
-    FacetimeMeetingDto,
-    getUpcomingFacetimeMeetings,
-} from "@/app/actions/facetimeActions";
+import { FacetimeMeetingDto } from "@/app/actions/facetimeActions";
 
 export const useGetCalls = () => {
     const [calls, setCalls] = useState<FacetimeMeetingDto[]>([]);
@@ -12,13 +9,21 @@ export const useGetCalls = () => {
         const loadCalls = async () => {
             setIsLoading(true);
             try {
-                const result = await getUpcomingFacetimeMeetings();
-                if (result.status === "success") {
-                    setCalls(result.data);
-                } else {
-                    console.error(result.error);
+                const res = await fetch("/api/facetime/meetings", {
+                    method: "GET",
+                    headers: { "Content-Type": "application/json" },
+                    credentials: "include",
+                    cache: "no-store",
+                });
+
+                const payload = await res.json().catch(() => ({} as any));
+                if (!res.ok) {
+                    console.error(payload?.error ?? "Failed to load meetings");
                     setCalls([]);
+                    return;
                 }
+
+                setCalls(Array.isArray(payload?.meetings) ? payload.meetings : []);
             } catch (error) {
                 console.error(error);
                 setCalls([]);

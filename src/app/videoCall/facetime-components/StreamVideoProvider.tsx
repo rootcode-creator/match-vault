@@ -50,6 +50,7 @@ export const StreamVideoProvider = ({ children }: { children: ReactNode }) => {
             try {
                 const response = await fetch("/api/stream/token", {
                     cache: "no-store",
+                    credentials: "include",
                 });
 
                 if (!response.ok) {

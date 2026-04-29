@@ -76,12 +76,10 @@ export async function getUpcomingFacetimeMeetings(): Promise<{
 }> {
   try {
     const userId = await getAuthUserId();
-    const now = new Date();
 
     const meetings = await prisma.facetimeMeeting.findMany({
       where: {
         creatorId: userId,
-        startsAt: { gt: now },
       },
       orderBy: { startsAt: 'asc' },
       select: {
