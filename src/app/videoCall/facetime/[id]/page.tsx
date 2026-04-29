@@ -234,7 +234,7 @@ const MeetingRoom = ({ call, onLeaveCall }: { call: Call; onLeaveCall: () => Pro
 			<ParticipantsAudio
 				participants={participants.filter((participant) => !participant.isLocalParticipant)}
 			/>
-			<div className="flex-1 min-h-0 w-full pb-24 pt-2 sm:pt-3 px-0">
+			<div className={hasMultipleParticipants ? "flex-1 min-h-0 w-full pb-24 pt-2 sm:pt-3 px-0" : "flex-1 min-h-0 w-full pb-0 pt-0 px-0"}>
 				<div className="h-full w-full bg-slate-100 p-0">
 					<StableVideoGrid ParticipantViewUI={ParticipantPinOverlay} />
 				</div>

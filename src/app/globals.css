@@ -150,6 +150,28 @@ button[aria-label="Open HeroUI devtools"],
   --facetime-grid-pad: clamp(6px, 1vw, 14px);
 }
 
+/* Stream call: ensure custom StableVideoGrid tiles are always full-bleed */
+.stable-video-grid .str-video__participant-view {
+  width: 100% !important;
+  height: 100% !important;
+  max-width: none !important;
+  max-height: none !important;
+  min-height: 0 !important;
+  aspect-ratio: auto !important;
+}
+
+.stable-video-grid .str-video__participant-view .str-video__video,
+.stable-video-grid .str-video__participant-view video {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+}
+
+.stable-video-grid .str-video__participant-view .str-video__video {
+  position: absolute;
+  inset: 0;
+}
+
 .facetime-room--multi .str-video__paginated-grid-layout {
   height: 100%;
   align-items: stretch;

@@ -62,15 +62,27 @@ export const StableVideoGrid: React.FC<StableVideoGridProps> = ({
 
   const participantCount = memoizedParticipants.length;
 
-  // Determine grid layout based on participant count
+  const isSingle = participantCount <= 1;
+
+  // Determine grid layout based on participant count.
+  // - Mobile (<sm): stack tiles (1 column)
+  // - >=sm: 2 columns for 2+ participants
+  // - >=lg: 3 columns for 3+ participants
+  // - >=xl: 4 columns for 5+ participants
   let gridCols = "grid-cols-1";
-  if (participantCount >= 2) gridCols = "md:grid-cols-2";
-  if (participantCount >= 3) gridCols = "lg:grid-cols-3";
-  if (participantCount >= 5) gridCols = "xl:grid-cols-4";
+  if (participantCount >= 2) gridCols = "sm:grid-cols-2";
+  if (participantCount >= 3) gridCols = "sm:grid-cols-2 lg:grid-cols-3";
+  if (participantCount >= 5) gridCols = "sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4";
+
+  const gridSpacing = isSingle
+    ? "gap-0 p-0"
+    : "gap-1.5 sm:gap-2 p-1 sm:p-2";
+
+  const tileRadius = isSingle ? "rounded-none" : "rounded-lg";
 
   return (
     <div
-      className={`stable-video-grid relative grid w-full h-full gap-1.5 sm:gap-2 p-1 sm:p-2 auto-rows-fr grid-cols-1 ${gridCols}`}
+      className={`stable-video-grid relative grid h-full w-full auto-rows-fr grid-cols-1 ${gridCols} ${gridSpacing}`}
     >
       {participantCount === 0 && (
         <div className="flex items-center justify-center col-span-full text-slate-500 text-sm">
@@ -80,7 +92,7 @@ export const StableVideoGrid: React.FC<StableVideoGridProps> = ({
       {memoizedParticipants.map((participant) => (
         <div
           key={`participant-${participant.sessionId}`}
-          className="relative w-full h-full min-h-0 overflow-hidden rounded-lg bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-300 [&_.str-video__participant-view]:w-full [&_.str-video__participant-view]:h-full [&_video]:object-cover"
+          className={`stable-video-tile relative h-full w-full min-h-0 overflow-hidden ${tileRadius} bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-300`}
           data-testid={`participant-${participant.sessionId}`}
         >
           <ParticipantView
