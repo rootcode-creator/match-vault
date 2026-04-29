@@ -5,6 +5,7 @@ import {
 	StreamTheme,
 	CallControls,
 	Call,
+	ParticipantsAudio,
 	useCallStateHooks
 } from "@stream-io/video-react-sdk";
 import StableVideoGrid from "../components/StableVideoGrid";
@@ -230,6 +231,9 @@ const MeetingRoom = ({ call, onLeaveCall }: { call: Call; onLeaveCall: () => Pro
 
 	return (
 		<section className={`facetime-room relative flex h-[100dvh] w-full flex-col overflow-hidden bg-gradient-to-br from-slate-50 to-slate-100 ${hasMultipleParticipants ? "facetime-room--multi" : ""}`}>
+			<ParticipantsAudio
+				participants={participants.filter((participant) => !participant.isLocalParticipant)}
+			/>
 			<div className={`flex-1 min-h-0 w-full pb-24 pt-2 sm:pt-3 ${hasMultipleParticipants ? "px-0" : "px-4 sm:px-6"}`}>
 				<div className={`h-full w-full ${hasMultipleParticipants ? "bg-slate-100 p-0" : "rounded-2xl bg-white/90 p-2 shadow-xl shadow-slate-200/50 border border-slate-200"}`}>
 					<StableVideoGrid ParticipantViewUI={ParticipantPinOverlay} />
