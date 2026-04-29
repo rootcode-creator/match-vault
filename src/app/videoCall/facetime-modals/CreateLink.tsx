@@ -69,6 +69,20 @@ export default function CreateLink({ enable, setEnable }: Props) {
 	);
 }
 
+function toIsoFromDatetimeLocal(value: string) {
+	// datetime-local returns e.g. "2026-04-29T13:45" (no timezone).
+	// Parsing that string with `new Date(value)` is inconsistent across environments.
+	// Build a local Date explicitly to preserve the user's intended local time.
+	const [datePart, timePart] = value.split("T");
+	if (!datePart || !timePart) throw new Error("Invalid date/time");
+
+	const [year, month, day] = datePart.split("-").map(Number);
+	const [hour, minute] = timePart.split(":").map(Number);
+	const dt = new Date(year, month - 1, day, hour, minute, 0, 0);
+	if (Number.isNaN(dt.getTime())) throw new Error("Invalid date/time");
+	return dt.toISOString();
+}
+
 const MeetingForm = ({
 	setShowMeetingLink,
 	setFacetimeLink,
@@ -89,7 +103,7 @@ const MeetingForm = ({
 			const call = client.call("default", id);
 			if (!call) throw new Error("Failed to create meeting");
 
-			const startsAtIso = new Date(dateTime).toISOString();
+			const startsAtIso = toIsoFromDatetimeLocal(dateTime);
 
 			await call.getOrCreate({
 				data: {
