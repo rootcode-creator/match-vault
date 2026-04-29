@@ -42,18 +42,6 @@ export const StableVideoGrid: React.FC<StableVideoGridProps> = ({
 
   const participantCount = memoizedParticipants.length;
 
-  // Log participant info for debugging
-  if (typeof window !== "undefined" && process.env.NODE_ENV !== "production") {
-    console.debug("[StableVideoGrid]", {
-      count: participantCount,
-      participants: memoizedParticipants.map((p) => ({
-        sessionId: p.sessionId,
-        name: p.name,
-        hasVideo: p.videoStream !== undefined,
-      })),
-    });
-  }
-
   // Determine grid layout based on participant count
   let gridCols = "grid-cols-1";
   if (participantCount >= 2) gridCols = "md:grid-cols-2";

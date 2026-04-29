@@ -204,7 +204,7 @@ const MeetingRoom = ({ call, onLeaveCall }: { call: Call; onLeaveCall: () => Pro
 
 	useQualityFallback();
 
-	// Debug logging for participants
+	// Debug logging for participants - only log when count changes to avoid infinite loops
 	useEffect(() => {
 		console.debug("[MeetingRoom] Participants updated:", {
 			count: participants.length,
@@ -212,11 +212,9 @@ const MeetingRoom = ({ call, onLeaveCall }: { call: Call; onLeaveCall: () => Pro
 				sessionId: p.sessionId,
 				name: p.name,
 				isLocalParticipant: p.isLocalParticipant,
-				hasVideo: p.videoStream !== undefined,
-				isSpeaking: p.isSpeaking,
 			})),
 		});
-	}, [participants.length, participants]);
+	}, [participants.length]);
 
 	const handleLeave = async () => {
 		if (!confirm("Are you sure you want to leave the call?")) return;
