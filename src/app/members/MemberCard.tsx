@@ -1,7 +1,6 @@
 "use client";
 import LikeButton from "@/components/LikeButton";
 import PresenceDot from "@/components/PresenceDot";
-import StartCallWithMember from "@/components/StartCallWithMember";
 import { calculateAge } from "@/lib/util";
 import { Card, CardBody, CardFooter } from "@heroui/react";
 
@@ -54,9 +53,6 @@ export default function MemberCard({
                             targetId={member.userId}
                             hasLiked={hasLiked}
                         />
-                        <div onClick={preventLinkAction}>
-                          <StartCallWithMember targetUserId={member.userId} memberName={member.name} />
-                        </div>
                     </div>
 
                     <div className="absolute top-2 left-3 z-50">

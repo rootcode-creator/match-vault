@@ -147,55 +147,216 @@ const MeetingForm = ({
 		}
 	};
 
+	// Parse current date and time for form
+	const today = new Date();
+	const [selectedDate, setSelectedDate] = useState<string>(
+		today.toISOString().split("T")[0]
+	);
+	const [selectedTime, setSelectedTime] = useState<string>("10:00");
+
+	// Generate calendar days
+	const generateCalendarDays = () => {
+		const [year, month, day] = selectedDate.split("-").map(Number);
+		const firstDay = new Date(year, month - 1, 1);
+		const lastDay = new Date(year, month, 0);
+		const prevLastDay = new Date(year, month - 1, 0);
+
+		const firstDayOfWeek = firstDay.getDay();
+		const daysInMonth = lastDay.getDate();
+		const daysInPrevMonth = prevLastDay.getDate();
+
+		const days: { date: string; isCurrentMonth: boolean }[] = [];
+
+		// Previous month days
+		for (let i = firstDayOfWeek - 1; i >= 0; i--) {
+			const prevDate = daysInPrevMonth - i;
+			const prevMonth = month === 1 ? 12 : month - 1;
+			const prevYear = month === 1 ? year - 1 : year;
+			days.push({
+				date: `${prevYear}-${String(prevMonth).padStart(2, "0")}-${String(
+					prevDate
+				).padStart(2, "0")}`,
+				isCurrentMonth: false,
+			});
+		}
+
+		// Current month days
+		for (let i = 1; i <= daysInMonth; i++) {
+			days.push({
+				date: `${year}-${String(month).padStart(2, "0")}-${String(i).padStart(
+					2,
+					"0"
+				)}`,
+				isCurrentMonth: true,
+			});
+		}
+
+		// Next month days
+		const remainingDays = 42 - days.length; // 6 weeks * 7 days
+		for (let i = 1; i <= remainingDays; i++) {
+			const nextMonth = month === 12 ? 1 : month + 1;
+			const nextYear = month === 12 ? year + 1 : year;
+			days.push({
+				date: `${nextYear}-${String(nextMonth).padStart(2, "0")}-${String(
+					i
+				).padStart(2, "0")}`,
+				isCurrentMonth: false,
+			});
+		}
+
+		return days;
+	};
+
+	const calendarDays = generateCalendarDays();
+	const [year, month] = selectedDate.split("-").map(Number);
+	const monthNames = [
+		"January",
+		"February",
+		"March",
+		"April",
+		"May",
+		"June",
+		"July",
+		"August",
+		"September",
+		"October",
+		"November",
+		"December",
+	];
+
+	const handleDateChange = (date: string) => {
+		setSelectedDate(date);
+		setDateTime(`${date}T${selectedTime}`);
+	};
+
+	const handleTimeChange = (time: string) => {
+		setSelectedTime(time);
+		setDateTime(`${selectedDate}T${time}`);
+	};
+
+	const handlePrevMonth = () => {
+		const [y, m, d] = selectedDate.split("-").map(Number);
+		const newMonth = m === 1 ? 12 : m - 1;
+		const newYear = m === 1 ? y - 1 : y;
+		const newDate = new Date(newYear, newMonth - 1, 1);
+		const formattedDate = newDate.toISOString().split("T")[0];
+		setSelectedDate(formattedDate);
+	};
+
+	const handleNextMonth = () => {
+		const [y, m, d] = selectedDate.split("-").map(Number);
+		const newMonth = m === 12 ? 1 : m + 1;
+		const newYear = m === 12 ? y + 1 : y;
+		const newDate = new Date(newYear, newMonth - 1, 1);
+		const formattedDate = newDate.toISOString().split("T")[0];
+		setSelectedDate(formattedDate);
+	};
+
 	return (
 		<>
-			<DialogTitle
-				as='h3'
-				className='text-lg font-bold leading-6 text-green-600'
-			>
+			<DialogTitle as="h3" className="text-lg font-bold leading-6 text-green-600">
 				Schedule a FaceTime
 			</DialogTitle>
 
-			<Description className='text-xs opacity-40 mb-4'>
+			<Description className="text-xs opacity-40 mb-4">
 				Schedule a FaceTime meeting with your cliq
 			</Description>
 
-			<form className='w-full' onSubmit={handleStartMeeting}>
+			<form className="w-full" onSubmit={handleStartMeeting}>
 				<label
-					className='block text-left text-sm font-medium text-gray-700'
-					htmlFor='description'
+					className="block text-left text-sm font-medium text-gray-700"
+					htmlFor="description"
 				>
 					Meeting Description
 				</label>
 				<input
-					type='text'
-					name='description'
-					id='description'
+					type="text"
+					name="description"
+					id="description"
 					value={description}
 					onChange={(e) => setDescription(e.target.value)}
-					className='mt-1 block w-full text-sm py-3 px-4 border-gray-200 border-[1px] rounded mb-3'
+					className="mt-1 block w-full text-sm py-3 px-4 border-gray-200 border-[1px] rounded mb-3"
 					required
-					placeholder='Enter a description for the meeting'
+					placeholder="Enter a description for the meeting"
 				/>
 
-				<label
-					className='block text-left text-sm font-medium text-gray-700'
-					htmlFor='date'
-				>
+				<label className="block text-left text-sm font-medium text-gray-700 mb-3">
 					Date and Time
 				</label>
 
+				{/* Calendar */}
+				<div className="border border-gray-200 rounded-lg p-4 mb-4 bg-white">
+					<div className="flex items-center justify-between mb-3">
+						<button
+							type="button"
+							onClick={handlePrevMonth}
+							className="px-2 py-1 text-gray-600 hover:bg-gray-100 rounded"
+						>
+							←
+						</button>
+						<h3 className="text-sm font-semibold text-gray-800">
+							{monthNames[month - 1]} {year}
+						</h3>
+						<button
+							type="button"
+							onClick={handleNextMonth}
+							className="px-2 py-1 text-gray-600 hover:bg-gray-100 rounded"
+						>
+							→
+						</button>
+					</div>
+
+					{/* Weekday headers */}
+					<div className="grid grid-cols-7 gap-1 mb-2">
+						{["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
+							<div
+								key={day}
+								className="text-center text-xs font-semibold text-gray-500 h-8 flex items-center justify-center"
+							>
+								{day}
+							</div>
+						))}
+					</div>
+
+					{/* Calendar days */}
+					<div className="grid grid-cols-7 gap-1">
+						{calendarDays.map((day) => (
+							<button
+								key={day.date}
+								type="button"
+								onClick={() => handleDateChange(day.date)}
+								className={`h-8 text-xs rounded flex items-center justify-center transition ${
+									selectedDate === day.date
+										? "bg-green-600 text-white font-semibold"
+										: day.isCurrentMonth
+											? "text-gray-900 hover:bg-gray-100"
+											: "text-gray-400"
+								}`}
+							>
+								{parseInt(day.date.split("-")[2])}
+							</button>
+						))}
+					</div>
+				</div>
+
+				{/* Time input */}
+				<label
+					className="block text-left text-sm font-medium text-gray-700 mb-2"
+					htmlFor="time"
+				>
+					Time
+				</label>
 				<input
-					type='datetime-local'
-					id='date'
-					name='date'
+					type="time"
+					id="time"
+					name="time"
+					value={selectedTime}
+					onChange={(e) => handleTimeChange(e.target.value)}
+					className="block w-full text-sm py-3 px-4 border-gray-200 border-[1px] rounded mb-4"
 					required
-					className='mt-1 block w-full text-sm py-3 px-4 border-gray-200 border-[1px] rounded mb-3'
-					value={dateTime}
-					onChange={(e) => setDateTime(e.target.value)}
 				/>
 
-				<button className='w-full bg-green-600 text-white py-3 rounded mt-4'>
+				<button className="w-full bg-green-600 text-white py-3 rounded mt-4 font-semibold hover:bg-green-700 transition">
 					Create FaceTime
 				</button>
 			</form>

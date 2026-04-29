@@ -1,13 +1,12 @@
 import CardInnerWrapper from "@/components/CardInnerWrapper";
 import { getMemberByUserId } from "@/app/actions/memberActions";
-import Link from "next/link";
 import React from "react";
 import ChatForm from "./ChatForm";
 import { getMessageThread } from "@/app/actions/messageActions";
 import { getAuthUserId } from "@/app/actions/authActions";
 import MessageList from "./MessageList";
 import { createChatId } from "@/lib/util";
-import { FaVideo } from "react-icons/fa";
+import StartVideoCallButton from "@/components/StartVideoCallButton";
 
 export default async function ChatPage({
   params,
@@ -49,13 +48,7 @@ export default async function ChatPage({
               </p>
             </div>
           </div>
-          <Link
-            href={`/videoCall?with=${targetUserId}`}
-            aria-label="Open video call"
-            className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[#c7dce8] bg-white text-[#35576b] shadow-sm transition hover:bg-[#eef6fb] hover:text-[#173042]"
-          >
-            <FaVideo className="text-[15px]" />
-          </Link>
+          <StartVideoCallButton targetUserId={targetUserId} memberName={member?.name} />
         </div>
       }
       body={
