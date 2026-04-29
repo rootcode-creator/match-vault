@@ -27,7 +27,8 @@ export const StableVideoGrid: React.FC<StableVideoGridProps> = ({
   const participants = useParticipants();
   const localParticipant = useLocalParticipant();
 
-  // Show remote participants first; fall back to local self-view when alone.
+  // Keep the main grid dedicated to remote participants.
+  // When there are no remotes, fall back to the local self-view.
   const memoizedParticipants = useMemo(() => {
     const remoteParticipants = participants.filter((participant) => !participant.isLocalParticipant);
 
@@ -40,6 +41,8 @@ export const StableVideoGrid: React.FC<StableVideoGridProps> = ({
 
   if (!call) return null;
 
+  const remoteParticipants = participants.filter((participant) => !participant.isLocalParticipant);
+  const showLocalPreview = remoteParticipants.length > 0 && !!localParticipant;
   const participantCount = memoizedParticipants.length;
 
   // Determine grid layout based on participant count
@@ -50,7 +53,7 @@ export const StableVideoGrid: React.FC<StableVideoGridProps> = ({
 
   return (
     <div
-      className={`stable-video-grid grid w-full h-full gap-1.5 sm:gap-2 p-1 sm:p-2 auto-rows-fr grid-cols-1 ${gridCols}`}
+      className={`stable-video-grid relative grid w-full h-full gap-1.5 sm:gap-2 p-1 sm:p-2 auto-rows-fr grid-cols-1 ${gridCols}`}
     >
       {participantCount === 0 && (
         <div className="flex items-center justify-center col-span-full text-slate-500 text-sm">
@@ -69,6 +72,14 @@ export const StableVideoGrid: React.FC<StableVideoGridProps> = ({
           />
         </div>
       ))}
+      {showLocalPreview && localParticipant && (
+        <div className="pointer-events-none absolute bottom-3 right-3 z-20 h-36 w-52 overflow-hidden rounded-xl border border-slate-300 bg-slate-900 shadow-2xl shadow-slate-400/25 sm:h-44 sm:w-64">
+          <ParticipantView
+            participant={localParticipant}
+            ParticipantViewUI={ParticipantViewUI}
+          />
+        </div>
+      )}
     </div>
   );
 };
