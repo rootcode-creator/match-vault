@@ -167,6 +167,13 @@ button[aria-label="Open HeroUI devtools"],
   object-fit: cover !important;
 }
 
+/* Screen sharing should never be cropped on mobile; show full desktop and letterbox if needed */
+.stable-video-grid .str-video__participant-view .str-video__video.str-video__video--screen-share,
+.stable-video-grid .str-video__participant-view video.str-video__video--screen-share {
+  object-fit: contain !important;
+  background: #000;
+}
+
 .stable-video-grid .str-video__participant-view .str-video__video {
   position: absolute;
   inset: 0;

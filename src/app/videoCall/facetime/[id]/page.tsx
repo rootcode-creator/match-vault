@@ -3,13 +3,13 @@ import { useGetCallById } from "../../facetime-hooks/useGetCallById";
 import {
 	StreamCall,
 	StreamTheme,
-	CallControls,
 	Call,
 	ParticipantsAudio,
 	useCallStateHooks
 } from "@stream-io/video-react-sdk";
 import StableVideoGrid from "../components/StableVideoGrid";
 import ParticipantPinOverlay from "../components/ParticipantPinOverlay";
+import FacetimeCallControls from "../components/FacetimeCallControls";
 import { useQualityFallback } from "../hooks/useQualityFallback";
 import { useParams } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -154,41 +154,70 @@ export default function FaceTimePage() {
 		}
 	};
 
-	if (isCallLoading) return <p>Loading...</p>;
+	if (isCallLoading) {
+		return (
+			<main className='flex min-h-screen w-full items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100 px-4'>
+				<p className='text-sm text-slate-600'>Loading…</p>
+			</main>
+		);
+	}
 
-	if (!call) return (<p>Call not found</p>);
+	if (!call) {
+		return (
+			<main className='flex min-h-screen w-full items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100 px-4'>
+				<p className='text-sm text-slate-600'>Call not found</p>
+			</main>
+		);
+	}
 
 	return (
-		<main className='min-h-screen w-full items-center justify-center'>
+		<main className='flex min-h-screen w-full items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100 px-4 py-10'>
 			<StreamCall call={call}>
 			<StreamTheme>
 				{confirmJoin ? <MeetingRoom call={call} onLeaveCall={() => leaveCallSafely("manual")} /> : (
-					<div className='flex flex-col items-center justify-center gap-5'>
-							<h1 className='text-3xl font-bold'>Join Call</h1>
-							<p className='text-lg'>Are you sure you want to join this call?</p>
-							<div className='flex flex-wrap items-center justify-center gap-3'>
-								<button
-									type='button'
-									onClick={() => setCameraEnabled((current) => !current)}
-									className={`rounded-full px-4 py-2 text-sm font-semibold transition ${cameraEnabled ? "bg-green-600 text-white" : "bg-slate-200 text-slate-700"}`}
-								>
-									Camera {cameraEnabled ? "On" : "Off"}
-								</button>
-								<button
-									type='button'
-									onClick={() => setMicrophoneEnabled((current) => !current)}
-									className={`rounded-full px-4 py-2 text-sm font-semibold transition ${microphoneEnabled ? "bg-green-600 text-white" : "bg-slate-200 text-slate-700"}`}
-								>
-									Mic {microphoneEnabled ? "On" : "Off"}
-								</button>
-							</div>
-							<div className='flex gap-5'>
-								<button onClick={handleJoin} disabled={isJoining} className='px-4 py-3 bg-green-600 text-green-50 disabled:opacity-50'>
-									{isJoining ? "Joining..." : "Join"}
-								</button>
-								<button onClick={() => router.push("/")} className='px-4 py-3 bg-red-600 text-red-50'>Cancel</button>
-							</div>
+					<div className='w-full max-w-md rounded-2xl border border-slate-200 bg-white/90 p-6 shadow-xl shadow-slate-200/60 backdrop-blur'>
+						<h1 className='text-center text-3xl font-bold tracking-tight text-slate-900'>Join Call</h1>
+						<p className='mt-2 text-center text-sm text-slate-600'>Are you sure you want to join this call?</p>
+
+						<div className='mt-6 grid grid-cols-2 gap-3'>
+							<button
+								type='button'
+								aria-pressed={cameraEnabled}
+								onClick={() => setCameraEnabled((current) => !current)}
+								className={`w-full rounded-full px-4 py-2 text-sm font-semibold transition focus:outline-none focus-visible:ring-2 focus-visible:ring-green-600 focus-visible:ring-offset-2 ${cameraEnabled ? "bg-green-600 text-white hover:bg-green-700" : "bg-slate-100 text-slate-700 hover:bg-slate-200"}`}
+							>
+								Camera {cameraEnabled ? "On" : "Off"}
+							</button>
+							<button
+								type='button'
+								aria-pressed={microphoneEnabled}
+								onClick={() => setMicrophoneEnabled((current) => !current)}
+								className={`w-full rounded-full px-4 py-2 text-sm font-semibold transition focus:outline-none focus-visible:ring-2 focus-visible:ring-green-600 focus-visible:ring-offset-2 ${microphoneEnabled ? "bg-green-600 text-white hover:bg-green-700" : "bg-slate-100 text-slate-700 hover:bg-slate-200"}`}
+							>
+								Mic {microphoneEnabled ? "On" : "Off"}
+							</button>
 						</div>
+
+						<div className='mt-4 text-center text-xs text-slate-500'>
+							You can change these after joining.
+						</div>
+
+						<div className='mt-6 grid grid-cols-2 gap-3'>
+							<button
+								onClick={handleJoin}
+								disabled={isJoining}
+								className='w-full rounded-lg bg-green-600 px-4 py-3 text-sm font-semibold text-white transition hover:bg-green-700 disabled:cursor-not-allowed disabled:opacity-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-600 focus-visible:ring-offset-2'
+							>
+								{isJoining ? "Joining..." : "Join"}
+							</button>
+							<button
+								onClick={() => router.push("/")}
+								className='w-full rounded-lg bg-red-600 px-4 py-3 text-sm font-semibold text-white transition hover:bg-red-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-600 focus-visible:ring-offset-2'
+							>
+								Cancel
+							</button>
+						</div>
+					</div>
 				)}
 				</StreamTheme>
 			</StreamCall>
@@ -241,7 +270,7 @@ const MeetingRoom = ({ call, onLeaveCall }: { call: Call; onLeaveCall: () => Pro
 			</div>
 			<div className='pointer-events-none absolute bottom-8 left-0 right-0 z-50 flex w-full items-center justify-center'>
 				<div className='pointer-events-auto rounded-full bg-white/95 px-5 py-3 shadow-2xl shadow-slate-400/30 border border-slate-200 backdrop-blur-md'>
-					<CallControls onLeave={handleLeave} />
+					<FacetimeCallControls onLeave={handleLeave} />
 				</div>
 			</div>
 		</section>
