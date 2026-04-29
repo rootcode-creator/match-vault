@@ -57,6 +57,7 @@ export default function CreateLink({ enable, setEnable, recipientUserIds }: Prop
 										<MeetingForm
 											setShowMeetingLink={setShowMeetingLink}
 											setFacetimeLink={setFacetimeLink}
+											recipientUserIds={recipientUserIds}
 										/>
 									)}
 								</DialogPanel>
@@ -86,9 +87,11 @@ function toIsoFromDatetimeLocal(value: string) {
 const MeetingForm = ({
 	setShowMeetingLink,
 	setFacetimeLink,
+	recipientUserIds,
 }: {
 	setShowMeetingLink: React.Dispatch<SetStateAction<boolean>>;
 	setFacetimeLink: Dispatch<SetStateAction<string>>;
+	recipientUserIds?: string[] | undefined;
 }) => {
 	const [description, setDescription] = useState<string>("");
 	const [dateTime, setDateTime] = useState<string>("");
