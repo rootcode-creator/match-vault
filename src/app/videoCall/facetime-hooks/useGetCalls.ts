@@ -1,40 +1,40 @@
 import { useEffect, useState } from "react";
-import { Call, useStreamVideoClient } from "@stream-io/video-react-sdk";
+import {
+    FacetimeMeetingDto,
+    getUpcomingFacetimeMeetings,
+} from "@/app/actions/facetimeActions";
 
 export const useGetCalls = () => {
-    const client = useStreamVideoClient();
-    const [calls, setCalls] = useState<Call[]>();
+    const [calls, setCalls] = useState<FacetimeMeetingDto[]>([]);
     const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         const loadCalls = async () => {
-            if (!client) return;
             setIsLoading(true);
             try {
-                const { calls } = await client.queryCalls({
-                    sort: [{ field: "starts_at", direction: -1 }],
-                    filter_conditions: {
-                        starts_at: { $exists: true },
-                    },
-                });
-
-                setCalls(calls);
+                const result = await getUpcomingFacetimeMeetings();
+                if (result.status === "success") {
+                    setCalls(result.data);
+                } else {
+                    console.error(result.error);
+                    setCalls([]);
+                }
             } catch (error) {
                 console.error(error);
+                setCalls([]);
             } finally {
                 setIsLoading(false);
             }
         };
 
         loadCalls();
-    }, [client]);
+    }, []);
 
-    const now = new Date();
+    const removeUpcomingCall = (callId: string) => {
+        setCalls((current) => current.filter((c) => c.callId !== callId));
+    };
 
-    //👇🏻 gets only calls that are yet to start
-    const upcomingCalls = calls?.filter(({ state: { startsAt } }: Call) => {
-        return startsAt && new Date(startsAt) > now;
-    });
+    const upcomingCalls = calls;
 
-    return { upcomingCalls, isLoading };
+    return { upcomingCalls, isLoading, removeUpcomingCall };
 };

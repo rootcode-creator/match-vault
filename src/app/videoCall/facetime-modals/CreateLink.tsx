@@ -11,6 +11,7 @@ import { FaCopy } from "react-icons/fa";
 import CopyToClipboard from "react-copy-to-clipboard";
 import { Fragment, SetStateAction, useState, Dispatch } from "react";
 import { useStreamVideoClient, Call } from "@stream-io/video-react-sdk";
+import { saveFacetimeMeeting } from "@/app/actions/facetimeActions";
 
 interface Props {
 	enable: boolean;
@@ -88,14 +89,27 @@ const MeetingForm = ({
 			const call = client.call("default", id);
 			if (!call) throw new Error("Failed to create meeting");
 
+			const startsAtIso = new Date(dateTime).toISOString();
+
 			await call.getOrCreate({
 				data: {
-					starts_at: new Date(dateTime).toISOString(),
+					starts_at: startsAtIso,
 					custom: {
 						description,
 					},
 				},
 			});
+
+			// Store meeting metadata in our DB so the "Upcoming FaceTime" modal doesn't
+			// depend on Stream call queries.
+			const saveResult = await saveFacetimeMeeting({
+				callId: call.id,
+				description,
+				startsAt: startsAtIso,
+			});
+			if (saveResult.status === "error") {
+				console.warn("saveFacetimeMeeting failed", saveResult.error);
+			}
 
 			setCallDetail(call);
 			setFacetimeLink(`${call.id}`);

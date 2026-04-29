@@ -40,6 +40,26 @@ model User {
   member        Member?
   role          Role     @default(MEMBER)
 
+
+
+
+
+  facetimeMeetings FacetimeMeeting[]
+
+}
+
+model FacetimeMeeting {
+  id          String   @id @default(cuid())
+  callId      String   @unique
+  description String
+  startsAt    DateTime
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  creatorId   String
+  creator     User     @relation(fields: [creatorId], references: [id], onDelete: Cascade)
+
+  @@index([creatorId, startsAt])
 }
 
 model Member {
