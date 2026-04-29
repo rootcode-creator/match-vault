@@ -30,7 +30,28 @@ export const StableVideoGrid: React.FC<StableVideoGridProps> = ({
   // Keep the main grid dedicated to remote participants.
   // When there are no remotes, fall back to the local self-view.
   const memoizedParticipants = useMemo(() => {
-    const remoteParticipants = participants.filter((participant) => !participant.isLocalParticipant);
+    // Basic array of all valid participants
+    const allValid = participants.filter(Boolean);
+    
+    // Deduplicate by userId, preferring the one with a video track or the local one
+    const uniqueParticipantsMap = new Map();
+    for (const p of allValid) {
+      if (!uniqueParticipantsMap.has(p.userId)) {
+        uniqueParticipantsMap.set(p.userId, p);
+      } else {
+        const existing = uniqueParticipantsMap.get(p.userId);
+        if (p.isLocalParticipant && !existing.isLocalParticipant) {
+          uniqueParticipantsMap.set(p.userId, p);
+        } else if (p.videoTrack && !existing.videoTrack) {
+          uniqueParticipantsMap.set(p.userId, p);
+        }
+      }
+    }
+    
+    const uniqueParticipants = Array.from(uniqueParticipantsMap.values());
+    const remoteParticipants = uniqueParticipants.filter(
+      (participant) => !participant.isLocalParticipant
+    );
 
     if (remoteParticipants.length > 0) {
       return remoteParticipants;
