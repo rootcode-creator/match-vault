@@ -16,12 +16,10 @@ export default function RootLayout({
     children: React.ReactNode;
 }) {
     return (
-        <html lang='en'>
-            <body className={inter.className}>
-                <StreamVideoProvider>
-                    {children}
-                </StreamVideoProvider>
-            </body>
-        </html>
+        <div className={inter.className}>
+            <StreamVideoProvider>
+                {children}
+            </StreamVideoProvider>
+        </div>
     );
 }
