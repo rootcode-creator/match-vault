@@ -17,35 +17,37 @@ async function clearSeedData() {
 }
 
 async function seedMembers() {
-    return Promise.all(membersData.map(async member => prisma.user.create({
-        data: {
-            email: member.email,
-            emailVerified: new Date(),
-            name: member.name,
-            passwordHash: await hash('password', 10),
-            image: member.image,
-            profileComplete: true,
-            member: {
-                create: {
-                    dateOfBirth: new Date(member.dateOfBirth),
-                    gender: member.gender,
-                    name: member.name,
-                    created: new Date(member.created),
-                    updated: new Date(member.lastActive),
-                    description: member.description,
-                    city: member.city,
-                    country: member.country,
-                    image: member.image,
-                    photos: {
-                        create: {
-                            url: member.image,
-                            isApproved: true
+    for (const member of membersData) {
+        await prisma.user.create({
+            data: {
+                email: member.email,
+                emailVerified: new Date(),
+                name: member.name,
+                passwordHash: await hash('password', 10),
+                image: member.image,
+                profileComplete: true,
+                member: {
+                    create: {
+                        dateOfBirth: new Date(member.dateOfBirth),
+                        gender: member.gender,
+                        name: member.name,
+                        created: new Date(member.created),
+                        updated: new Date(member.lastActive),
+                        description: member.description,
+                        city: member.city,
+                        country: member.country,
+                        image: member.image,
+                        photos: {
+                            create: {
+                                url: member.image,
+                                isApproved: true
+                            }
                         }
                     }
                 }
             }
-        }
-    })))
+        });
+    }
 }
 
 async function seedAdmin() {
