@@ -50,7 +50,6 @@ export const StableVideoGrid: React.FC<StableVideoGridProps> = ({
         sessionId: p.sessionId,
         name: p.name,
         hasVideo: p.videoStream !== undefined,
-        isScreenSharing: p.isScreenSharing,
       })),
     });
   }
