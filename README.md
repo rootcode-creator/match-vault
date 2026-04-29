@@ -166,11 +166,27 @@ npx prisma migrate dev
 npx prisma db seed
 ```
 
-To fully reset the database and restore the sample users plus FaceTime meetings, run:
+### Resetting the Database
 
-```bash
-npm run db:reset
-```
+To clear and reset the database:
+
+- **Recommended (restore all sample data including meetings):**
+  ```bash
+  npm run db:reset
+  ```
+  This resets the schema and re-seeds all users, admin, and FaceTime meeting fixtures.
+
+- **Quick reset without seeding:**
+  ```bash
+  npx prisma migrate reset --skip-seed
+  ```
+  ⚠️ This will drop all data including user accounts and scheduled meetings (no data is restored automatically).
+
+- **Just seed data (if database is already migrated):**
+  ```bash
+  npx prisma db seed
+  ```
+  This clears and re-creates all sample users and FaceTime meetings.
 
 4) Start development server:
 
