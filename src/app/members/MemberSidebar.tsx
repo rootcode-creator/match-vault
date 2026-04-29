@@ -12,6 +12,7 @@ import {
 import { Member } from "@prisma/client";
 import clsx from "clsx";
 import Link from "next/link";
+import StartCallWithMember from "@/components/StartCallWithMember";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
 import React from "react";
@@ -100,16 +101,19 @@ export default function MemberSidebar({
       <Divider />
 
       <CardFooter className="pt-4">
-        <Button
-          as={Link}
-          href="/members"
-          fullWidth
-          className="font-semibold"
-          color="default"
-          variant="bordered"
-        >
-          Go back
-        </Button>
+        <div className="flex gap-2">
+          <StartCallWithMember targetUserId={member.userId} memberName={member.name} />
+          <Button
+            as={Link}
+            href="/members"
+            fullWidth
+            className="font-semibold"
+            color="default"
+            variant="bordered"
+          >
+            Go back
+          </Button>
+        </div>
       </CardFooter>
     </Card>
   );
