@@ -42,7 +42,7 @@ export const StableVideoGrid: React.FC<StableVideoGridProps> = ({
         const existing = uniqueParticipantsMap.get(p.userId);
         if (p.isLocalParticipant && !existing.isLocalParticipant) {
           uniqueParticipantsMap.set(p.userId, p);
-        } else if (p.videoTrack && !existing.videoTrack) {
+        } else if (p.publishedTracks?.includes('video') && !existing.publishedTracks?.includes('video')) {
           uniqueParticipantsMap.set(p.userId, p);
         }
       }
