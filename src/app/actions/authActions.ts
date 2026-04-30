@@ -24,7 +24,9 @@ export async function signInUser(data: LoginSchema): Promise<ActionResult<string
         if (!existingUser.emailVerified) {
             const { token, email } = await generateToken(existingUser.email, 'VERIFICATION');
 
-            await sendVerificationEmail(email, token)
+            await sendVerificationEmail(email, token).catch((error) => {
+                console.error('Failed to send verification email:', error);
+            });
 
             return { status: 'error', error: 'Please verify your email before logging in' }
         }
@@ -107,7 +109,9 @@ export async function registerUser(data:RegisterSchema): Promise<ActionResult<Us
         })
 
         const verificationToken = await generateToken(email, 'VERIFICATION');        
-        await sendVerificationEmail(verificationToken.email, verificationToken.token)
+        await sendVerificationEmail(verificationToken.email, verificationToken.token).catch((error) => {
+            console.error('Failed to send verification email:', error);
+        });
 
         
         return {status: 'success', data: user}
@@ -218,8 +222,8 @@ export async function verifyEmail(token: string | null | undefined): Promise<Act
         return { status: 'success', data: 'Success' }
 
     } catch (error) {
-        console.log(error);
-        throw error;
+        console.error('verifyEmail failed:', error);
+        return { status: 'error', error: 'Failed to verify email' };
     }
 }
 
