@@ -124,11 +124,22 @@ const MeetingForm = ({
 }) => {
 	const [description, setDescription] = useState<string>("");
 	const [isCreating, setIsCreating] = useState(false);
+	const [validationError, setValidationError] = useState<string>("");
 
 	const handleStartMeeting = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		if (!description || isCreating) return;
 
+		// Validate that the selected date/time is in the future
+		const selectedDateTime = new Date(dateTime.replace("T", " "));
+		const now = new Date();
+		
+		if (selectedDateTime <= now) {
+			setValidationError("Meeting must be scheduled for a future date and time.");
+			return;
+		}
+
+		setValidationError("");
 		setIsCreating(true);
 		try {
 			const id = crypto.randomUUID();
@@ -179,6 +190,15 @@ const MeetingForm = ({
 		} finally {
 			setIsCreating(false);
 		}
+	};
+
+	// Helper function to check if a date is in the past
+	const isPastDate = (dateString: string): boolean => {
+		const today = new Date();
+		today.setHours(0, 0, 0, 0);
+		const [year, month, day] = dateString.split("-").map(Number);
+		const checkDate = new Date(year, month - 1, day, 0, 0, 0, 0);
+		return checkDate < today;
 	};
 
 	// Parse current date and time for form
@@ -380,22 +400,29 @@ const MeetingForm = ({
 
 					{/* Calendar days */}
 					<div className="grid grid-cols-7 gap-1">
-						{calendarDays.map((day) => (
-							<button
-								key={day.date}
-								type="button"
-								onClick={() => handleDateChange(day.date)}
-								className={`h-8 text-xs rounded flex items-center justify-center transition ${
-									selectedDate === day.date
-										? "bg-green-600 text-white font-semibold"
-										: day.isCurrentMonth
-											? "text-gray-900 hover:bg-gray-100"
-											: "text-gray-400"
-								}`}
-							>
-								{parseInt(day.date.split("-")[2])}
-							</button>
-						))}
+						{calendarDays.map((day) => {
+							const isPast = isPastDate(day.date);
+							return (
+								<button
+									key={day.date}
+									type="button"
+									onClick={() => !isPast && handleDateChange(day.date)}
+									disabled={isPast}
+									className={`h-8 text-xs rounded flex items-center justify-center transition ${
+										selectedDate === day.date && !isPast
+											? "bg-green-600 text-white font-semibold"
+											: day.isCurrentMonth
+												? isPast
+													? "text-gray-300 cursor-not-allowed bg-gray-50"
+													: "text-gray-900 hover:bg-gray-100 cursor-pointer"
+												: "text-gray-400"
+									}`}
+									title={isPast ? "Date has passed" : ""}
+								>
+									{parseInt(day.date.split("-")[2])}
+								</button>
+							);
+						})}
 					</div>
 				</div>
 
@@ -423,6 +450,12 @@ const MeetingForm = ({
 						</option>
 					))}
 				</select>
+
+			{validationError && (
+				<div className="mb-4 p-3 bg-red-50 border border-red-200 rounded text-red-700 text-sm">
+					{validationError}
+				</div>
+			)}
 
 			<button className="w-full bg-green-600 text-white py-3 rounded mt-4 font-semibold hover:bg-green-700 transition disabled:opacity-50 disabled:cursor-not-allowed" disabled={isCreating}>
 				{isCreating ? "Creating..." : "Create FaceTime"}
