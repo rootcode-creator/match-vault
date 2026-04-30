@@ -26,7 +26,7 @@ export async function POST(request: Request) {
 
     // Initialize Stream client server-side (no media access needed)
     const client = new StreamVideoClient(apiKey, {
-      apiSecret,
+      secret: apiSecret,
     });
 
     // Create the call object
