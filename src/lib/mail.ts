@@ -52,3 +52,18 @@ export async function sendPasswordResetEmail(email: string, token: string) {
 
 
 
+export async function sendScheduledMeetingEmail(email: string, meetingDescription: string, callId: string) {
+    const link = `${getBaseUrl()}/videoCall/facetime/${callId}`;
+
+    return resend.emails.send({
+        from: 'scheduled-meeting@credentials.kawserahmed.tech',
+        to: email,
+        subject: `Scheduled FaceTime: ${meetingDescription}`,
+        html: `
+            <h1>You have scheduled a FaceTime meeting</h1>
+            <p><strong>Meeting:</strong> ${meetingDescription}</p>
+            <p>Click the link below to join the meeting</p>
+            <a href="${link}">Join FaceTime Meeting</a>
+        `
+    })
+}
