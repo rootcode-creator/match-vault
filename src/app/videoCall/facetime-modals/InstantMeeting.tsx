@@ -12,6 +12,17 @@ import CopyToClipboard from "react-copy-to-clipboard";
 import { Fragment, useState, Dispatch, SetStateAction } from "react";
 import Link from "next/link";
 
+async function readApiError(response: Response) {
+	try {
+		const payload = await response.json();
+		if (payload?.error) return String(payload.error);
+	} catch {
+		// fall through to generic status text
+	}
+
+	return response.statusText || `Request failed with status ${response.status}`;
+}
+
 interface Props {
 	enable: boolean;
 	setEnable: React.Dispatch<React.SetStateAction<boolean>>;
@@ -117,7 +128,7 @@ const MeetingForm = ({
 			});
 
 			if (!createRes.ok) {
-				throw new Error("Failed to create meeting");
+				throw new Error(await readApiError(createRes));
 			}
 
 			const createData = await createRes.json();
@@ -143,8 +154,9 @@ const MeetingForm = ({
 			setShowMeetingLink(true);
 			console.log("Meeting Created!");
 		} catch (error) {
-			console.error(error);
-			alert("Failed to create Meeting");
+			const message = error instanceof Error ? error.message : "Failed to create Meeting";
+			console.error("InstantMeeting create error:", error);
+			alert(message);
 		} finally {
 			setIsCreating(false);
 		}
