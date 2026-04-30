@@ -54,7 +54,15 @@ export const StreamVideoProvider = ({ children }: { children: ReactNode }) => {
                 });
 
                 if (!response.ok) {
-                    throw new Error("Failed to fetch Stream token");
+                    // try to read json error body for better diagnostics
+                    let errMsg = `Failed to fetch Stream token: ${response.status}`;
+                    try {
+                        const errBody = await response.json().catch(() => null);
+                        if (errBody?.error) errMsg += ` - ${errBody.error}`;
+                    } catch (e) {
+                        // ignore
+                    }
+                    throw new Error(errMsg);
                 }
 
                 const data: {

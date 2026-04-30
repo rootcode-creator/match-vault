@@ -1,12 +1,12 @@
 "use client";
-import { useGetCallById } from "../../facetime-hooks/useGetCallById";
 import { StreamVideoProvider } from "../../facetime-components/StreamVideoProvider";
 import {
 	StreamCall,
 	StreamTheme,
 	Call,
 	ParticipantsAudio,
-	useCallStateHooks
+	useCallStateHooks,
+	useStreamVideoClient
 } from "@stream-io/video-react-sdk";
 import StableVideoGrid from "../components/StableVideoGrid";
 import ParticipantPinOverlay from "../components/ParticipantPinOverlay";
@@ -50,109 +50,17 @@ if (typeof window !== "undefined") {
 
 export default function FaceTimePage() {
 	const { id } = useParams<{ id: string }>();
-	const { call, isCallLoading } = useGetCallById(id);
 	const [confirmJoin, setConfirmJoin] = useState<boolean>(false);
 	const [isJoining, setIsJoining] = useState<boolean>(false);
 	const [cameraEnabled, setCameraEnabled] = useState<boolean>(true);
 	const [microphoneEnabled, setMicrophoneEnabled] = useState<boolean>(true);
-	const leaveInFlightRef = useRef<Promise<void> | null>(null);
 	const router = useRouter();
 
-	const leaveCallSafely = useCallback(async (source: "manual" | "cleanup") => {
-		if (!call || typeof call.leave !== "function") return;
-
-		if (leaveInFlightRef.current) {
-			await leaveInFlightRef.current;
-			return;
-		}
-
-		const callingState = (call as any)?.state?.callingState;
-		if (callingState === "left" || callingState === "idle") {
-			logCallLifecycle(`leave:${source}:already-left`, { callId: call.id, callingState });
-			return;
-		}
-
-		const leavePromise = (async () => {
-			logCallLifecycle(`leave:${source}:start`, { callId: call.id, callingState });
-			try {
-				await call.leave();
-				logCallLifecycle(`leave:${source}:success`, { callId: call.id });
-			} catch (error) {
-				if (isAlreadyLeftError(error)) {
-					logCallLifecycle(`leave:${source}:already-left`, { callId: call.id });
-					return;
-				}
-
-				logCallLifecycle(`leave:${source}:error`, { callId: call.id, error });
-				console.warn("Error leaving call", error);
-			} finally {
-				leaveInFlightRef.current = null;
-			}
-		})();
-
-		leaveInFlightRef.current = leavePromise;
-		await leavePromise;
-	}, [call]);
-
-	useEffect(() => {
-		return () => {
-			if (!call || !confirmJoin) return;
-			void leaveCallSafely("cleanup");
-		};
-	}, [call, confirmJoin, leaveCallSafely]);
-
 	const handleJoin = async () => {
-		if (!call || isJoining) return;
+		// Mount provider first, then perform join inside provider-aware component
+		if (isJoining) return;
 		setIsJoining(true);
-		logCallLifecycle("join:start", { callId: call.id, cameraEnabled, microphoneEnabled });
-
-		try {
-			// Ensure we're listening to call state updates
-			const unsubscribe = call.on("call.updated", (payload: any) => {
-				logCallLifecycle("call:updated", { callId: call.id, payload });
-			});
-
-			await call.join({
-				create: false,
-				video: cameraEnabled,
-			});
-
-			// The SDK's JoinCallData type doesn't accept an `audio` option.
-			// Toggle microphone and camera after joining if the call object exposes those APIs.
-			try {
-				const c: any = call;
-				if (c.microphone && typeof c.microphone.enable === "function") {
-					try {
-						const isEnabled = !!c.microphone.enabled;
-						if (microphoneEnabled && !isEnabled) await c.microphone.enable();
-						else if (!microphoneEnabled && isEnabled) await c.microphone.disable();
-					} catch (e) {
-						console.warn("Error toggling microphone", e);
-					}
-				}
-
-				if (c.camera && typeof c.camera.enable === "function") {
-					try {
-						const isCamEnabled = !!c.camera.enabled;
-						if (cameraEnabled && !isCamEnabled) await c.camera.enable();
-						else if (!cameraEnabled && isCamEnabled) await c.camera.disable();
-					} catch (e) {
-						console.warn("Error toggling camera", e);
-					}
-				}
-			} catch (err) {
-				console.warn("Microphone/camera toggle not available on call object", err);
-			}
-
-			logCallLifecycle("join:success", { callId: call.id });
-			setConfirmJoin(true);
-		} catch (error) {
-			logCallLifecycle("join:error", { callId: call.id, error });
-			console.error(error);
-			alert("Failed to join call. Please check camera/microphone permissions and try again.");
-		} finally {
-			setIsJoining(false);
-		}
+		setConfirmJoin(true);
 	};
 
 	if (isCallLoading) {
@@ -175,11 +83,13 @@ export default function FaceTimePage() {
 		return (
 			<main className='min-h-[100dvh] w-full'>
 				<StreamVideoProvider>
-					<StreamCall call={call}>
-						<StreamTheme>
-							<MeetingRoom call={call} onLeaveCall={() => leaveCallSafely("manual")} />
-						</StreamTheme>
-					</StreamCall>
+					{/* ProviderJoin handles creating the Stream call client-side and joining once the provider is ready */}
+					<ProviderJoin
+						callId={Array.isArray(id) ? id[0] : id}
+						cameraEnabled={cameraEnabled}
+						microphoneEnabled={microphoneEnabled}
+						setIsJoining={setIsJoining}
+					/>
 				</StreamVideoProvider>
 			</main>
 		);
@@ -283,5 +193,100 @@ const MeetingRoom = ({ call, onLeaveCall }: { call: Call; onLeaveCall: () => Pro
 				</div>
 			</div>
 		</section>
+	);
+};
+
+const ProviderJoin = ({
+	callId,
+	cameraEnabled,
+	microphoneEnabled,
+	setIsJoining
+}: {
+	callId: string;
+	cameraEnabled: boolean;
+	microphoneEnabled: boolean;
+	setIsJoining: (v: boolean) => void;
+}) => {
+	const client = useStreamVideoClient();
+	const router = useRouter();
+	const [call, setCall] = useState<Call | undefined>(undefined);
+
+	useEffect(() => {
+		let isActive = true;
+
+		const doJoin = async () => {
+			if (!client) return;
+
+			try {
+				const c = client.call("default", callId);
+
+				try {
+					await c.get();
+				} catch (e) {
+					// call might not have state yet; continue
+					console.debug("Call state not available yet:", e);
+				}
+
+				await c.join({ create: false, video: cameraEnabled });
+
+				try {
+					const anyC: any = c;
+					if (anyC.microphone && typeof anyC.microphone.enable === "function") {
+						const isEnabled = !!anyC.microphone.enabled;
+						if (microphoneEnabled && !isEnabled) await anyC.microphone.enable();
+						else if (!microphoneEnabled && isEnabled) await anyC.microphone.disable();
+					}
+
+					if (anyC.camera && typeof anyC.camera.enable === "function") {
+						const isCamEnabled = !!anyC.camera.enabled;
+						if (cameraEnabled && !isCamEnabled) await anyC.camera.enable();
+						else if (!cameraEnabled && isCamEnabled) await anyC.camera.disable();
+					}
+				} catch (err) {
+					console.warn("Microphone/camera toggle not available on call object", err);
+				}
+
+				if (!isActive) return;
+				setCall(c);
+				setIsJoining(false);
+			} catch (error) {
+				console.error("Error joining call:", error);
+				alert("Failed to join call. Please check camera/microphone permissions and try again.");
+				setIsJoining(false);
+				router.push("/");
+			}
+		};
+
+		doJoin();
+
+		return () => {
+			isActive = false;
+		};
+	}, [client, callId, cameraEnabled, microphoneEnabled, router, setIsJoining]);
+
+	const handleLeave = async () => {
+		try {
+			if (call && typeof call.leave === "function") await call.leave();
+		} catch (err) {
+			console.warn("Error leaving call", err);
+		} finally {
+			router.push("/");
+		}
+	};
+
+	if (!call) {
+		return (
+			<div className='flex min-h-screen w-full items-center justify-center'>
+				<p className='text-sm text-slate-600'>Joining…</p>
+			</div>
+		);
+	}
+
+	return (
+		<StreamCall call={call}>
+			<StreamTheme>
+				<MeetingRoom call={call} onLeaveCall={handleLeave} />
+			</StreamTheme>
+		</StreamCall>
 	);
 };
