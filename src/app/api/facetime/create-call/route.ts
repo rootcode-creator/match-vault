@@ -4,7 +4,7 @@ import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 
 const apiKey = process.env.NEXT_PUBLIC_STREAM_API_KEY!;
-const apiSecret = process.env.STREAM_SECRET_KEY!;
+const apiSecret = process.env.STREAM_SECRET_KEY ?? process.env.STREAM_SECRET;
 
 export async function POST(request: Request) {
   try {
@@ -36,6 +36,13 @@ export async function POST(request: Request) {
       );
     }
 
+    if (!apiKey || !apiSecret) {
+      return NextResponse.json(
+        { error: "Stream is not configured" },
+        { status: 500 }
+      );
+    }
+
     // Initialize Stream client server-side (no media access needed)
     const client = new StreamClient(apiKey, apiSecret);
 
@@ -55,9 +62,10 @@ export async function POST(request: Request) {
       callId: call.id,
     });
   } catch (error) {
+    const message = error instanceof Error ? error.message : "Failed to create call";
     console.error("Error creating call:", error);
     return NextResponse.json(
-      { error: "Failed to create call" },
+      { error: message },
       { status: 500 }
     );
   }
