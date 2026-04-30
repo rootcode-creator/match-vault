@@ -14,10 +14,15 @@ import { AuthError } from 'next-auth';
 const shouldExposeError =
     process.env.DEBUG_ERRORS === 'true' || process.env.NODE_ENV !== 'production';
 
+function normalizeEmail(email: string) {
+    return email.trim().toLowerCase();
+}
+
 
 export async function signInUser(data: LoginSchema): Promise<ActionResult<string>>{
     try {
-        const existingUser = await getUserByEmail(data.email);
+        const email = normalizeEmail(data.email);
+        const existingUser = await getUserByEmail(email);
 
         console.debug('signInUser: existingUser:', existingUser);
 
@@ -34,7 +39,7 @@ export async function signInUser(data: LoginSchema): Promise<ActionResult<string
         }
 
         await signIn('credentials', {
-            email: data.email,
+            email,
             password: data.password,
             redirect: false
         });
@@ -71,7 +76,8 @@ export async function registerUser(data:RegisterSchema): Promise<ActionResult<Us
             return {status: 'error', error: validated.error.issues}
         }
 
-        const {name, email, password, gender, description,city, country,dateOfBirth } = validated.data;
+        const {name, email: rawEmail, password, gender, description,city, country,dateOfBirth } = validated.data;
+        const email = normalizeEmail(rawEmail);
 
         const hashedPassword = await bcrypt.hash(password, 12);
 
