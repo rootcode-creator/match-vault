@@ -99,87 +99,90 @@ const MeetingList = () => {
 	
     return (
         <>
-			<div className='flex flex-col space-y-4'>
+			<div className='mt-6 flex flex-col space-y-4 max-h-[60vh] overflow-y-auto pr-2'>
 				{upcomingCalls?.map((call: any) => (
-					 <div className='bg-gray-100 py-4 px-4 rounded flex flex-col gap-3' key={call.id}>
-						<div className="space-y-2">
-							<p className='text-sm font-semibold text-gray-800'>{call.description}</p>
-							<p className='text-xs text-gray-600'>
-								<span className='font-medium'>Date:</span> {formatDateTime(new Date(call.startsAt).toLocaleString())}
+					<div className='bg-gradient-to-br from-slate-50 to-white border border-slate-200 rounded-xl p-5 shadow-sm hover:shadow-md transition-shadow' key={call.id}>
+						{/* Meeting Title */}
+						<h4 className='text-base font-bold text-slate-900 mb-3 line-clamp-1'>{call.description}</h4>
+						
+						{/* Date and Time */}
+						<div className='mb-4 pb-4 border-b border-slate-100'>
+							<p className='text-xs text-slate-600'>
+								<span className='font-semibold text-slate-700'>Date & Time:</span> {formatDateTime(new Date(call.startsAt).toLocaleString())}
 							</p>
+						</div>
 
-							<div className='space-y-2'>
-								<p className='text-xs font-medium text-gray-700'>Meeting with:</p>
-								<div className='flex flex-wrap gap-2'>
-									{call.isCreator ? (
-										call.recipients && call.recipients.length > 0 ? (
-											call.recipients.map((recipient: any) => (
-												<div key={recipient.id} className='flex items-center gap-1 bg-white px-2 py-1 rounded text-xs border border-gray-300'>
-													{recipient.image && (
-														<img
-															src={recipient.image}
-															alt={recipient.name}
-															className='h-5 w-5 rounded-full object-cover'
-														/>
-													)}
-													<span className='text-gray-700'>{recipient.name}</span>
-												</div>
-											))
-										) : (
-											<span className='text-xs text-gray-500'>No recipients added yet</span>
-										)
+						{/* Meeting Participants */}
+						<div className='mb-4'>
+							<p className='text-xs font-semibold text-slate-700 mb-2.5 uppercase tracking-wide'>Meeting with</p>
+							<div className='flex flex-wrap gap-2'>
+								{call.isCreator ? (
+									call.recipients && call.recipients.length > 0 ? (
+										call.recipients.map((recipient: any) => (
+											<div key={recipient.id} className='inline-flex items-center gap-1.5 bg-white px-3 py-1.5 rounded-full text-xs border border-emerald-200 hover:border-emerald-300 transition-colors'>
+												{recipient.image && (
+													<img
+														src={recipient.image}
+														alt={recipient.name}
+														className='h-5 w-5 rounded-full object-cover border border-slate-200'
+													/>
+												)}
+												<span className='text-slate-700 font-medium'>{recipient.name}</span>
+											</div>
+										))
 									) : (
-										<div className='flex items-center gap-2 bg-white px-2 py-1 rounded text-xs border border-gray-300'>
-											{call.creatorImage && (
-												<img
-													src={call.creatorImage}
-													alt={call.creatorName}
-													className='h-5 w-5 rounded-full object-cover'
-												/>
-											)}
-											<span className='text-gray-700'>{call.creatorName || 'Unknown'}</span>
-										</div>
-									)}
-								</div>
+										<span className='text-xs text-slate-500 italic'>No recipients invited yet</span>
+									)
+								) : (
+									<div className='inline-flex items-center gap-1.5 bg-white px-3 py-1.5 rounded-full text-xs border border-blue-200 hover:border-blue-300 transition-colors'>
+										{call.creatorImage && (
+											<img
+												src={call.creatorImage}
+												alt={call.creatorName}
+												className='h-5 w-5 rounded-full object-cover border border-slate-200'
+											/>
+										)}
+										<span className='text-slate-700 font-medium'>{call.creatorName || 'Unknown'}</span>
+									</div>
+								)}
 							</div>
 						</div>
                     
-						<div className="flex items-center gap-2">
-							{call.isCreator ? (
-								<>
-									<button
-										type="button"
-										className='bg-slate-700 text-sm px-4 py-2 hover:bg-slate-800 text-white rounded-md shadow-sm'
-										onClick={async () => {
-											const res = await fetch(`/api/facetime/meetings/${encodeURIComponent(call.callId)}`, {
-												method: "DELETE",
-												credentials: "include",
-											});
-											if (res.ok) {
-												removeUpcomingCall(call.callId);
-												return;
-											}
+						{/* Action Buttons */}
+						{call.isCreator ? (
+							<div className='flex gap-2 pt-2'>
+								<button
+									type="button"
+									className='flex-1 bg-slate-600 hover:bg-slate-700 text-white text-sm font-semibold py-2.5 px-3 rounded-lg shadow-sm transition-all duration-200 hover:shadow-md'
+									onClick={async () => {
+										const res = await fetch(`/api/facetime/meetings/${encodeURIComponent(call.callId)}`, {
+											method: "DELETE",
+											credentials: "include",
+										});
+										if (res.ok) {
+											removeUpcomingCall(call.callId);
+											return;
+										}
 
-											const payload = await res.json().catch(() => ({} as any));
-											alert(payload?.error ?? "Failed to complete meeting");
-										}}
-									>
-										Complete
-									</button>
-									<Link className='bg-green-500 text-sm px-4 py-2 hover:bg-green-700 text-white rounded-md shadow-sm'
-									href={`/videoCall/facetime/${call.callId}`}
-									>
-										Start now
-									</Link>
-								</>
-							) : (
-								<Link className='bg-blue-500 text-sm px-4 py-2 hover:bg-blue-700 text-white rounded-md shadow-sm w-full text-center'
+										const payload = await res.json().catch(() => ({} as any));
+										alert(payload?.error ?? "Failed to complete meeting");
+									}}
+								>
+									Complete
+								</button>
+								<Link className='flex-1 bg-emerald-500 hover:bg-emerald-600 text-white text-sm font-semibold py-2.5 px-3 rounded-lg shadow-sm transition-all duration-200 hover:shadow-md text-center flex items-center justify-center'
 								href={`/videoCall/facetime/${call.callId}`}
 								>
-									Join Meeting
+									Start now
 								</Link>
-							)}
-						</div>
+							</div>
+						) : (
+							<Link className='block w-full bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold py-2.5 px-4 rounded-lg shadow-sm transition-all duration-200 hover:shadow-md text-center'
+							href={`/videoCall/facetime/${call.callId}`}
+							>
+								Join Meeting
+							</Link>
+						)}
                 </div>
 
 				))}
