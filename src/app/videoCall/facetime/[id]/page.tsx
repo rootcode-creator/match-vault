@@ -63,22 +63,6 @@ export default function FaceTimePage() {
 		setConfirmJoin(true);
 	};
 
-	if (isCallLoading) {
-		return (
-			<main className='flex min-h-screen w-full items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100 px-4'>
-				<p className='text-sm text-slate-600'>Loading…</p>
-			</main>
-		);
-	}
-
-	if (!call) {
-		return (
-			<main className='flex min-h-screen w-full items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100 px-4'>
-				<p className='text-sm text-slate-600'>Call not found</p>
-			</main>
-		);
-	}
-
 	if (confirmJoin) {
 		return (
 			<main className='min-h-[100dvh] w-full'>
