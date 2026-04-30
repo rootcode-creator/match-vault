@@ -23,7 +23,7 @@ export default function UpcomingMeeting({ enable, setEnable }: Props) {
 	return (
 		<>
 			<Transition appear show={enable} as={Fragment}>
-				<Dialog as='div' className='relative z-10' onClose={closeModal}>
+				<Dialog as='div' className='relative z-[100]' onClose={closeModal}>
 					<TransitionChild
 						as={Fragment}
 						enter='ease-out duration-300'
@@ -33,10 +33,10 @@ export default function UpcomingMeeting({ enable, setEnable }: Props) {
 						leaveFrom='opacity-100'
 						leaveTo='opacity-0'
 					>
-						<div className='fixed inset-0 bg-black/75' />
+						<div className='fixed inset-0 z-[100] bg-black/75' />
 					</TransitionChild>
 
-					<div className='fixed inset-0 overflow-y-auto'>
+					<div className='fixed inset-0 z-[110] overflow-y-auto'>
 						<div className='flex min-h-full items-center justify-center p-4 text-center'>
 							<TransitionChild
 								as={Fragment}
@@ -104,52 +104,42 @@ const MeetingList = () => {
 					 <div className='bg-gray-100 py-4 px-4 rounded flex flex-col gap-3' key={call.id}>
 						<div className="space-y-2">
 							<p className='text-sm font-semibold text-gray-800'>{call.description}</p>
-							
-							{call.isCreator ? (
-								<>
-									<p className='text-xs text-gray-600'>
-										<span className='font-medium'>Date:</span> {formatDateTime(new Date(call.startsAt).toLocaleString())}
-									</p>
-									
-									{call.recipients && call.recipients.length > 0 && (
-										<div className='space-y-2'>
-											<p className='text-xs font-medium text-gray-700'>Meeting with:</p>
-											<div className='flex flex-wrap gap-2'>
-												{call.recipients.map((recipient: any) => (
-													<div key={recipient.id} className='flex items-center gap-1 bg-white px-2 py-1 rounded text-xs border border-gray-300'>
-														{recipient.image && (
-															<img 
-																src={recipient.image} 
-																alt={recipient.name}
-																className='h-5 w-5 rounded-full object-cover'
-															/>
-														)}
-														<span className='text-gray-700'>{recipient.name}</span>
-													</div>
-												))}
-											</div>
+							<p className='text-xs text-gray-600'>
+								<span className='font-medium'>Date:</span> {formatDateTime(new Date(call.startsAt).toLocaleString())}
+							</p>
+
+							<div className='space-y-2'>
+								<p className='text-xs font-medium text-gray-700'>Meeting with:</p>
+								<div className='flex flex-wrap gap-2'>
+									{call.isCreator
+										? (call.recipients?.length > 0
+											? call.recipients.map((recipient: any) => (
+												<div key={recipient.id} className='flex items-center gap-1 bg-white px-2 py-1 rounded text-xs border border-gray-300'>
+													{recipient.image && (
+														<img
+															src={recipient.image}
+															alt={recipient.name}
+															className='h-5 w-5 rounded-full object-cover'
+														/>
+													)}
+													<span className='text-gray-700'>{recipient.name}</span>
+												</div>
+											))
+											: <span className='text-xs text-gray-500'>No recipients added yet</span>)
+									: (
+										<div className='flex items-center gap-2 bg-white px-2 py-1 rounded text-xs border border-gray-300'>
+											{call.creatorImage && (
+												<img
+													src={call.creatorImage}
+													alt={call.creatorName}
+													className='h-5 w-5 rounded-full object-cover'
+												/>
+											)}
+											<span className='text-gray-700'>{call.creatorName || 'Unknown'}</span>
 										</div>
-									)}
-								</>
-							) : (
-								<>
-									<div className='flex items-center gap-2'>
-										{call.creatorImage && (
-											<img 
-												src={call.creatorImage} 
-												alt={call.creatorName}
-												className='h-6 w-6 rounded-full object-cover'
-											/>
-										)}
-										<p className='text-xs text-gray-600'>
-											<span className='font-medium'>Scheduled by:</span> {call.creatorName || 'Unknown'}
-										</p>
-									</div>
-									<p className='text-xs text-gray-600'>
-										<span className='font-medium'>Date:</span> {formatDateTime(new Date(call.startsAt).toLocaleString())}
-									</p>
-								</>
-							)}
+									)
+								}
+							</div>
 						</div>
                     
 						<div className="flex items-center gap-2">
