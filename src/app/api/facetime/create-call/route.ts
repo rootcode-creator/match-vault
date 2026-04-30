@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { StreamVideoClient } from "@stream-io/video-react-sdk";
+import { StreamClient } from "@stream-io/node-sdk";
 import { getAuthUserId } from "@/app/actions/authActions";
 
 const apiKey = process.env.NEXT_PUBLIC_STREAM_API_KEY!;
@@ -25,12 +25,10 @@ export async function POST(request: Request) {
     }
 
     // Initialize Stream client server-side (no media access needed)
-    const client = new StreamVideoClient(apiKey, {
-      secret: apiSecret,
-    });
+    const client = new StreamClient(apiKey, apiSecret);
 
     // Create the call object
-    const call = client.call("default", callId);
+    const call = client.video.call("default", callId);
     await call.getOrCreate({
       data: {
         starts_at: new Date(startsAt).toISOString(),
