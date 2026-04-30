@@ -318,8 +318,7 @@ const MeetingForm = ({
 		const [y, m, d] = selectedDate.split("-").map(Number);
 		const newMonth = m === 1 ? 12 : m - 1;
 		const newYear = m === 1 ? y - 1 : y;
-		const newDate = new Date(newYear, newMonth - 1, 1);
-		const formattedDate = newDate.toISOString().split("T")[0];
+		const formattedDate = `${newYear}-${String(newMonth).padStart(2, "0")}-01`;
 		setSelectedDate(formattedDate);
 	};
 
@@ -327,8 +326,7 @@ const MeetingForm = ({
 		const [y, m, d] = selectedDate.split("-").map(Number);
 		const newMonth = m === 12 ? 1 : m + 1;
 		const newYear = m === 12 ? y + 1 : y;
-		const newDate = new Date(newYear, newMonth - 1, 1);
-		const formattedDate = newDate.toISOString().split("T")[0];
+		const formattedDate = `${newYear}-${String(newMonth).padStart(2, "0")}-01`;
 		setSelectedDate(formattedDate);
 	};
 
