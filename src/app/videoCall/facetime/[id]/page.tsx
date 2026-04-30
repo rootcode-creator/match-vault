@@ -1,5 +1,6 @@
 "use client";
 import { useGetCallById } from "../../facetime-hooks/useGetCallById";
+import { StreamVideoProvider } from "../../facetime-components/StreamVideoProvider";
 import {
 	StreamCall,
 	StreamTheme,
@@ -173,11 +174,13 @@ export default function FaceTimePage() {
 	if (confirmJoin) {
 		return (
 			<main className='min-h-[100dvh] w-full'>
-				<StreamCall call={call}>
-					<StreamTheme>
-						<MeetingRoom call={call} onLeaveCall={() => leaveCallSafely("manual")} />
-					</StreamTheme>
-				</StreamCall>
+				<StreamVideoProvider>
+					<StreamCall call={call}>
+						<StreamTheme>
+							<MeetingRoom call={call} onLeaveCall={() => leaveCallSafely("manual")} />
+						</StreamTheme>
+					</StreamCall>
+				</StreamVideoProvider>
 			</main>
 		);
 	}

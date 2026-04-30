@@ -10,7 +10,6 @@ import {
 import { FaCopy, FaTimes } from "react-icons/fa";
 import CopyToClipboard from "react-copy-to-clipboard";
 import { Fragment, SetStateAction, useState, Dispatch } from "react";
-import { useStreamVideoClient, Call } from "@stream-io/video-react-sdk";
 
 interface Props {
 	enable: boolean;
@@ -113,36 +112,42 @@ const MeetingForm = ({
 	recipientUserIds?: string[] | undefined;
 }) => {
 	const [description, setDescription] = useState<string>("");
-	const [callDetail, setCallDetail] = useState<Call>();
-	const client = useStreamVideoClient();
+	const [isCreating, setIsCreating] = useState(false);
 
 	const handleStartMeeting = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		if (!client) return;
+		if (!description || isCreating) return;
+
+		setIsCreating(true);
 		try {
 			const id = crypto.randomUUID();
-			const call = client.call("default", id);
-			if (!call) throw new Error("Failed to create meeting");
-
 			const startsAtIso = toIsoFromDatetimeLocal(dateTime);
 
-			await call.getOrCreate({
-				data: {
-					starts_at: startsAtIso,
-					custom: {
-						description,
-					},
-				},
+			// Create call via API endpoint
+			const createRes = await fetch("/api/facetime/create-call", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				credentials: "include",
+				body: JSON.stringify({
+					callId: id,
+					description,
+					startsAt: startsAtIso,
+				}),
 			});
 
-			// Store meeting metadata in our DB so the "Upcoming FaceTime" modal doesn't
-			// depend on Stream call queries.
+			if (!createRes.ok) {
+				throw new Error("Failed to create meeting");
+			}
+
+			const createData = await createRes.json();
+
+			// Store meeting metadata in our DB
 			const saveRes = await fetch("/api/facetime/meetings", {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
 				credentials: "include",
 				body: JSON.stringify({
-					callId: call.id,
+					callId: createData.callId,
 					description,
 					startsAt: startsAtIso,
 					recipientUserIds: recipientUserIds ?? [],
@@ -153,15 +158,14 @@ const MeetingForm = ({
 				console.warn("Failed to save meeting", payload?.error ?? saveRes.statusText);
 			}
 
-			setCallDetail(call);
-			setFacetimeLink(`${call.id}`);
+			setFacetimeLink(createData.callId);
 			setShowMeetingLink(true);
-
-			console.log({ call });
 			console.log("Meeting Created!");
 		} catch (error) {
 			console.error(error);
-			console.error({ title: "Failed to create Meeting" });
+			alert("Failed to create Meeting");
+		} finally {
+			setIsCreating(false);
 		}
 	};
 
@@ -408,8 +412,8 @@ const MeetingForm = ({
 					))}
 				</select>
 
-				<button className="w-full bg-green-600 text-white py-3 rounded mt-4 font-semibold hover:bg-green-700 transition">
-					Create FaceTime
+			<button className="w-full bg-green-600 text-white py-3 rounded mt-4 font-semibold hover:bg-green-700 transition disabled:opacity-50 disabled:cursor-not-allowed" disabled={isCreating}>
+				{isCreating ? "Creating..." : "Create FaceTime"}
 				</button>
 			</form>
 		</>

@@ -48,13 +48,13 @@ export default function UpcomingMeeting({ enable, setEnable }: Props) {
 								leaveTo='opacity-0 scale-95'
 							>
 								<DialogPanel className='w-full max-w-2xl transform overflow-hidden rounded-2xl bg-white p-6 align-middle text-center shadow-xl transition-all'>
-									<div className='flex items-start justify-between gap-4 pb-6'>
-										<DialogTitle as='h3' className='text-lg font-bold leading-6 text-green-600'>
+									<div className='flex items-center justify-between gap-8 pb-6 border-b border-gray-200'>
+										<DialogTitle as='h3' className='text-lg font-bold leading-6 text-green-600 flex-1 text-left'>
 											Upcoming FaceTime
 										</DialogTitle>
 										<button
 											onClick={closeModal}
-											className='rounded-full p-2 text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-700'
+											className='flex-shrink-0 rounded-full p-2 text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-700'
 											aria-label='Close modal'
 										>
 											<FaTimes size={20} />

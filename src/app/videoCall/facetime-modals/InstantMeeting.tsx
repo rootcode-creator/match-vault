@@ -10,7 +10,6 @@ import {
 import { FaCopy, FaTimes } from "react-icons/fa";
 import CopyToClipboard from "react-copy-to-clipboard";
 import { Fragment, useState, Dispatch, SetStateAction } from "react";
-import { useStreamVideoClient, Call } from "@stream-io/video-react-sdk";
 import Link from "next/link";
 
 interface Props {
@@ -94,39 +93,44 @@ const MeetingForm = ({
 	recipientUserIds?: string[] | undefined;
 }) => {
 	const [description, setDescription] = useState<string>("");
-	const [callDetail, setCallDetail] = useState<Call>();
-
-	const client = useStreamVideoClient();
+	const [isCreating, setIsCreating] = useState(false);
 
 	const handleStartMeeting = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		if (!client) return;
+		if (!description || isCreating) return;
+
+		setIsCreating(true);
 		try {
 			const id = crypto.randomUUID();
-			const call = client.call("default", id);
-			if (!call) throw new Error("Failed to create meeting");
+			const startsAtIso = new Date(Date.now()).toISOString();
 
-			await call.getOrCreate({
-				data: {
-					starts_at: new Date(Date.now()).toISOString(),
-					custom: {
-						description,
-					},
-				},
+			// Create call via API endpoint
+			const createRes = await fetch("/api/facetime/create-call", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				credentials: "include",
+				body: JSON.stringify({
+					callId: id,
+					description,
+					startsAt: startsAtIso,
+				}),
 			});
 
-			setCallDetail(call);
-			setFacetimeLink(`${call.id}`);
-			setShowMeetingLink(true);
-			// Persist meeting metadata with optional recipients so UpcomingMeeting can show it
+			if (!createRes.ok) {
+				throw new Error("Failed to create meeting");
+			}
+
+			const createData = await createRes.json();
+			setFacetimeLink(createData.callId);
+
+			// Persist meeting metadata with optional recipients
 			try {
-				const startsAtIso = new Date(Date.now()).toISOString();
 				await fetch("/api/facetime/meetings", {
 					method: "POST",
 					headers: { "Content-Type": "application/json" },
 					credentials: "include",
 					body: JSON.stringify({
-						callId: call.id,
+						callId: createData.callId,
 						description,
 						startsAt: startsAtIso,
 						recipientUserIds: recipientUserIds ?? [],
@@ -135,10 +139,14 @@ const MeetingForm = ({
 			} catch (err) {
 				console.warn("Failed to save instant meeting metadata", err);
 			}
+
+			setShowMeetingLink(true);
 			console.log("Meeting Created!");
 		} catch (error) {
 			console.error(error);
 			alert("Failed to create Meeting");
+		} finally {
+			setIsCreating(false);
 		}
 	};
 
@@ -173,8 +181,8 @@ const MeetingForm = ({
 					placeholder='Enter a description for the meeting'
 				/>
 
-				<button className='w-full bg-green-600 text-white py-3 rounded mt-4'>
-					Proceed
+				<button className='w-full bg-green-600 text-white py-3 rounded mt-4' disabled={isCreating}>
+					{isCreating ? "Creating..." : "Proceed"}
 				</button>
 			</form>
 		</>
