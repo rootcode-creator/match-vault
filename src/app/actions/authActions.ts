@@ -19,6 +19,8 @@ export async function signInUser(data: LoginSchema): Promise<ActionResult<string
     try {
         const existingUser = await getUserByEmail(data.email);
 
+        console.debug('signInUser: existingUser:', existingUser);
+
         if (!existingUser || !existingUser.email) return { status: 'error', error: 'Invalid credentials' }
 
         if (!existingUser.emailVerified) {
@@ -192,6 +194,8 @@ export async function verifyEmail(token: string | null | undefined): Promise<Act
 
         const existingToken = await getTokenByToken(token);
 
+        console.debug('verifyEmail: token:', token, 'existingToken:', existingToken);
+
         if (!existingToken) {
             return { status: 'error', error: 'Invalid token' }
         }
@@ -207,6 +211,8 @@ export async function verifyEmail(token: string | null | undefined): Promise<Act
         }
 
         const existingUser = await getUserByEmail(existingToken.email);
+
+        console.debug('verifyEmail: existingUser:', existingUser);
 
         if (!existingUser) {
             return { status: 'error', error: 'User not found' }
