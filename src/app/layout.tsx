@@ -4,6 +4,7 @@ import Providers from "@/components/Providers";
 import TopNav from "@/components/navbar/TopNav";
 import { auth } from "@/auth";
 import { getUserInfoForNav } from "@/app/actions/userActions";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 export const metadata: Metadata = {
   title: "Match Vault",
@@ -41,6 +42,7 @@ export default async function RootLayout({
             </div>
           </div>
         </Providers>
+        <SpeedInsights />
       </body>
     </html>
   );
