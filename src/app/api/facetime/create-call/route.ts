@@ -2,7 +2,6 @@ import { NextResponse } from "next/server";
 import { StreamClient } from "@stream-io/node-sdk";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
-import { sendScheduledMeetingEmail } from "@/lib/mail";
 
 const apiKey = process.env.NEXT_PUBLIC_STREAM_API_KEY!;
 const apiSecret = process.env.STREAM_SECRET_KEY ?? process.env.STREAM_SECRET;
@@ -18,7 +17,7 @@ export async function POST(request: Request) {
 
     const existingUser = await prisma.user.findUnique({
       where: { id: userId },
-      select: { id: true, email: true },
+      select: { id: true },
     });
 
     if (!existingUser) {
@@ -58,13 +57,6 @@ export async function POST(request: Request) {
         },
       },
     });
-
-    // Send email notification to the user
-    if (existingUser.email) {
-      await sendScheduledMeetingEmail(existingUser.email, description, callId).catch((error) => {
-        console.error("Failed to send scheduled meeting email:", error);
-      });
-    }
 
     return NextResponse.json({
       success: true,
