@@ -19,8 +19,10 @@ export default async function MembersPage({searchParams,}:{
   }
 
   const params = await searchParams;
-  
-  const {items:members, totalCount}= await getMembers(params);
+  // By default, show members even if they don't have a photo so newly registered users appear
+  const mergedParams = { ...params, withPhoto: params?.withPhoto ?? 'false' };
+
+  const {items:members, totalCount}= await getMembers(mergedParams as any);
   const likeIds = await fetchCurrentUserLikeIds();
 
   return (

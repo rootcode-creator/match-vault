@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { sendScheduledMeetingEmail } from '@/lib/mail';
 import { getAuthUserId } from "@/app/actions/authActions";
 
 export async function GET() {
@@ -174,6 +175,26 @@ export async function POST(request: Request) {
         },
       },
     });
+    // Send scheduled meeting emails to recipients (best-effort)
+    try {
+      if (recipientUserIds.length > 0) {
+        const users = await prisma.user.findMany({
+          where: { id: { in: recipientUserIds } },
+          select: { email: true }
+        });
+
+        await Promise.all(
+          users.map((u) => {
+            if (!u.email) return Promise.resolve();
+            return sendScheduledMeetingEmail(u.email, description, callId).catch((err) => {
+              console.warn('Failed to send scheduled meeting email to', u.email, err);
+            });
+          })
+        );
+      }
+    } catch (err) {
+      console.warn('Error while sending scheduled meeting emails', err);
+    }
 
     return NextResponse.json({
       meeting: {
