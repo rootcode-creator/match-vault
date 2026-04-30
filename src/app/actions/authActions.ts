@@ -21,29 +21,39 @@ function normalizeEmail(email: string) {
 
 export async function signInUser(data: LoginSchema): Promise<ActionResult<string>>{
     try {
+        console.log('=== signInUser START ===');
         const email = normalizeEmail(data.email);
+        console.log('signInUser: normalized email:', email);
+        
         const existingUser = await getUserByEmail(email);
 
+        console.log('signInUser: looked up user, found:', existingUser ? 'YES' : 'NO');
         console.debug('signInUser: existingUser:', existingUser);
 
         if (!existingUser || !existingUser.email) return { status: 'error', error: 'Invalid credentials' }
 
-        if (!existingUser.emailVerified) {
-            const { token, email } = await generateToken(normalizeEmail(existingUser.email || ''), 'VERIFICATION');
+        console.log('signInUser: user emailVerified status:', existingUser.emailVerified);
 
-            await sendVerificationEmail(email, token).catch((error) => {
-                console.error('Failed to send verification email:', error);
+        if (!existingUser.emailVerified) {
+            console.log('signInUser: user not verified, generating verification token...');
+            const { token, email: tokenEmail } = await generateToken(normalizeEmail(existingUser.email || ''), 'VERIFICATION');
+            console.log('signInUser: generated token, email:', tokenEmail);
+
+            await sendVerificationEmail(tokenEmail, token).catch((error) => {
+                console.error('signInUser: Failed to send verification email:', error);
             });
 
             return { status: 'error', error: 'Please verify your email before logging in' }
         }
 
+        console.log('signInUser: user verified, attempting credentials sign-in...');
         await signIn('credentials', {
             email,
             password: data.password,
             redirect: false
         });
 
+        console.log('=== signInUser SUCCESS ===');
         return { status: 'success', data: 'Logged in' }
     } catch (error) {
         console.error('signInUser failed', error);
@@ -194,47 +204,60 @@ export async function getAuthUserId(){
 
 export async function verifyEmail(token: string | null | undefined): Promise<ActionResult<string>> {
     try {
+        console.log('=== verifyEmail START ===');
+        console.log('token received:', token);
+        
         if (!token) {
+            console.log('verifyEmail: no token provided');
             return { status: 'error', error: 'Missing token' }
         }
 
         const existingToken = await getTokenByToken(token);
 
-        console.debug('verifyEmail: token:', token, 'existingToken:', existingToken);
+        console.log('verifyEmail: looked up token in DB, found:', existingToken ? 'YES' : 'NO');
+        console.debug('verifyEmail: token object:', existingToken);
 
         if (!existingToken) {
+            console.log('verifyEmail: token not found in database');
             return { status: 'error', error: 'Invalid token' }
         }
 
         if (existingToken.type !== 'VERIFICATION') {
+            console.log('verifyEmail: token type is not VERIFICATION, got:', existingToken.type);
             return { status: 'error', error: 'Invalid token type' }
         }
 
         const hasExpired = new Date() > existingToken.expires;
 
         if (hasExpired) {
+            console.log('verifyEmail: token has expired. Now:', new Date(), 'Expires:', existingToken.expires);
             return { status: 'error', error: 'Token has expired' }
         }
 
         const existingUser = await getUserByEmail(normalizeEmail(existingToken.email));
 
-        console.debug('verifyEmail: existingUser:', existingUser);
+        console.log('verifyEmail: looked up user by email:', existingToken.email, 'found:', existingUser ? 'YES' : 'NO');
+        console.debug('verifyEmail: user object:', existingUser);
 
         if (!existingUser) {
+            console.log('verifyEmail: user not found');
             return { status: 'error', error: 'User not found' }
         }
 
+        console.log('verifyEmail: updating user emailVerified...');
         await prisma.user.update({
             where: { id: existingUser.id },
             data: { emailVerified: new Date() }
         });
 
+        console.log('verifyEmail: deleting token...');
         await deleteTokenById(existingToken.id)
 
+        console.log('=== verifyEmail SUCCESS ===');
         return { status: 'success', data: 'Success' }
 
     } catch (error) {
-        console.error('verifyEmail failed:', error);
+        console.error('verifyEmail FAILED with exception:', error);
         return { status: 'error', error: 'Failed to verify email' };
     }
 }
