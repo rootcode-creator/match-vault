@@ -1,14 +1,26 @@
 import { NextResponse } from "next/server";
 import { StreamClient } from "@stream-io/node-sdk";
-import { getAuthUserId } from "@/app/actions/authActions";
+import { auth } from "@/auth";
+import { prisma } from "@/lib/prisma";
 
 const apiKey = process.env.NEXT_PUBLIC_STREAM_API_KEY!;
 const apiSecret = process.env.STREAM_SECRET_KEY!;
 
 export async function POST(request: Request) {
   try {
-    const userId = await getAuthUserId();
+    const session = await auth();
+    const userId = session?.user?.id;
+
     if (!userId) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    const existingUser = await prisma.user.findUnique({
+      where: { id: userId },
+      select: { id: true },
+    });
+
+    if (!existingUser) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
