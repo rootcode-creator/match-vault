@@ -111,9 +111,9 @@ const MeetingList = () => {
 							<div className='space-y-2'>
 								<p className='text-xs font-medium text-gray-700'>Meeting with:</p>
 								<div className='flex flex-wrap gap-2'>
-									{call.isCreator
-										? (call.recipients?.length > 0
-											? call.recipients.map((recipient: any) => (
+									{call.isCreator ? (
+										call.recipients && call.recipients.length > 0 ? (
+											call.recipients.map((recipient: any) => (
 												<div key={recipient.id} className='flex items-center gap-1 bg-white px-2 py-1 rounded text-xs border border-gray-300'>
 													{recipient.image && (
 														<img
@@ -125,8 +125,10 @@ const MeetingList = () => {
 													<span className='text-gray-700'>{recipient.name}</span>
 												</div>
 											))
-											: <span className='text-xs text-gray-500'>No recipients added yet</span>)
-									: (
+										) : (
+											<span className='text-xs text-gray-500'>No recipients added yet</span>
+										)
+									) : (
 										<div className='flex items-center gap-2 bg-white px-2 py-1 rounded text-xs border border-gray-300'>
 											{call.creatorImage && (
 												<img
@@ -137,8 +139,8 @@ const MeetingList = () => {
 											)}
 											<span className='text-gray-700'>{call.creatorName || 'Unknown'}</span>
 										</div>
-									)
-								}
+									)}
+								</div>
 							</div>
 						</div>
                     
