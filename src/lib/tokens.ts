@@ -19,9 +19,36 @@ export async function getTokenByEmail(email: string) {
 
 export async function getTokenByToken(token: string) {
     try {
-        return prisma.token.findFirst({
-            where: { token }
-        })
+        // Try exact match first
+        let found = await prisma.token.findFirst({ where: { token } });
+        if (found) return found;
+
+        // Try decoded token (in case the token was URL-encoded in the link)
+        try {
+            const decoded = decodeURIComponent(token);
+            if (decoded !== token) {
+                found = await prisma.token.findFirst({ where: { token: decoded } });
+                if (found) return found;
+            }
+        } catch (e) {
+            // ignore decode errors
+            console.warn('getTokenByToken: decodeURIComponent failed', e);
+        }
+
+        // Fallback: if the provided token looks truncated, try a startsWith search
+        // only if it's reasonably long to avoid wide scans.
+        if (token && token.length >= 12) {
+            found = await prisma.token.findFirst({
+                where: { token: { startsWith: token } },
+                orderBy: { expires: 'desc' }
+            });
+            if (found) {
+                console.warn('getTokenByToken: token lookup fell back to startsWith match');
+                return found;
+            }
+        }
+
+        return null;
     } catch (error) {
         console.log(error);
         throw error;
