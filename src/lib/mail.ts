@@ -21,7 +21,7 @@ function getBaseUrl() {
 }
 
 export async function sendVerificationEmail(email: string, token: string) {
-    const link = `${getBaseUrl()}/verify-email?token=${token}`;
+    const link = `${getBaseUrl()}/verify-email?token=${encodeURIComponent(token)}`;
 
     return resend.emails.send({
         from: 'verify-email@credentials.kawserahmed.tech',
@@ -36,7 +36,7 @@ export async function sendVerificationEmail(email: string, token: string) {
 }
 
 export async function sendPasswordResetEmail(email: string, token: string) {
-    const link = `${getBaseUrl()}/reset-password?token=${token}`;
+    const link = `${getBaseUrl()}/reset-password?token=${encodeURIComponent(token)}`;
 
     return resend.emails.send({
         from: 'reset-password@credentials.kawserahmed.tech',
