@@ -113,6 +113,13 @@ function toIsoFromDatetimeLocal(value: string) {
 	return dt.toISOString();
 }
 
+function formatLocalDate(date: Date) {
+	const year = date.getFullYear();
+	const month = String(date.getMonth() + 1).padStart(2, "0");
+	const day = String(date.getDate()).padStart(2, "0");
+	return `${year}-${month}-${day}`;
+}
+
 const MeetingForm = ({
 	setShowMeetingLink,
 	setFacetimeLink,
@@ -130,12 +137,9 @@ const MeetingForm = ({
 		e.preventDefault();
 		if (!description || isCreating) return;
 
-		// Validate that the selected date/time is in the future
-		const selectedDateTime = new Date(dateTime.replace("T", " "));
-		const now = new Date();
-		
-		if (selectedDateTime <= now) {
-			setValidationError("Meeting must be scheduled for a future date and time.");
+		// Allow scheduling for today and future dates; block only past dates.
+		if (isPastDate(selectedDate)) {
+			setValidationError("Meeting date cannot be in the past.");
 			return;
 		}
 
@@ -203,7 +207,7 @@ const MeetingForm = ({
 
 	// Parse current date and time for form
 	const today = new Date();
-	const initialDate = today.toISOString().split("T")[0];
+	const initialDate = formatLocalDate(today);
 	const [selectedDate, setSelectedDate] = useState<string>(initialDate);
 	const [selectedTime, setSelectedTime] = useState<string>("10:00");
 	const [dateTime, setDateTime] = useState<string>(`${initialDate}T10:00`);
@@ -315,10 +319,16 @@ const MeetingForm = ({
 	};
 
 	const handlePrevMonth = () => {
-		const [y, m, d] = selectedDate.split("-").map(Number);
+		const [y, m] = selectedDate.split("-").map(Number);
 		const newMonth = m === 1 ? 12 : m - 1;
 		const newYear = m === 1 ? y - 1 : y;
 		const formattedDate = `${newYear}-${String(newMonth).padStart(2, "0")}-01`;
+
+		const currentMonthStart = `${initialDate.slice(0, 7)}-01`;
+		if (formattedDate < currentMonthStart) {
+			return;
+		}
+
 		setSelectedDate(formattedDate);
 	};
 
