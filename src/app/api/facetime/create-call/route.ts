@@ -31,7 +31,7 @@ export async function POST(request: Request) {
     const call = client.video.call("default", callId);
     await call.getOrCreate({
       data: {
-        starts_at: new Date(startsAt).toISOString(),
+        starts_at: new Date(startsAt),
         custom: {
           description,
         },
