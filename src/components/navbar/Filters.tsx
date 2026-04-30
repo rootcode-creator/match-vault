@@ -66,10 +66,10 @@ return (
                     aria-label="Age range"
                     color="foreground"
                     classNames={{
-                        track: "h-1 bg-indigo-600 rounded-full",
-                        filler: "h-1 bg-indigo-600 rounded-full",
+                        track: "h-1 bg-black rounded-full",
+                        filler: "h-1 bg-black rounded-full",
                         step: "w-1 h-1 bg-default-400 rounded-full data-[in-range=true]:bg-default-400",
-                        thumb: "w-5 h-5 bg-white border-2 border-indigo-600 shadow-sm",
+                        thumb: "w-5 h-5 bg-white border-2 border-black shadow-sm",
                     }}
 
                     onChangeEnd={(values) => selectAge(values as number[])}
