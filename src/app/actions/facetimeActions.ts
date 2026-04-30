@@ -2,17 +2,7 @@
 
 import { prisma } from '@/lib/prisma';
 import { getAuthUserId } from './authActions';
-
-export type FacetimeMeetingDto = {
-  id: string;
-  callId: string;
-  description: string;
-  startsAt: string; // ISO
-  creatorId: string;
-  creatorName?: string | null;
-  creatorImage?: string | null;
-  isCreator?: boolean;
-};
+import type { FacetimeMeetingDto } from '@/app/videoCall/facetime-lib/types';
 
 const shouldExposeError =
   process.env.DEBUG_ERRORS === 'true' || process.env.NODE_ENV !== 'production';

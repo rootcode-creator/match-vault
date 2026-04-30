@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { FacetimeMeetingDto } from "@/app/actions/facetimeActions";
+import type { FacetimeMeetingDto } from "../facetime-lib/types";
 
 export const useGetCalls = () => {
     const [calls, setCalls] = useState<FacetimeMeetingDto[]>([]);
