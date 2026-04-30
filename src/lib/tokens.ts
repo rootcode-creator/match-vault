@@ -1,10 +1,15 @@
 import { TokenType } from '@prisma/client';
 import { prisma } from './prisma';
 
+function normalizeEmail(email: string): string {
+    return email.trim().toLowerCase();
+}
+
 export async function getTokenByEmail(email: string) {
     try {
+        const normalized = normalizeEmail(email);
         return prisma.token.findFirst({
-            where: { email }
+            where: { email: normalized }
         })
     } catch (error) {
         console.log(error);
@@ -24,10 +29,11 @@ export async function getTokenByToken(token: string) {
 }
 
 export async function generateToken(email: string, type: TokenType) {
+    const normalizedEmail = normalizeEmail(email);
     const token = getToken();
     const expires = new Date(Date.now() + 1000 * 60 * 60 * 24); //  Expires in 24 hours
 
-    const existingToken = await getTokenByEmail(email);
+    const existingToken = await getTokenByEmail(normalizedEmail);
 
     if (existingToken) {
         await prisma.token.delete({
@@ -37,7 +43,7 @@ export async function generateToken(email: string, type: TokenType) {
 
     return prisma.token.create({
         data: {
-            email,
+            email: normalizedEmail,
             token,
             expires,
             type

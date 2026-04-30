@@ -29,7 +29,7 @@ export async function signInUser(data: LoginSchema): Promise<ActionResult<string
         if (!existingUser || !existingUser.email) return { status: 'error', error: 'Invalid credentials' }
 
         if (!existingUser.emailVerified) {
-            const { token, email } = await generateToken(existingUser.email, 'VERIFICATION');
+            const { token, email } = await generateToken(normalizeEmail(existingUser.email || ''), 'VERIFICATION');
 
             await sendVerificationEmail(email, token).catch((error) => {
                 console.error('Failed to send verification email:', error);
@@ -216,7 +216,7 @@ export async function verifyEmail(token: string | null | undefined): Promise<Act
             return { status: 'error', error: 'Token has expired' }
         }
 
-        const existingUser = await getUserByEmail(existingToken.email);
+        const existingUser = await getUserByEmail(normalizeEmail(existingToken.email));
 
         console.debug('verifyEmail: existingUser:', existingUser);
 
