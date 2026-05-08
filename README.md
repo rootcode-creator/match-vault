@@ -57,6 +57,7 @@ Modern full-stack matchmaking application built with Next.js App Router, Prisma,
 - Member discovery with filters/pagination
 - Likes (including mutual likes)
 - Real-time chat and real-time notifications
+- FaceTime-style video calling with scheduled and instant meeting flows
 - Admin photo moderation
 
 It is designed as an MVP-friendly production-ready foundation for social/match applications.
@@ -114,9 +115,9 @@ match-vault/
 | Member browsing | ✅ Current | Filter by age/gender/photo + pagination |
 | Likes & lists | ✅ Current | Source likes, target likes, mutual likes |
 | Messaging | ✅ Current | Real-time thread updates + inbox/outbox view |
+| Video calling | ✅ Current | FaceTime meetings with instant creation, scheduling, and join links |
 | Photo uploads | ✅ Current | Cloudinary upload + signed API route |
 | Admin moderation | ✅ Current | Approve/reject pending photos |
-| Health endpoint | ✅ Current | DB connectivity check (`/api/health/db`) |
 
 ### Route protection behavior
 
@@ -134,6 +135,7 @@ match-vault/
 - **UI:** HeroUI + Tailwind CSS 4
 - **Forms/Validation:** React Hook Form + Zod
 - **Realtime:** Pusher + pusher-js
+- **Video calling:** Stream Video React SDK + Stream Node SDK
 - **Media:** Cloudinary + next-cloudinary
 - **Email:** Resend
 
