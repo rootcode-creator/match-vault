@@ -35,6 +35,7 @@ Modern full-stack matchmaking application built with Next.js App Router, Prisma,
 ## Table of Contents
 
 - [🚀 Project intro](#-project-intro)
+- [🧭 App flow](#-app-flow)
 - [📁 Project structure](#-project-structure)
 - [⭐ Differentiators](#-differentiators)
 - [🔧 Features](#-features)
@@ -61,6 +62,49 @@ Modern full-stack matchmaking application built with Next.js App Router, Prisma,
 - Admin photo moderation
 
 It is designed as an MVP-friendly production-ready foundation for social/match applications.
+
+## 🧭 App flow
+
+```mermaid
+flowchart TD
+	A[Visitor] --> B[/Home /]
+	B --> C{Authenticated?}
+
+	C -- No --> D[Register]
+	C -- No --> E[Login]
+	D --> F[Verify email]
+	F --> G{OAuth account?}
+	E --> H[Session created]
+	F --> H
+	G -- No --> H
+	G -- Yes --> I{Profile complete?}
+	H --> I
+
+	I -- No --> J[Complete profile]
+	I -- Yes --> K[Members feed]
+	J --> K
+
+	K --> L[Open member profile]
+	L --> M[Like / Unlike]
+	L --> N[Start chat]
+	L --> O[Start video call]
+	L --> P[View member photos]
+
+	M --> Q{Mutual like?}
+	Q -- Yes --> N
+	N --> R[Real-time messages + notifications]
+	O --> S[Facetime meeting]
+	S --> T[Join scheduled or instant call]
+
+	K --> U[Lists]
+	K --> V[Edit profile]
+	K --> W{ADMIN?}
+	W -- Yes --> X[Admin moderation]
+	W -- No --> Y[Redirect to Home]
+	X --> Z[Review photo uploads]
+```
+
+This flow reflects the app's public routes, auth guards, profile-completion gate, member discovery, messaging, video calls, and admin moderation path.
 
 ## 📁 Project structure
 
