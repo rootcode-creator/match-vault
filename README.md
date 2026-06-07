@@ -35,10 +35,10 @@ Modern full-stack matchmaking application built with Next.js App Router, Prisma,
 ## Table of Contents
 
 - [🚀 Project intro](#-project-intro)
-- [🗂 Format selection & upload syntax](#-format-selection--upload-syntax)
 - [📁 Project structure](#-project-structure)
 - [⭐ Differentiators](#-differentiators)
 - [🔧 Features](#-features)
+	- [Flow diagram](#flow-diagram)
 - [🧰 Tech stack](#-tech-stack)
 - [⚙️ Install methods](#️-install-methods)
 	- [📦 npm / Node](#-npm--node)
@@ -62,49 +62,6 @@ Modern full-stack matchmaking application built with Next.js App Router, Prisma,
 - Admin photo moderation
 
 It is designed as an MVP-friendly production-ready foundation for social/match applications.
-
-## 🗂 Format selection & upload syntax
-
-The Mermaid flow below shows the main application journey, from public entry points through auth, profile completion, member discovery, messaging, video calls, and admin moderation.
-
-```mermaid
-flowchart TD
-	A[Visitor] --> B[/Home /]
-	B --> C{Authenticated?}
-
-	C -- No --> D[Register]
-	C -- No --> E[Login]
-	D --> F[Verify email]
-	F --> G{OAuth account?}
-	E --> H[Session created]
-	F --> H
-	G -- No --> H
-	G -- Yes --> I{Profile complete?}
-	H --> I
-
-	I -- No --> J[Complete profile]
-	I -- Yes --> K[Members feed]
-	J --> K
-
-	K --> L[Open member profile]
-	L --> M[Like / Unlike]
-	L --> N[Start chat]
-	L --> O[Start video call]
-	L --> P[View member photos]
-
-	M --> Q{Mutual like?}
-	Q -- Yes --> N
-	N --> R[Real-time messages + notifications]
-	O --> S[Facetime meeting]
-	S --> T[Join scheduled or instant call]
-
-	K --> U[Lists]
-	K --> V[Edit profile]
-	K --> W{ADMIN?}
-	W -- Yes --> X[Admin moderation]
-	W -- No --> Y[Redirect to Home]
-	X --> Z[Review photo uploads]
-```
 
 ## 📁 Project structure
 
@@ -162,6 +119,49 @@ match-vault/
 | Video calling | ✅ Current | FaceTime meetings with instant creation, scheduling, and join links |
 | Photo uploads | ✅ Current | Cloudinary upload + signed API route |
 | Admin moderation | ✅ Current | Approve/reject pending photos |
+
+### Flow diagram
+
+The Mermaid flow below shows the main application journey, from public entry points through auth, profile completion, member discovery, messaging, video calls, and admin moderation.
+
+```mermaid
+flowchart TD
+	A[Visitor] --> B[/Home /]
+	B --> C{Authenticated?}
+
+	C -- No --> D[Register]
+	C -- No --> E[Login]
+	D --> F[Verify email]
+	F --> G{OAuth account?}
+	E --> H[Session created]
+	F --> H
+	G -- No --> H
+	G -- Yes --> I{Profile complete?}
+	H --> I
+
+	I -- No --> J[Complete profile]
+	I -- Yes --> K[Members feed]
+	J --> K
+
+	K --> L[Open member profile]
+	L --> M[Like / Unlike]
+	L --> N[Start chat]
+	L --> O[Start video call]
+	L --> P[View member photos]
+
+	M --> Q{Mutual like?}
+	Q -- Yes --> N
+	N --> R[Real-time messages + notifications]
+	O --> S[Facetime meeting]
+	S --> T[Join scheduled or instant call]
+
+	K --> U[Lists]
+	K --> V[Edit profile]
+	K --> W{ADMIN?}
+	W -- Yes --> X[Admin moderation]
+	W -- No --> Y[Redirect to Home]
+	X --> Z[Review photo uploads]
+```
 
 ### Route protection behavior
 
