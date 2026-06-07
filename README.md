@@ -35,7 +35,7 @@ Modern full-stack matchmaking application built with Next.js App Router, Prisma,
 ## Table of Contents
 
 - [🚀 Project intro](#-project-intro)
-- [🧭 App flow](#-app-flow)
+- [🗂 Format selection & upload syntax](#-format-selection--upload-syntax)
 - [📁 Project structure](#-project-structure)
 - [⭐ Differentiators](#-differentiators)
 - [🔧 Features](#-features)
@@ -63,7 +63,9 @@ Modern full-stack matchmaking application built with Next.js App Router, Prisma,
 
 It is designed as an MVP-friendly production-ready foundation for social/match applications.
 
-## 🧭 App flow
+## 🗂 Format selection & upload syntax
+
+The Mermaid flow below shows the main application journey, from public entry points through auth, profile completion, member discovery, messaging, video calls, and admin moderation.
 
 ```mermaid
 flowchart TD
@@ -103,8 +105,6 @@ flowchart TD
 	W -- No --> Y[Redirect to Home]
 	X --> Z[Review photo uploads]
 ```
-
-This flow reflects the app's public routes, auth guards, profile-completion gate, member discovery, messaging, video calls, and admin moderation path.
 
 ## 📁 Project structure
 
