@@ -3,7 +3,7 @@
 import { MemberEditSchema, memberEditSchema } from '@/lib/schemas/MemberEditSchema';
 import { ActionResult } from '@/types';
 import { Member, Photo } from '@prisma/client';
-import { getAuthUserId } from './authActions';
+import { getAuthUserId, getAuthUserIdOrNull } from './authActions';
 import { prisma } from '@/lib/prisma';
 import { cloudinary } from '@/lib/cloudinary';
 
@@ -110,11 +110,14 @@ export async function deleteImage(photo: Photo) {
 
 export async function getUserInfoForNav() {
     try {
-        const userId = await getAuthUserId();
+        const userId = await getAuthUserIdOrNull();
+        if (!userId) {
+            return null;
+        }
         return prisma.user.findUnique({
             where: { id: userId },
             select: { name: true, image: true }
-        })
+        });
     } catch (error) {
         console.log(error);
         return null;

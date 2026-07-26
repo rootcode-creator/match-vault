@@ -99,7 +99,7 @@ export default function MessageBox({
     return (
       <div className={messageContentClasses}>
         {renderMessageHeader()}
-        <p className="whitespace-pre-wrap break-words py-1 text-[15px] font-medium leading-relaxed [overflow-wrap:anywhere]">
+        <p className="whitespace-pre-wrap break-words py-1 text-[15px] font-medium leading-relaxed">
           {message.text}
         </p>
       </div>
@@ -114,7 +114,7 @@ export default function MessageBox({
           <Bubble variant={isCurrentUserSender ? "default" : "muted"}>
             <BubbleContent>
               {renderMessageHeader()}
-              <p className="whitespace-pre-wrap break-words py-1 text-[15px] font-normal leading-relaxed [overflow-wrap:anywhere]">
+              <p className="whitespace-pre-wrap break-words py-1 text-[15px] font-normal leading-relaxed">
                 {message.text}
               </p>
             </BubbleContent>

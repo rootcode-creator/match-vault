@@ -75,9 +75,36 @@ export async function getMembers({
 
 export async function getMemberByUserId(userId: string) {
     try {
-        return prisma.member.findUnique({ where: { userId } })
+        const member = await prisma.member.findUnique({ where: { userId } });
+
+        if (member) {
+            return member;
+        }
+
+        const user = await prisma.user.findUnique({
+            where: { id: userId },
+            select: { id: true, name: true, image: true },
+        });
+
+        if (!user) {
+            return null;
+        }
+
+        return prisma.member.create({
+            data: {
+                userId: user.id,
+                name: user.name ?? "Member",
+                gender: "unspecified",
+                dateOfBirth: new Date("1970-01-01"),
+                description: "",
+                city: "",
+                country: "",
+                image: user.image ?? "/images/user.png",
+            },
+        });
     } catch (error) {
         console.log(error);
+        return null;
     }
 }
 

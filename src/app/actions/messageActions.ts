@@ -3,7 +3,7 @@
 import { MessageSchema, messageSchema } from "@/lib/schemas/MessageSchema";
 import { ActionResult, MessageDto } from "@/types";
 import {Message} from "@prisma/client";
-import { getAuthUserId } from "./authActions";
+import { getAuthUserId, getAuthUserIdOrNull } from "./authActions";
 import { prisma } from "@/lib/prisma";
 import { mapMessageToMessageDto } from '@/lib/mappings';
 import { getPusherServer } from "@/lib/pusher";
@@ -322,7 +322,10 @@ export async function deleteMessage(messageId: string, isOutbox: boolean) {
 
 export async function getUnreadMessageCount() {
     try {
-        const userId = await getAuthUserId();
+        const userId = await getAuthUserIdOrNull();
+        if (!userId) {
+            return 0;
+        }
 
         return prisma.message.count({
             where: {
@@ -330,7 +333,7 @@ export async function getUnreadMessageCount() {
                 dateRead: null,
                 recipientDeleted: false
             }
-        })
+        });
     } catch (error) {
         console.log(error);
         return 0;
