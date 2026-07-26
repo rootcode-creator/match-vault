@@ -206,9 +206,8 @@ const MeetingForm = ({
 		} catch (error) {
 			const message = error instanceof Error ? error.message : "Failed to create Meeting";
                     console.error("CreateLink create error:", error);
-                    toast("Unable to create meeting", {
+                    toast.error("Unable to create meeting", {
                       description: message,
-                      variant: "destructive",
                     });
 			setAlertMessage(message);
 			setAlertOpen(true);
