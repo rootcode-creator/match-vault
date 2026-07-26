@@ -85,6 +85,8 @@ export default function InstantMeeting({ enable, setEnable, recipientUserIds }: 
 										setShowMeetingLink={setShowMeetingLink}
 										setFacetimeLink={setFacetimeLink}
 										recipientUserIds={recipientUserIds}
+										setAlertMessage={setAlertMessage}
+										setAlertOpen={setAlertOpen}
 									/>
 								)}
 							</DialogPanel>
@@ -111,10 +113,14 @@ const MeetingForm = ({
 	setShowMeetingLink,
 	setFacetimeLink,
 	recipientUserIds,
+	setAlertMessage,
+	setAlertOpen,
 }: {
 	setShowMeetingLink: Dispatch<SetStateAction<boolean>>;
 	setFacetimeLink: Dispatch<SetStateAction<string>>;
 	recipientUserIds?: string[] | undefined;
+	setAlertMessage: Dispatch<SetStateAction<string>>;
+	setAlertOpen: Dispatch<SetStateAction<boolean>>;
 }) => {
 	const [description, setDescription] = useState<string>("");
 	const [isCreating, setIsCreating] = useState(false);

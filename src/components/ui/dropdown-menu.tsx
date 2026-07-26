@@ -22,8 +22,7 @@ export const DropdownMenuTrigger: React.FC<React.PropsWithChildren<any>> = ({ ch
   const { asChild, ...rest } = props as any;
   const child = React.Children.only(children) as React.ReactElement;
   if (asChild && React.isValidElement(child)) {
-    const cloned = React.cloneElement(child, { ...(child.props || {}), ...(rest || {}) });
-    return <HeroDropdownTrigger>{cloned}</HeroDropdownTrigger>;
+    return React.cloneElement(child, { ...(child.props || {}), ...(rest || {}) });
   }
 
   return <HeroDropdownTrigger {...rest}>{children}</HeroDropdownTrigger>;
@@ -39,8 +38,7 @@ export const DropdownMenuItem: React.FC<React.PropsWithChildren<any>> = ({ child
   const { asChild, ...rest } = props as any;
   const child = React.Children.only(children) as React.ReactElement;
   if (asChild && React.isValidElement(child)) {
-    const cloned = React.cloneElement(child, { ...(child.props || {}), ...(rest || {}) });
-    return <HeroDropdownItem>{cloned}</HeroDropdownItem>;
+    return React.cloneElement(child, { ...(child.props || {}), ...(rest || {}) });
   }
 
   return <HeroDropdownItem {...rest}>{children}</HeroDropdownItem>;
