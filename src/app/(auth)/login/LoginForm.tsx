@@ -87,14 +87,17 @@ export default function LoginForm() {
     <Card className="relative w-full max-w-[30rem] mx-auto mb-8 pt-4 pb-8 px-6 rounded-2xl bg-white/95 backdrop-blur
       ring-1 ring-indigo-100 border border-white/60
       shadow-[0_18px_50px_-12px_rgba(79,70,229,0.35),0_25px_55px_-25px_rgba(0,0,0,0.3)]">
-      <CardHeader className="flex flex-col items-center justify-center mb-2">
-        <div className="flex flex-col gap-1.5 items-center text-default">
-          <div className="flex flex-row items-center gap-3">
-            <GiPadlock size={30} />
-            <h1 className="text-3xl font-semibold">Login</h1>
-          </div>
-          <p className="text-neutral-500">Welcome back to MatchVault</p>
+      <CardHeader className="relative flex flex-col items-center justify-center mb-2">
+        <div className="absolute right-0 top-0 text-sm text-neutral-500">
+          <Link href="/register" className="font-semibold text-black hover:underline">
+            Sign Up
+          </Link>
         </div>
+        <div className="flex flex-row items-center gap-3">
+          <GiPadlock size={30} />
+          <h1 className="text-3xl font-semibold">Login</h1>
+        </div>
+        <p className="mt-3 text-neutral-500">Welcome back to MatchVault</p>
       </CardHeader>
 
       <CardBody>
@@ -134,13 +137,16 @@ export default function LoginForm() {
             </div>
 
             {/* Password */}
-            <div className="w-full max-w-lg mx-auto">
-              <label
-                htmlFor="password"
-                className="block text-sm font-medium text-foreground mb-1"
-              >
+            <div className="w-full max-w-lg mx-auto flex items-center justify-between text-sm">
+              <label htmlFor="password" className="text-sm font-medium text-foreground">
                 Password
               </label>
+              <Link href="/forgot-password" className="text-sm text-black hover:underline">
+                Forgot your password?
+              </Link>
+            </div>
+
+            <div className="w-full max-w-lg mx-auto mt-1">
               <Input
                 id="password"
                 type={showPassword ? "text" : "password"}
@@ -198,18 +204,7 @@ export default function LoginForm() {
 
               <SocialLogin />
 
-              <div className="mt-3 flex items-center justify-between gap-14 px-3 text-sm text-default-700">
-                <Link href="/forgot-password" className="text-sky-600 hover:underline">
-                  Forgot password?
-                </Link>
-                <div>
-                  New User?{" "}
-                  <Link href="/register" className="font-medium text-sky-600 hover:underline">
-                    Sign Up
-                  </Link>
-                </div>
-              </div>
-
+            
             </div>
           </div>
         </form>

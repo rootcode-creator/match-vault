@@ -25,6 +25,12 @@ export default function UserMenu({
 }: Props) {
   const [isMounted, setIsMounted] = useState(false);
 
+  const getDisplayName = (name: string | null | undefined) => {
+    if (!name) return "";
+    const trimmed = name.trim();
+    return trimmed.length > 5 ? `${trimmed.slice(0, 5)}…` : trimmed;
+  };
+
   useEffect(() => {
     setIsMounted(true);
   }, []);
@@ -70,7 +76,7 @@ export default function UserMenu({
             className="user-menu__header"
             aria-label="username"
           >
-            Signed in as {userInfo?.name}
+            Welcome, {getDisplayName(userInfo?.name)}
           </DropdownItem>
         </DropdownSection>
         <DropdownItem

@@ -6,7 +6,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import React, { useTransition } from "react";
 import { Key } from "react";
 import MemberCard from "../members/MemberCard";
-import LoadingComponent from "@/app/members/[userId]/loading";
+import LoadingComponent from "@/components/Loading";
 
 type Props = {
   members: Member[];

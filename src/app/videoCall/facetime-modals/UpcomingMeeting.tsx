@@ -4,13 +4,13 @@ import {
 	DialogTitle,
 	DialogPanel,
 	Transition,
-	TransitionChild,
 } from "@headlessui/react";
 import { FaTimes } from "react-icons/fa";
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import { useGetCalls } from "../facetime-hooks/useGetCalls";
 import { formatDateTime } from "../facetime-lib/util";
 import Link from "next/link";
+import { AlertDialogModal } from "@/components/AlertDialogModal";
 
 interface Props {
 	enable: boolean;
@@ -24,8 +24,8 @@ export default function UpcomingMeeting({ enable, setEnable }: Props) {
 		<>
 			<Transition appear show={enable} as={Fragment}>
 				<Dialog as='div' className='relative z-[100]' onClose={closeModal}>
-					<TransitionChild
-						as={Fragment}
+					<Transition.Child
+						as="div"
 						enter='ease-out duration-300'
 						enterFrom='opacity-0'
 						enterTo='opacity-100'
@@ -34,12 +34,12 @@ export default function UpcomingMeeting({ enable, setEnable }: Props) {
 						leaveTo='opacity-0'
 					>
 						<div className='fixed inset-0 z-[100] bg-black/75' />
-					</TransitionChild>
+							</Transition.Child>
 
 					<div className='fixed inset-0 z-[110] overflow-y-auto'>
 						<div className='flex min-h-full items-center justify-center p-4 text-center'>
-							<TransitionChild
-								as={Fragment}
+							<Transition.Child
+								as="div"
 								enter='ease-out duration-300'
 								enterFrom='opacity-0 scale-95'
 								enterTo='opacity-100 scale-100'
@@ -47,7 +47,7 @@ export default function UpcomingMeeting({ enable, setEnable }: Props) {
 								leaveFrom='opacity-100 scale-100'
 								leaveTo='opacity-0 scale-95'
 							>
-								<DialogPanel className='w-full max-w-2xl transform overflow-hidden rounded-2xl bg-white p-6 align-middle text-center shadow-xl transition-all'>
+								<DialogPanel className='w-full md:w-[380px] lg:w-[400px] xl:w-[420px] transform overflow-hidden rounded-2xl bg-white p-6 align-middle text-center shadow-xl transition-all'>
 									<div className='flex items-center justify-between gap-8 pb-6 border-b border-gray-200'>
 										<DialogTitle as='h3' className='text-lg font-bold leading-6 text-green-600 flex-1 text-left'>
 											Upcoming FaceTime
@@ -63,7 +63,7 @@ export default function UpcomingMeeting({ enable, setEnable }: Props) {
 
 									<MeetingList />
 								</DialogPanel>
-							</TransitionChild>
+							</Transition.Child>
 						</div>
 					</div>
 				</Dialog>
@@ -74,6 +74,8 @@ export default function UpcomingMeeting({ enable, setEnable }: Props) {
 
 const MeetingList = () => { 
 	const { upcomingCalls, isLoading, removeUpcomingCall } = useGetCalls();
+	const [alertOpen, setAlertOpen] = useState(false);
+	const [alertMessage, setAlertMessage] = useState("");
 
 	if (isLoading) { 
 		return (
@@ -155,18 +157,19 @@ const MeetingList = () => {
 									type="button"
 									className='flex-1 bg-slate-600 hover:bg-slate-700 text-white text-sm font-semibold py-2.5 px-3 rounded-lg shadow-sm transition-all duration-200 hover:shadow-md'
 									onClick={async () => {
-										const res = await fetch(`/api/facetime/meetings/${encodeURIComponent(call.callId)}`, {
-											method: "DELETE",
-											credentials: "include",
-										});
-										if (res.ok) {
-											removeUpcomingCall(call.callId);
-											return;
-										}
+											const res = await fetch(`/api/facetime/meetings/${encodeURIComponent(call.callId)}`, {
+												method: "DELETE",
+												credentials: "include",
+											});
+											if (res.ok) {
+												removeUpcomingCall(call.callId);
+												return;
+											}
 
-										const payload = await res.json().catch(() => ({} as any));
-										alert(payload?.error ?? "Failed to complete meeting");
-									}}
+											const payload = await res.json().catch(() => ({} as any));
+											setAlertMessage(payload?.error ?? "Failed to complete meeting");
+											setAlertOpen(true);
+										}}
 								>
 									Complete
 								</button>
@@ -188,6 +191,17 @@ const MeetingList = () => {
 				))}
               
             </div>
+
+			{alertOpen ? (
+				<AlertDialogModal
+					open={alertOpen}
+					onOpenChange={setAlertOpen}
+					title="Unable to complete meeting"
+					description={alertMessage}
+					confirmLabel="OK"
+					onConfirm={() => setAlertOpen(false)}
+				/>
+			) : null}
         </>
     );
 }

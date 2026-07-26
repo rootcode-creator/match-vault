@@ -1,14 +1,15 @@
-"use client";
+﻿"use client";
 import {
 	Dialog,
 	DialogTitle,
 	DialogPanel,
 	Transition,
 	Description,
-	TransitionChild,
 } from "@headlessui/react";
+import { AlertDialogModal } from "@/components/AlertDialogModal";
 import { FaCopy, FaTimes } from "react-icons/fa";
 import CopyToClipboard from "react-copy-to-clipboard";
+import { toast } from "sonner";
 import { Fragment, SetStateAction, useState, Dispatch } from "react";
 
 async function readApiError(response: Response) {
@@ -31,14 +32,16 @@ interface Props {
 export default function CreateLink({ enable, setEnable, recipientUserIds }: Props) {
 	const [showMeetingLink, setShowMeetingLink] = useState(false);
 	const [facetimeLink, setFacetimeLink] = useState<string>("");
+	const [alertOpen, setAlertOpen] = useState(false);
+	const [alertMessage, setAlertMessage] = useState("");
 	const closeModal = () => setEnable(false);
 
 	return (
 		<>
 			<Transition appear show={enable} as={Fragment}>
 				<Dialog as='div' className='relative z-10' onClose={closeModal}>
-					<TransitionChild
-						as={Fragment}
+					<Transition.Child
+						as="div"
 						enter='ease-out duration-300'
 						enterFrom='opacity-0'
 						enterTo='opacity-100'
@@ -47,12 +50,12 @@ export default function CreateLink({ enable, setEnable, recipientUserIds }: Prop
 						leaveTo='opacity-0'
 					>
 						<div className='fixed inset-0 bg-black/75' />
-					</TransitionChild>
+							</Transition.Child>
 
 					<div className='fixed inset-0 overflow-y-auto'>
 						<div className='flex min-h-full items-center justify-center p-4 text-center'>
-							<TransitionChild
-								as={Fragment}
+							<Transition.Child
+								as="div"
 								enter='ease-out duration-300'
 								enterFrom='opacity-0 scale-95'
 								enterTo='opacity-100 scale-100'
@@ -60,7 +63,7 @@ export default function CreateLink({ enable, setEnable, recipientUserIds }: Prop
 								leaveFrom='opacity-100 scale-100'
 								leaveTo='opacity-0 scale-95'
 							>
-							<DialogPanel className='w-full max-w-lg transform rounded-2xl bg-white max-h-[85vh] overflow-y-auto align-middle shadow-xl transition-all text-center'>
+							<DialogPanel className='w-full md:w-[380px] lg:w-[400px] xl:w-[420px] transform rounded-2xl bg-white max-h-[85vh] overflow-y-auto align-middle shadow-xl transition-all'>
 								<div className='flex items-start justify-between gap-4 px-4 pt-4'>
 									<div className='text-left'>
 										<DialogTitle as='h3' className='text-lg font-bold leading-6 text-green-600'>
@@ -90,7 +93,17 @@ export default function CreateLink({ enable, setEnable, recipientUserIds }: Prop
 									)}
 								</div>
 								</DialogPanel>
-							</TransitionChild>
+								{alertOpen ? (
+									<AlertDialogModal
+										open={alertOpen}
+										onOpenChange={setAlertOpen}
+										title="Unable to create meeting"
+										description={alertMessage}
+										confirmLabel="OK"
+										onConfirm={() => setAlertOpen(false)}
+									/>
+								) : null}
+							</Transition.Child>
 						</div>
 					</div>
 				</Dialog>
@@ -185,12 +198,20 @@ const MeetingForm = ({
 			}
 
 			setFacetimeLink(createData.callId);
-			setShowMeetingLink(true);
-			console.log("Meeting Created!");
+                    setShowMeetingLink(true);
+                    toast("FaceTime scheduled", {
+                      description: `"Meeting scheduled for ${new Date(startsAtIso).toLocaleString()}"`, 
+                    });
+                    console.log("Meeting Created!");
 		} catch (error) {
 			const message = error instanceof Error ? error.message : "Failed to create Meeting";
-			console.error("CreateLink create error:", error);
-			alert(message);
+                    console.error("CreateLink create error:", error);
+                    toast("Unable to create meeting", {
+                      description: message,
+                      variant: "destructive",
+                    });
+			setAlertMessage(message);
+			setAlertOpen(true);
 		} finally {
 			setIsCreating(false);
 		}
@@ -380,7 +401,7 @@ const MeetingForm = ({
 							onClick={handlePrevMonth}
 							className="px-2 py-1 text-gray-600 hover:bg-gray-100 rounded"
 						>
-							←
+							â†
 						</button>
 						<h3 className="text-sm font-semibold text-gray-800">
 							{monthNames[month - 1]} {year}
@@ -390,7 +411,7 @@ const MeetingForm = ({
 							onClick={handleNextMonth}
 							className="px-2 py-1 text-gray-600 hover:bg-gray-100 rounded"
 						>
-							→
+							â†’
 						</button>
 					</div>
 
@@ -513,3 +534,5 @@ const MeetingLink = ({ facetimeLink }: { facetimeLink: string }) => {
 		</>
 	);
 };
+
+

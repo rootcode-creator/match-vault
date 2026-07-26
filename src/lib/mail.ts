@@ -1,6 +1,20 @@
 import { Resend } from 'resend';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+let resend: Resend | null = null;
+
+function getResendClient() {
+    const apiKey = process.env.RESEND_API_KEY?.trim();
+
+    if (!apiKey) {
+        throw new Error('Missing RESEND_API_KEY. Set it before sending email.');
+    }
+
+    if (!resend) {
+        resend = new Resend(apiKey);
+    }
+
+    return resend;
+}
 
 function getBaseUrl() {
     const configured = process.env.NEXT_PUBLIC_BASE_URL?.trim();
@@ -23,7 +37,7 @@ function getBaseUrl() {
 export async function sendVerificationEmail(email: string, token: string) {
     const link = `${getBaseUrl()}/verify-email?token=${encodeURIComponent(token)}`;
 
-    return resend.emails.send({
+    return getResendClient().emails.send({
         from: 'verify-email@credentials.kawserahmad.engineer',
         to: email,
         subject: 'Verify your email address',
@@ -38,7 +52,7 @@ export async function sendVerificationEmail(email: string, token: string) {
 export async function sendPasswordResetEmail(email: string, token: string) {
     const link = `${getBaseUrl()}/reset-password?token=${encodeURIComponent(token)}`;
 
-    return resend.emails.send({
+    return getResendClient().emails.send({
         from: 'reset-password@credentials.kawserahmad.engineer',
         to: email,
         subject: 'Reset your password',
@@ -55,7 +69,7 @@ export async function sendPasswordResetEmail(email: string, token: string) {
 export async function sendScheduledMeetingEmail(email: string, meetingDescription: string, callId: string) {
     const link = `${getBaseUrl()}/videoCall/facetime/${callId}`;
 
-    return resend.emails.send({
+    return getResendClient().emails.send({
         from: 'scheduled-meeting@credentials.kawserahmad.engineer',
         to: email,
         subject: `Scheduled FaceTime: ${meetingDescription}`,

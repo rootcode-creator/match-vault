@@ -4,7 +4,6 @@ import {
 	DialogTitle,
 	DialogPanel,
 	Transition,
-	TransitionChild,
 } from "@headlessui/react";
 import { FaTimes } from "react-icons/fa";
 import { useRouter } from "next/navigation";
@@ -22,8 +21,8 @@ export default function JoinMeeting({ enable, setEnable }: Props) {
 		<>
 			<Transition appear show={enable} as={Fragment}>
 				<Dialog as='div' className='relative z-10' onClose={closeModal}>
-					<TransitionChild
-						as={Fragment}
+					<Transition.Child
+						as="div"
 						enter='ease-out duration-300'
 						enterFrom='opacity-0'
 						enterTo='opacity-100'
@@ -32,12 +31,12 @@ export default function JoinMeeting({ enable, setEnable }: Props) {
 						leaveTo='opacity-0'
 					>
 						<div className='fixed inset-0 bg-black/75' />
-					</TransitionChild>
+							</Transition.Child>
 
 					<div className='fixed inset-0 overflow-y-auto'>
 						<div className='flex min-h-full items-center justify-center p-4 text-center'>
-							<TransitionChild
-								as={Fragment}
+							<Transition.Child
+								as="div"
 								enter='ease-out duration-300'
 								enterFrom='opacity-0 scale-95'
 								enterTo='opacity-100 scale-100'
@@ -45,7 +44,7 @@ export default function JoinMeeting({ enable, setEnable }: Props) {
 								leaveFrom='opacity-100 scale-100'
 								leaveTo='opacity-0 scale-95'
 							>
-							<DialogPanel className='w-full max-w-2xl transform overflow-hidden rounded-2xl bg-white p-6 align-middle shadow-xl transition-all text-center'>
+							<DialogPanel className='w-full md:w-[380px] lg:w-[400px] xl:w-[420px] transform overflow-hidden rounded-2xl bg-white p-6 align-middle shadow-xl transition-all text-center'>
 								<div className='flex items-start justify-between gap-4 pb-6'>
 									<DialogTitle as='h3' className='text-lg font-bold leading-6 text-green-600'>
 										Join FaceTime
@@ -60,7 +59,7 @@ export default function JoinMeeting({ enable, setEnable }: Props) {
 								</div>
 								<MeetingForm />
 								</DialogPanel>
-							</TransitionChild>
+							</Transition.Child>
 						</div>
 					</div>
 				</Dialog>

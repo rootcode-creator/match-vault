@@ -15,6 +15,7 @@ import { useQualityFallback } from "../hooks/useQualityFallback";
 import { useParams } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import { AlertDialogModal } from "@/components/AlertDialogModal";
 
 const logCallLifecycle = (...args: unknown[]) => {
 	if (process.env.NODE_ENV !== "production") {
@@ -150,8 +151,6 @@ const MeetingRoom = ({ call, onLeaveCall }: { call: Call; onLeaveCall: () => Pro
 	}, [participants.length]);
 
 	const handleLeave = async () => {
-		if (!confirm("Are you sure you want to leave the call?")) return;
-
 		try {
 			await onLeaveCall();
 		} catch (error) {
@@ -194,6 +193,8 @@ const ProviderJoin = ({
 	const client = useStreamVideoClient();
 	const router = useRouter();
 	const [call, setCall] = useState<Call | undefined>(undefined);
+	const [alertOpen, setAlertOpen] = useState(false);
+	const [alertMessage, setAlertMessage] = useState("");
 
 	useEffect(() => {
 		let isActive = true;
@@ -235,9 +236,9 @@ const ProviderJoin = ({
 				setIsJoining(false);
 			} catch (error) {
 				console.error("Error joining call:", error);
-				alert("Failed to join call. Please check camera/microphone permissions and try again.");
+				setAlertMessage("Failed to join call. Please check camera/microphone permissions and try again.");
+				setAlertOpen(true);
 				setIsJoining(false);
-				router.push("/");
 			}
 		};
 
@@ -262,6 +263,26 @@ const ProviderJoin = ({
 		return (
 			<div className='flex min-h-screen w-full items-center justify-center'>
 				<p className='text-sm text-slate-600'>Joining…</p>
+			</div>
+		);
+	}
+
+	if (alertOpen) {
+		// Render a simple joining-error modal when join fails
+		return (
+			<div className='flex min-h-screen w-full items-center justify-center'>
+				<p className='text-sm text-slate-600'>Joining…</p>
+				<AlertDialogModal
+					open={alertOpen}
+					onOpenChange={setAlertOpen}
+					title="Unable to join call"
+					description={alertMessage}
+					confirmLabel="OK"
+					onConfirm={() => {
+						setAlertOpen(false);
+						router.push("/");
+					}}
+				/>
 			</div>
 		);
 	}

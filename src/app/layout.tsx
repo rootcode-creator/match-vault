@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Providers from "@/components/Providers";
+import Script from "next/script";
 import TopNav from "@/components/navbar/TopNav";
 import { auth } from "@/auth";
 import { getUserInfoForNav } from "@/app/actions/userActions";
@@ -33,6 +34,35 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body>
+        <Script id="suppress-notallowed" strategy="beforeInteractive">{`(function(){
+          try {
+            var orig = console.error;
+            console.error = function(){
+              try {
+                for (var i=0;i<arguments.length;i++){
+                  var a = arguments[i];
+                  var msg = "";
+                  if (a && typeof a === 'object' && a.message) msg = String(a.message);
+                  else msg = String(a);
+                  if (msg.indexOf("The request is not allowed by the user agent")!==-1 || /not allowed by the user agent|not allowed by the platform/i.test(msg) || msg.indexOf("NotAllowedError")!==-1) {
+                    try { window.dispatchEvent(new CustomEvent('screenShareNotAllowed', { detail: msg })); } catch(e){}
+                    return;
+                  }
+                }
+              } catch(e){}
+              return orig.apply(console, arguments);
+            };
+            window.addEventListener('error', function(ev){
+              try {
+                var m = ev && ev.error && ev.error.message ? String(ev.error.message) : String(ev.message || '');
+                if (/not allowed by the user agent|not allowed by the platform|NotAllowedError/i.test(m)){
+                  try { window.dispatchEvent(new CustomEvent('screenShareNotAllowed', { detail: m })); } catch(e){}
+                  ev.preventDefault();
+                }
+              } catch(e){}
+            });
+          } catch(e){}
+        })();`}</Script>
         <Providers profileComplete={profileComplete} userId={userId}>
           <div className="app-shell">
             <div className="app-panel overflow-hidden">

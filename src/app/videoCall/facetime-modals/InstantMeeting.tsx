@@ -1,16 +1,17 @@
-"use client";
+﻿"use client";
 import {
 	Dialog,
 	DialogTitle,
 	DialogPanel,
 	Transition,
 	Description,
-	TransitionChild,
 } from "@headlessui/react";
 import { FaCopy, FaTimes } from "react-icons/fa";
 import CopyToClipboard from "react-copy-to-clipboard";
+import { toast } from "sonner";
 import { Fragment, useState, Dispatch, SetStateAction } from "react";
 import Link from "next/link";
+import { AlertDialogModal } from "@/components/AlertDialogModal";
 
 async function readApiError(response: Response) {
 	try {
@@ -32,6 +33,8 @@ interface Props {
 export default function InstantMeeting({ enable, setEnable, recipientUserIds }: Props) {
 	const [showMeetingLink, setShowMeetingLink] = useState(false);
 	const [facetimeLink, setFacetimeLink] = useState<string>("");
+	const [alertOpen, setAlertOpen] = useState(false);
+	const [alertMessage, setAlertMessage] = useState("");
 
 	const closeModal = () => setEnable(false);
 
@@ -39,8 +42,8 @@ export default function InstantMeeting({ enable, setEnable, recipientUserIds }: 
 		<>
 			<Transition appear show={enable} as={Fragment}>
 				<Dialog as='div' className='relative z-10' onClose={closeModal}>
-					<TransitionChild
-						as={Fragment}
+							<Transition.Child
+								as="div"
 						enter='ease-out duration-300'
 						enterFrom='opacity-0'
 						enterTo='opacity-100'
@@ -49,20 +52,20 @@ export default function InstantMeeting({ enable, setEnable, recipientUserIds }: 
 						leaveTo='opacity-0'
 					>
 						<div className='fixed inset-0 bg-black/75' />
-					</TransitionChild>
+					</Transition.Child>
 
 					<div className='fixed inset-0 overflow-y-auto'>
 						<div className='flex min-h-full items-center justify-center p-4 text-center'>
-							<TransitionChild
-								as={Fragment}
+							<Transition.Child
+								as="div"
 								enter='ease-out duration-300'
 								enterFrom='opacity-0 scale-95'
 								enterTo='opacity-100 scale-100'
 								leave='ease-in duration-200'
 								leaveFrom='opacity-100 scale-100'
 								leaveTo='opacity-0 scale-95'
-							>
-							<DialogPanel className='w-full max-w-2xl transform overflow-hidden rounded-2xl bg-white p-6 align-middle shadow-xl transition-all text-center'>
+								>
+									<DialogPanel className='w-full md:w-[380px] lg:w-[400px] xl:w-[420px] transform overflow-hidden rounded-2xl bg-white p-6 align-middle shadow-xl transition-all text-center'>
 								<div className='flex items-start justify-between gap-4 pb-6'>
 									<DialogTitle as='h3' className='text-lg font-bold leading-6 text-green-600'>
 										Create Instant FaceTime
@@ -85,7 +88,17 @@ export default function InstantMeeting({ enable, setEnable, recipientUserIds }: 
 									/>
 								)}
 							</DialogPanel>
-							</TransitionChild>
+							{alertOpen ? (
+								<AlertDialogModal
+									open={alertOpen}
+									onOpenChange={setAlertOpen}
+									title="Unable to create meeting"
+									description={alertMessage}
+									confirmLabel="OK"
+									onConfirm={() => setAlertOpen(false)}
+								/>
+							) : null}
+							</Transition.Child>
 						</div>
 					</div>
 				</Dialog>
@@ -152,11 +165,19 @@ const MeetingForm = ({
 			}
 
 			setShowMeetingLink(true);
-			console.log("Meeting Created!");
+                    toast("Instant FaceTime created", {
+                      description: "Your meeting invite link is ready.",
+                    });
+                    console.log("Meeting Created!");
 		} catch (error) {
 			const message = error instanceof Error ? error.message : "Failed to create Meeting";
-			console.error("InstantMeeting create error:", error);
-			alert(message);
+                    console.error("InstantMeeting create error:", error);
+                    toast("Unable to create FaceTime", {
+                      description: message,
+                      variant: "destructive",
+                    });
+			setAlertMessage(message);
+			setAlertOpen(true);
 		} finally {
 			setIsCreating(false);
 		}
@@ -245,3 +266,4 @@ const MeetingLink = ({ facetimeLink }: { facetimeLink: string }) => {
 		</>
 	);
 };
+

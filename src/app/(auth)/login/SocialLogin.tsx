@@ -33,10 +33,9 @@ export default function SocialLogin() {
   };
 
   return (
-    <div className="mt-4 w-full">
-      <div className="mb-3 flex items-center gap-2.5">
+    <div className="mt-1 w-full">
+      <div className="mb-1 flex items-center gap-2.5">
         <span className="h-px flex-1 bg-default-200" />
-        <span className="text-lg text-default-800">Or Sign In with</span>
         <span className="h-px flex-1 bg-default-200" />
       </div>
 
