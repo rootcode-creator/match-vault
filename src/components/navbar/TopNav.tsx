@@ -77,20 +77,20 @@ export default function TopNav({
         className={navbarClassName}
         classNames={{
           base: "z-50",
-          wrapper: "mx-auto w-full max-w-6xl gap-3 bg-transparent px-4 sm:px-6",
+          wrapper: "mx-auto w-full max-w-6xl gap-2 bg-transparent px-3 sm:px-6",
           item: navbarItemClassName,
         }}
       >
         <NavbarBrand
           as={Link}
           href="/"
-          className="min-w-0 flex-none sm:flex-1"
+          className="min-w-0 flex-none pr-2 sm:flex-1"
         >
           <GiSelfLove
             size={24}
             className={brandIconClassName}
           />
-          <div className="flex font-bold text-lg sm:text-2xl">
+          <div className="flex text-lg font-bold sm:text-2xl">
             <span className={brandTextClassName}>
               MatchVault
             </span>
@@ -98,7 +98,7 @@ export default function TopNav({
         </NavbarBrand>
         <NavbarContent
           justify="center"
-          className="min-w-0 flex-1 max-w-[52vw] justify-start overflow-x-auto whitespace-nowrap [scrollbar-width:none] sm:max-w-[45vw] sm:justify-center [&::-webkit-scrollbar]:hidden"
+          className="min-w-0 flex-1 max-w-[45vw] justify-start overflow-x-auto whitespace-nowrap [scrollbar-width:none] sm:max-w-[45vw] sm:justify-center md:max-w-[55vw] [&::-webkit-scrollbar]:hidden"
         >
           {isLoggedIn &&
             links.map((item) => (

@@ -67,7 +67,7 @@ export default async function RootLayout({
           <div className="app-shell">
             <div className="app-panel overflow-hidden">
               <TopNav userInfo={userInfo} isLoggedIn={isLoggedIn} isAdmin={isAdmin} />
-              <main>{children}</main>
+              <main className="min-w-0 overflow-x-hidden">{children}</main>
             </div>
           </div>
         </Providers>
