@@ -89,7 +89,7 @@ useEffect(() => {
 
 
 return (
-    <div className="min-h-[36vh] max-h-[62vh] overflow-y-auto overflow-x-hidden rounded-[24px] border border-[#d6e5eb] bg-[linear-gradient(180deg,#fbfefe_0%,#f1f7fb_100%)] px-3 py-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.85)] sm:max-h-[66vh] sm:px-4">
+    <div className="min-h-[24vh] max-h-[48vh] h-auto overflow-y-auto overflow-x-hidden rounded-[24px] border border-[#d6e5eb] bg-[linear-gradient(180deg,#fbfefe_0%,#f1f7fb_100%)] px-3 py-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.85)] sm:max-h-[48vh] sm:px-4">
 
         {messages.length === 0 ? (
             <div className="flex min-h-[32vh] items-center justify-center text-sm font-medium text-[#67808f]">
@@ -97,13 +97,19 @@ return (
             </div>
         ) : (
             <div className="flex flex-col gap-3 sm:gap-4">
-                {messages.map((message) => (
-                    <MessageBox
-                        key={message.id}
-                        message={message}
-                        currentUserId={currentUserId}
-                    />
-                ))}
+                {messages.map((message, index) => {
+                    const nextMessage = messages[index + 1];
+                    const showAvatar = !nextMessage || nextMessage.senderId !== message.senderId;
+
+                    return (
+                        <MessageBox
+                            key={message.id}
+                            message={message}
+                            currentUserId={currentUserId}
+                            showAvatar={showAvatar}
+                        />
+                    );
+                })}
             </div>
         )}
     </div>

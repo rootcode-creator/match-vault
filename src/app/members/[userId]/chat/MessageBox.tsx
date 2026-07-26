@@ -6,15 +6,24 @@ import clsx from "clsx";
 import { useEffect } from "react";
 import { timeAgo } from "@/lib/util";
 import PresenceAvatar from "@/components/PresenceAvatar";
+import {
+  Message,
+  MessageAvatar,
+  MessageContent,
+} from "@/components/ui/message";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { Bubble, BubbleContent } from "@/components/ui/bubble";
 
 type Props = {
   message: MessageDto;
   currentUserId: string;
+  showAvatar?: boolean;
 };
 
 export default function MessageBox({
   message,
   currentUserId,
+  showAvatar = true,
 }: Props) {
   const isCurrentUserSender =
     message.senderId === currentUserId;
@@ -30,16 +39,19 @@ export default function MessageBox({
   }, [messageEndRef]);
 
   const renderAvatar = () => (
-    <div className="self-end pb-1">
-      <PresenceAvatar
-        src={message.senderImage}
-        userId={message.senderId}
-      />
-    </div>
+    <MessageAvatar>
+      <Avatar>
+        {message.senderImage ? (
+          <AvatarImage src={message.senderImage} alt={message.senderName ?? "avatar"} />
+        ) : (
+          <AvatarFallback>{(message.senderName || "?").slice(0, 2)}</AvatarFallback>
+        )}
+      </Avatar>
+    </MessageAvatar>
   );
 
   const messageContentClasses = clsx(
-    "flex max-w-[86%] flex-col gap-1 border px-3.5 py-2.5 shadow-[0_3px_10px_rgba(16,31,47,0.05)] sm:max-w-[76%] md:max-w-[64%] lg:max-w-[52%]",
+    "flex w-full max-w-[86%] flex-col gap-1 border px-3.5 py-2.5 shadow-[0_3px_10px_rgba(16,31,47,0.05)] sm:max-w-[76%] md:max-w-[64%] lg:max-w-[52%] xl:max-w-[720px] 2xl:max-w-[900px]",
     {
       "rounded-[18px_18px_6px_18px] border-[#cdd9d1] bg-[linear-gradient(180deg,#eef5f1_0%,#dae6de_100%)] text-[#152823]":
         isCurrentUserSender,
@@ -51,27 +63,35 @@ export default function MessageBox({
   const renderMessageHeader = () => (
     <div
       className={clsx(
-        "flex w-full items-center justify-between gap-3",
+        "flex w-full items-center gap-2",
         {
-          "flex-row-reverse": isCurrentUserSender,
+          "justify-end": isCurrentUserSender,
+          "justify-start": !isCurrentUserSender,
         }
       )}
     >
-      <div className="flex min-w-0 items-center gap-2">
-        <span className="truncate text-sm font-semibold text-[#0f2232]">
+      <div
+        className={clsx("flex min-w-0 items-center gap-2", {
+          "justify-end text-right": isCurrentUserSender,
+        })}
+      >
+        <span
+          className={clsx(
+            "truncate text-sm font-semibold",
+            isCurrentUserSender ? "text-cyan-100" : "text-[#0f2232]"
+          )}
+        >
           {message.senderName}
         </span>
-        <span className="whitespace-nowrap text-xs font-medium text-[#5e7383]">
+        <span
+          className={clsx(
+            "whitespace-nowrap text-xs font-medium",
+            isCurrentUserSender ? "text-cyan-200" : "text-[#5e7383]"
+          )}
+        >
           {message.created}
         </span>
       </div>
-      {message.dateRead && message.recipientId !== currentUserId ? (
-        <span className="whitespace-nowrap text-[11px] font-medium text-[#5f7461]">
-          Read {timeAgo(message.dateRead)}
-        </span>
-      ) : (
-        <span className="text-[11px] text-transparent">.</span>
-      )}
     </div>
   );
 
@@ -88,17 +108,25 @@ export default function MessageBox({
 
   return (
     <div className="grid grid-rows-1">
-      <div
-        className={clsx("mb-1 flex gap-2", {
-          "justify-end text-right":
-            isCurrentUserSender,
-          "justify-start": !isCurrentUserSender,
-        })}
-      >
-        {!isCurrentUserSender && renderAvatar()}
-        {renderMessageContent()}
-        {isCurrentUserSender && renderAvatar()}
-      </div>
+      <Message align={isCurrentUserSender ? "end" : "start"}>
+        {showAvatar ? renderAvatar() : <MessageAvatar className="invisible" />}
+        <MessageContent>
+          <Bubble variant={isCurrentUserSender ? "default" : "muted"}>
+            <BubbleContent>
+              {renderMessageHeader()}
+              <p className="whitespace-pre-wrap break-words py-1 text-[15px] font-normal leading-relaxed [overflow-wrap:anywhere]">
+                {message.text}
+              </p>
+            </BubbleContent>
+          </Bubble>
+          {isCurrentUserSender && message.dateRead && message.recipientId !== currentUserId ? (
+            <div className="mt-1 text-right text-[11px] font-medium text-slate-500">
+              Read {timeAgo(message.dateRead)}
+            </div>
+          ) : null}
+        </MessageContent>
+      </Message>
+
       <div ref={messageEndRef} />
     </div>
   );
