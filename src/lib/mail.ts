@@ -24,7 +24,7 @@ export async function sendVerificationEmail(email: string, token: string) {
     const link = `${getBaseUrl()}/verify-email?token=${encodeURIComponent(token)}`;
 
     return resend.emails.send({
-        from: 'verify-email@credentials.kawserahmed.tech',
+        from: 'verify-email@credentials.kawserahmad.engineer',
         to: email,
         subject: 'Verify your email address',
         html: `
@@ -39,7 +39,7 @@ export async function sendPasswordResetEmail(email: string, token: string) {
     const link = `${getBaseUrl()}/reset-password?token=${encodeURIComponent(token)}`;
 
     return resend.emails.send({
-        from: 'reset-password@credentials.kawserahmed.tech',
+        from: 'reset-password@credentials.kawserahmad.engineer',
         to: email,
         subject: 'Reset your password',
         html: `
@@ -56,7 +56,7 @@ export async function sendScheduledMeetingEmail(email: string, meetingDescriptio
     const link = `${getBaseUrl()}/videoCall/facetime/${callId}`;
 
     return resend.emails.send({
-        from: 'scheduled-meeting@credentials.kawserahmed.tech',
+        from: 'scheduled-meeting@credentials.kawserahmad.engineer',
         to: email,
         subject: `Scheduled FaceTime: ${meetingDescription}`,
         html: `
