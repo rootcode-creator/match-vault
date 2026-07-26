@@ -89,6 +89,8 @@ export default function CreateLink({ enable, setEnable, recipientUserIds }: Prop
 											setShowMeetingLink={setShowMeetingLink}
 											setFacetimeLink={setFacetimeLink}
 											recipientUserIds={recipientUserIds}
+											setAlertMessage={setAlertMessage}
+											setAlertOpen={setAlertOpen}
 										/>
 									)}
 								</div>
@@ -137,10 +139,14 @@ const MeetingForm = ({
 	setShowMeetingLink,
 	setFacetimeLink,
 	recipientUserIds,
+	setAlertMessage,
+	setAlertOpen,
 }: {
 	setShowMeetingLink: React.Dispatch<SetStateAction<boolean>>;
 	setFacetimeLink: Dispatch<SetStateAction<string>>;
 	recipientUserIds?: string[] | undefined;
+	setAlertMessage: Dispatch<SetStateAction<string>>;
+	setAlertOpen: Dispatch<SetStateAction<boolean>>;
 }) => {
 	const [description, setDescription] = useState<string>("");
 	const [isCreating, setIsCreating] = useState(false);
