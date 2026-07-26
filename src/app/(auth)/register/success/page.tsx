@@ -26,7 +26,7 @@ export default function RegisterSuccessPage() {
         <div className="pt-5 pb-6">
           <Link
             href="/login"
-            className="inline-flex h-9 w-full items-center justify-center rounded-lg bg-gradient-to-r from-indigo-600 to-violet-600 text-white font-semibold shadow-md hover:shadow-lg active:translate-y-px"
+            className="inline-flex h-10 w-full items-center justify-center rounded-lg bg-black text-white font-semibold shadow-md hover:bg-zinc-800 hover:shadow-lg active:translate-y-px focus:outline-none focus-visible:outline-none"
           >
             Go to login
           </Link>
