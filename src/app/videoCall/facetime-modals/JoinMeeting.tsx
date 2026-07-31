@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 import {
 	Dialog,
 	DialogTitle,
@@ -45,18 +45,23 @@ export default function JoinMeeting({ enable, setEnable }: Props) {
 								leaveTo='opacity-0 scale-95'
 							>
 							<DialogPanel className='w-full md:w-[380px] lg:w-[400px] xl:w-[420px] transform overflow-hidden rounded-2xl bg-white p-6 align-middle shadow-xl transition-all text-center'>
-								<div className='flex items-start justify-between gap-4 pb-6'>
+							<div className='flex items-start justify-between gap-4 pb-6'>
+								<div className='text-left'>
 									<DialogTitle as='h3' className='text-lg font-bold leading-6 text-green-600'>
 										Join FaceTime
 									</DialogTitle>
-									<button
-										onClick={closeModal}
-										className='rounded-full p-2 text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-700'
-										aria-label='Close modal'
-									>
-										<FaTimes size={20} />
-									</button>
+									<p className='text-xs text-gray-500 opacity-80 mt-1'>
+										Enter the FaceTime link to join an existing call.
+									</p>
 								</div>
+								<button
+									onClick={closeModal}
+									className='rounded-full p-2 text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-700'
+									aria-label='Close modal'
+								>
+									<FaTimes size={20} />
+								</button>
+							</div>
 								<MeetingForm />
 								</DialogPanel>
 							</Transition.Child>
@@ -96,13 +101,6 @@ const MeetingForm = () => {
 
 	return (
 		<>
-			<DialogTitle
-				as='h3'
-				className='text-lg font-bold leading-6 text-green-600'
-			>
-				Join FaceTime
-			</DialogTitle>
-
 			<form className='w-full' onSubmit={handleStartMeeting}>
 				<label
 					className='block text-left text-sm font-medium text-gray-700'

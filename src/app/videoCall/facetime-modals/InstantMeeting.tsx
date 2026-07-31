@@ -65,20 +65,21 @@ export default function InstantMeeting({ enable, setEnable, recipientUserIds }: 
 								leaveFrom='opacity-100 scale-100'
 								leaveTo='opacity-0 scale-95'
 								>
-									<DialogPanel className='w-full md:w-[380px] lg:w-[400px] xl:w-[420px] transform overflow-hidden rounded-2xl bg-white p-6 align-middle shadow-xl transition-all text-center'>
-								<div className='flex items-start justify-between gap-4 pb-6'>
-									<DialogTitle as='h3' className='text-lg font-bold leading-6 text-green-600'>
-										Create Instant FaceTime
-									</DialogTitle>
-									<button
-										onClick={closeModal}
-										className='rounded-full p-2 text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-700'
-										aria-label='Close modal'
-									>
-										<FaTimes size={20} />
-									</button>
-								</div>
-								{showMeetingLink ? (
+				<DialogPanel className='w-full md:w-[380px] lg:w-[400px] xl:w-[420px] transform overflow-hidden rounded-2xl bg-white p-4 align-middle shadow-xl transition-all text-left'>
+    <div className='flex items-start justify-between pb-8'>
+        <div>
+            <DialogTitle as='h3' className='text-lg font-bold leading-6 text-green-600'>
+                Create Instant FaceTime
+            </DialogTitle>
+            <p className='text-xs text-gray-500 opacity-80 mt-1'>
+                You can start a new FaceTime instantly.
+            </p>
+        </div>
+        <button onClick={closeModal} className='rounded-full p-2 text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-700' aria-label='Close modal'>
+            <FaTimes size={20} />
+        </button>
+    </div>
+{showMeetingLink ? (
 									<MeetingLink facetimeLink={facetimeLink} />
 								) : (
 									<MeetingForm
@@ -190,16 +191,6 @@ const MeetingForm = ({
 
 	return (
 		<>
-			<DialogTitle
-				as='h3'
-				className='text-lg font-bold leading-6 text-green-600'
-			>
-				Create Instant FaceTime
-			</DialogTitle>
-
-			<Description className='text-xs opacity-40 mb-4'>
-				You can start a new FaceTime instantly.
-			</Description>
 
 			<form className='w-full' onSubmit={handleStartMeeting}>
 				<label
@@ -246,10 +237,6 @@ const MeetingLink = ({ facetimeLink }: { facetimeLink: string }) => {
 				Copy FaceTime Link
 			</DialogTitle>
 
-			<Description className='text-xs opacity-40 mb-4'>
-				You can start a new FaceTime instantly.
-			</Description>
-
 			<div className='bg-gray-100 p-4 rounded flex items-center justify-between'>
 				<p className='text-xs text-gray-500'>{meetingUrl}</p>
 
@@ -271,4 +258,7 @@ const MeetingLink = ({ facetimeLink }: { facetimeLink: string }) => {
 		</>
 	);
 };
+
+
+
 
