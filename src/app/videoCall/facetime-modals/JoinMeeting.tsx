@@ -47,11 +47,11 @@ export default function JoinMeeting({ enable, setEnable }: Props) {
 							<DialogPanel className='w-full md:w-[380px] lg:w-[400px] xl:w-[420px] transform overflow-hidden rounded-2xl bg-white p-6 align-middle shadow-xl transition-all text-center'>
 							<div className='flex items-start justify-between gap-4 pb-6'>
 								<div className='text-left'>
-									<DialogTitle as='h3' className='text-lg font-bold leading-6 text-green-600'>
+									<DialogTitle as='h3' className='text-lg font-bold leading-6 text-[#CB2957]'>
 										Join FaceTime
 									</DialogTitle>
 									<p className='text-xs text-gray-500 opacity-80 mt-1'>
-										Enter the FaceTime link to join an existing call.
+										Enter your FaceTime invite to join the call.
 									</p>
 								</div>
 								<button
@@ -118,7 +118,7 @@ const MeetingForm = () => {
 					placeholder='Enter the FaceTime link'
 				/>
 
-				<button className='w-full bg-green-600 text-white py-3 rounded mt-4'>
+				<button className='w-full bg-[#CB2957] text-white py-3 rounded mt-4'>
 					Join now
 				</button>
 			</form>

@@ -66,16 +66,16 @@ export default function InstantMeeting({ enable, setEnable, recipientUserIds }: 
 								leaveTo='opacity-0 scale-95'
 								>
 				<DialogPanel className='w-full md:w-[380px] lg:w-[400px] xl:w-[420px] transform overflow-hidden rounded-2xl bg-white p-4 align-middle shadow-xl transition-all text-left'>
-    <div className='flex items-start justify-between pb-8'>
+			<div className='flex items-start justify-between pb-8'>
         <div>
-            <DialogTitle as='h3' className='text-lg font-bold leading-6 text-green-600'>
-                Create Instant FaceTime
+			<DialogTitle as='h3' className='text-lg font-bold leading-6 text-[#CB2957]'>
+				Create Instant FaceTime
             </DialogTitle>
             <p className='text-xs text-gray-500 opacity-80 mt-1'>
-                You can start a new FaceTime instantly.
+                Start a new FaceTime session instantly.
             </p>
         </div>
-        <button onClick={closeModal} className='rounded-full p-2 text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-700' aria-label='Close modal'>
+		<button onClick={closeModal} className='rounded-full p-2 text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-700' aria-label='Close modal'>
             <FaTimes size={20} />
         </button>
     </div>
@@ -210,7 +210,7 @@ const MeetingForm = ({
 					placeholder='Enter a description for the meeting'
 				/>
 
-				<button className='w-full bg-green-600 text-white py-3 rounded mt-4' disabled={isCreating}>
+				<button className='w-full bg-[#CB2957] text-white py-3 rounded mt-4' disabled={isCreating}>
 					{isCreating ? "Creating..." : "Proceed"}
 				</button>
 			</form>
@@ -232,7 +232,7 @@ const MeetingLink = ({ facetimeLink }: { facetimeLink: string }) => {
 		<>
 			<DialogTitle
 				as='h3'
-				className='text-lg font-bold leading-6 text-green-600'
+				className='text-lg font-bold leading-6 text-[#CB2957]'
 			>
 				Copy FaceTime Link
 			</DialogTitle>
@@ -244,15 +244,15 @@ const MeetingLink = ({ facetimeLink }: { facetimeLink: string }) => {
 					onCopy={handleCopy}
 					text={meetingUrl}
 				>
-					<FaCopy className='text-green-600 text-lg cursor-pointer' />
+					<FaCopy className='text-[#CB2957] text-lg cursor-pointer' />
 				</CopyToClipboard>
 			</div>
 
 			{copied && (
-				<p className='text-red-600 text-xs mt-2'>Link copied to clipboard</p>
+				<p className='text-[#CB2957] text-xs mt-2'>Link copied to clipboard</p>
 			)}
 
-			<Link href={meetingUrl} className='w-full block bg-green-600 text-white py-3 rounded mt-4'>
+			<Link href={meetingUrl} className='w-full block bg-[#CB2957] text-white py-3 rounded mt-4'>
 				Start FaceTime
 			</Link>
 		</>

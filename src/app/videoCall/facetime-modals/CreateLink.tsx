@@ -67,11 +67,11 @@ export default function CreateLink({ enable, setEnable, recipientUserIds }: Prop
                                 <div className='px-4 pb-4 pt-4'>
                                     <div className='flex items-start justify-between gap-4 pb-12'>
                                         <div className='text-left'>
-                                            <DialogTitle as='h3' className='text-lg font-bold leading-6 text-green-600'>
+                                            <DialogTitle as='h3' className='text-lg font-bold leading-6 text-[#CB2957]'>
                                                 Schedule a FaceTime
                                             </DialogTitle>
                                             <p className='mt-1 text-xs text-gray-500 opacity-80'>
-                                                Schedule a FaceTime meeting with one click
+                                                Schedule a FaceTime session in seconds.
                                             </p>
                                         </div>
                                         <button
@@ -435,7 +435,7 @@ const MeetingForm = ({
                                     disabled={isPast}
                                     className={`h-8 text-xs rounded flex items-center justify-center transition ${
                                         selectedDate === day.date && !isPast
-                                            ? "bg-green-600 text-white font-semibold"
+                                            ? "bg-[#CB2957] text-white font-semibold"
                                             : day.isCurrentMonth
                                                 ? isPast
                                                     ? "text-gray-300 cursor-not-allowed bg-gray-50"
@@ -477,12 +477,12 @@ const MeetingForm = ({
                 </select>
 
             {validationError && (
-                <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded text-red-700 text-sm">
+                <div className="mb-4 p-3 bg-[#DDDDDD] border border-[#CB2957] rounded text-[#CB2957] text-sm">
                     {validationError}
                 </div>
             )}
 
-            <button className="w-full bg-green-600 text-white py-3 rounded mt-4 font-semibold hover:bg-green-700 transition disabled:opacity-50 disabled:cursor-not-allowed" disabled={isCreating}>
+            <button className="w-full bg-[#CB2957] text-white py-3 rounded mt-4 font-semibold transition disabled:opacity-50 disabled:cursor-not-allowed" disabled={isCreating}>
                 {isCreating ? "Creating..." : "Create FaceTime"}
                 </button>
             </form>
@@ -504,7 +504,7 @@ const MeetingLink = ({ facetimeLink }: { facetimeLink: string }) => {
         <>
             <DialogTitle
                 as='h3'
-                className='text-lg font-bold leading-6 text-green-600'
+                className='text-lg font-bold leading-6 text-[#CB2957]'
             >
                 Copy FaceTime Link
             </DialogTitle>
@@ -520,12 +520,12 @@ const MeetingLink = ({ facetimeLink }: { facetimeLink: string }) => {
                     onCopy={handleCopy}
                     text={meetingUrl}
                 >
-                    <FaCopy className='text-green-600 text-lg cursor-pointer' />
+                    <FaCopy className='text-[#CB2957] text-lg cursor-pointer' />
                 </CopyToClipboard>
             </div>
 
             {copied && (
-                <p className='text-red-600 text-xs mt-2'>Link copied to clipboard</p>
+                <p className='text-[#CB2957] text-xs mt-2'>Link copied to clipboard</p>
             )}
         </>
     );

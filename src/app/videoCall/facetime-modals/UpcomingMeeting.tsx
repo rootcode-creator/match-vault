@@ -49,7 +49,7 @@ export default function UpcomingMeeting({ enable, setEnable }: Props) {
 							>
 								<DialogPanel className='w-full md:w-[380px] lg:w-[400px] xl:w-[420px] transform overflow-hidden rounded-2xl bg-white p-6 align-middle text-center shadow-xl transition-all'>
 									<div className='flex items-center justify-between gap-8 pb-6 border-b border-gray-200'>
-										<DialogTitle as='h3' className='text-lg font-bold leading-6 text-green-600 flex-1 text-left'>
+										<DialogTitle as='h3' className='text-lg font-bold leading-6 text-[#CB2957] flex-1 text-left'>
 											Upcoming FaceTime
 										</DialogTitle>
 										<button
@@ -121,7 +121,7 @@ const MeetingList = () => {
 								{call.isCreator ? (
 									call.recipients && call.recipients.length > 0 ? (
 										call.recipients.map((recipient: any) => (
-											<div key={recipient.id} className='inline-flex items-center gap-1.5 bg-white px-3 py-1.5 rounded-full text-xs border border-emerald-200 hover:border-emerald-300 transition-colors'>
+											<div key={recipient.id} className='inline-flex items-center gap-1.5 bg-white px-3 py-1.5 rounded-full text-xs border border-[#DDDDDD] hover:border-[#CB2957] transition-colors'>
 												{recipient.image && (
 													<img
 														src={recipient.image}
@@ -136,7 +136,7 @@ const MeetingList = () => {
 										<span className='text-xs text-slate-500 italic'>No recipients invited yet</span>
 									)
 								) : (
-									<div className='inline-flex items-center gap-1.5 bg-white px-3 py-1.5 rounded-full text-xs border border-blue-200 hover:border-blue-300 transition-colors'>
+									<div className='inline-flex items-center gap-1.5 bg-white px-3 py-1.5 rounded-full text-xs border border-[#DDDDDD] hover:border-[#CB2957] transition-colors'>
 										{call.creatorImage && (
 											<img
 												src={call.creatorImage}
@@ -152,10 +152,10 @@ const MeetingList = () => {
                     
 						{/* Action Buttons */}
 						{call.isCreator ? (
-							<div className='flex gap-2 pt-2'>
+								<div className='flex gap-2 pt-2'>
 								<button
 									type="button"
-									className='flex-1 bg-slate-600 hover:bg-slate-700 text-white text-sm font-semibold py-2.5 px-3 rounded-lg shadow-sm transition-all duration-200 hover:shadow-md'
+									className='flex-1 bg-[#000000] hover:bg-[#111111] text-white text-sm font-semibold py-2.5 px-3 rounded-lg shadow-sm transition-all duration-200 hover:shadow-md'
 									onClick={async () => {
 											const res = await fetch(`/api/facetime/meetings/${encodeURIComponent(call.callId)}`, {
 												method: "DELETE",
@@ -173,14 +173,14 @@ const MeetingList = () => {
 								>
 									Complete
 								</button>
-								<Link className='flex-1 bg-emerald-500 hover:bg-emerald-600 text-white text-sm font-semibold py-2.5 px-3 rounded-lg shadow-sm transition-all duration-200 hover:shadow-md text-center flex items-center justify-center'
+								<Link className='flex-1 bg-[#CB2957] hover:bg-[#b7244a] text-white text-sm font-semibold py-2.5 px-3 rounded-lg shadow-sm transition-all duration-200 hover:shadow-md text-center flex items-center justify-center'
 								href={`/videoCall/facetime/${call.callId}`}
 								>
 									Start now
 								</Link>
 							</div>
 						) : (
-							<Link className='block w-full bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold py-2.5 px-4 rounded-lg shadow-sm transition-all duration-200 hover:shadow-md text-center'
+							<Link className='block w-full bg-[#CB2957] hover:bg-[#b7244a] text-white text-sm font-semibold py-2.5 px-4 rounded-lg shadow-sm transition-all duration-200 hover:shadow-md text-center'
 							href={`/videoCall/facetime/${call.callId}`}
 							>
 								Join Meeting
