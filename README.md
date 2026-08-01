@@ -28,10 +28,6 @@
 	<a href="#-available-scripts"><img src="https://img.shields.io/badge/RUN-SCRIPTS-A855F7?style=for-the-badge&logo=files&logoColor=white&labelColor=7E22CE" alt="Scripts" /></a>
 </p>
 
-## match-vault — README
-
-Modern full-stack matchmaking application built with Next.js App Router, Prisma, PostgreSQL, NextAuth v5, and real-time messaging/notifications with Pusher.
-
 ## Table of Contents
 
 - [🚀 Project intro](#-project-intro)
