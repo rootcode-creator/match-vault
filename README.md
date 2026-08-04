@@ -116,7 +116,7 @@ match-vault/
 | Photo uploads | ✅ Current | Cloudinary upload + signed API route |
 | Admin moderation | ✅ Current | Approve/reject pending photos |
 
-### Flow diagram
+### 🌊 Flow diagram
 
 The Mermaid flow below shows the main application journey, from public entry points through auth, profile completion, member discovery, messaging, video calls, and admin moderation.
 
