@@ -23,6 +23,8 @@ export default function PresenceAvatar({
       <Avatar
         src={src || "/images/user.png"}
         alt="User avatar"
+        name="User"
+        showFallback
       />
       {isOnline && (
         <span
