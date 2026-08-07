@@ -1,5 +1,4 @@
 import usePresenceStore from "@/hooks/usePresenceStore";
-import { Avatar } from "@heroui/react";
 import React from "react";
 
 type Props = {
@@ -19,12 +18,11 @@ export default function PresenceAvatar({
     userId && membersId.indexOf(userId) !== -1;
 
   return (
-    <div className="relative inline-flex">
-      <Avatar
+    <div className="relative inline-flex h-9 w-9 overflow-hidden rounded-full bg-slate-100">
+      <img
         src={src || "/images/user.png"}
         alt="User avatar"
-        name="User"
-        showFallback
+        className="h-full w-full object-cover"
       />
       {isOnline && (
         <span
