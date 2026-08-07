@@ -21,11 +21,20 @@ export default function EditForm({ member, }: Props) {
 
     const fieldClassNames = {
         base: "w-full",
-        // Matches the login screenshot: light border + subtle shadow + compact height
         inputWrapper:
-            "bg-white border border-slate-200 rounded-xl shadow-sm h-12 px-4 transition focus-within:border-indigo-500 focus-within:ring-2 focus-within:ring-indigo-200/60",
-        input: "text-neutral-900 placeholder:text-slate-400",
+            "w-full rounded-xl bg-white border border-slate-200 shadow-sm px-4 py-3 transition focus-within:border-indigo-500 focus-within:ring-2 focus-within:ring-indigo-200/60",
+        input: "w-full text-neutral-900 placeholder:text-slate-400",
+        innerWrapper: "gap-2",
         label: "text-sm font-medium text-neutral-700",
+        errorMessage: "text-sm text-danger",
+    } as const;
+
+    const textareaClassNames = {
+        inputWrapper:
+            "w-full rounded-xl bg-white border border-slate-200 shadow-sm px-4 py-3 transition focus-within:border-indigo-500 focus-within:ring-2 focus-within:ring-indigo-200/60",
+        input: "w-full min-h-[140px] text-neutral-900 placeholder:text-slate-400",
+        innerWrapper: "gap-2",
+        errorMessage: "text-sm text-danger",
     } as const;
 
     const {
@@ -100,67 +109,74 @@ export default function EditForm({ member, }: Props) {
         >
 
 
-            <fieldset>
-                <legend>Name:</legend>
+            <div className="space-y-5">
+                <div className="w-full">
+                    <label htmlFor="name" className="block text-sm font-medium text-neutral-700 mb-2">
+                        Name
+                    </label>
+                    <Input
+                        id="name"
+                        type="text"
+                        placeholder="Name"
+                        variant="bordered"
+                        {...register("name")}
+                        defaultValue={member.name}
+                        isInvalid={!!errors.name}
+                        errorMessage={errors.name?.message}
+                        classNames={fieldClassNames}
+                    />
+                </div>
 
-                <Input
-                    type="text"
-                    placeholder='Name'
-                    variant='bordered'
-                    {...register("name")}
-                    defaultValue={member.name}
-                    isInvalid={!!errors.name}
-                    errorMessage={errors.name?.message}
-                    classNames={fieldClassNames}
-                />
-            </fieldset>
-
-            <Textarea
-                label='Description:'
-                placeholder='Description'
-                variant='bordered'
-                {...register("description")}
-                defaultValue={member.description}
-                isInvalid={!!errors.description}
-                errorMessage={errors.description?.message}
-                minRows={5}
-
-            />
-
-
+                <div className="w-full">
+                    <label htmlFor="description" className="block text-sm font-medium text-neutral-700 mb-2">
+                        Description
+                    </label>
+                    <textarea
+                        id="description"
+                        placeholder="Description"
+                        {...register("description")}
+                        defaultValue={member.description}
+                        rows={5}
+                        className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-neutral-900 placeholder:text-slate-400 shadow-sm transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200/60"
+                    />
+                </div>
+            </div>
 
             <div className='grid grid-cols-1 sm:grid-cols-2 gap-3'>
 
 
 
-                <fieldset>
-                    <legend >City:</legend>
+                <div className="w-full">
+                    <label htmlFor="city" className="block text-sm font-medium text-neutral-700 mb-2">
+                        City
+                    </label>
                     <Input
-                        placeholder="City:" variant='bordered' {...register("city")}
-
+                        id="city"
+                        placeholder="City"
+                        variant='bordered'
+                        {...register("city")}
                         defaultValue={member.city}
                         isInvalid={!!errors.city}
                         errorMessage={errors.city?.message}
                         classNames={fieldClassNames}
-
                     />
+                </div>
 
-                </fieldset>
-
-
-                <fieldset>
-                    <legend>Country:</legend>
+                <div className="w-full">
+                    <label htmlFor="country" className="block text-sm font-medium text-neutral-700 mb-2">
+                        Country
+                    </label>
                     <Input
-                        placeholder="Country" variant='bordered' {...register("country")}
-
+                        id="country"
+                        placeholder="Country"
+                        variant='bordered'
+                        {...register("country")}
                         defaultValue={member.country}
                         isInvalid={!!errors.country}
                         errorMessage={errors.country?.message}
                         classNames={fieldClassNames}
-
                     />
-
-                </fieldset>
+                </div>
             </div>
 
             {errors.root?.serverError && (

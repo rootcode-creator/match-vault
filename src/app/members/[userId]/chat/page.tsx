@@ -1,4 +1,3 @@
-import CardInnerWrapper from "@/components/CardInnerWrapper";
 import { getMemberByUserId } from "@/app/actions/memberActions";
 import React from "react";
 import ChatForm from "./ChatForm";
@@ -24,9 +23,9 @@ export default async function ChatPage({
   );
 
   return (
-    <CardInnerWrapper
-      header={
-        <div className="flex w-full items-center justify-between rounded-2xl border border-[#dce7eb] bg-[linear-gradient(180deg,#f9fdfd_0%,#edf5f8_100%)] px-3 py-2.5 sm:px-4">
+    <div className="flex h-full flex-col overflow-hidden rounded-[28px] bg-white">
+      <div className="px-3 py-2.5 sm:px-4">
+        <div className="flex w-full items-center justify-between rounded-2xl border border-[#dce7eb] bg-[linear-gradient(180deg,#f9fdfd_0%,#edf5f8_100%)] p-3 sm:p-4">
           <div className="flex items-center gap-2.5">
             <div className="relative inline-flex h-10 w-10 shrink-0 overflow-hidden rounded-full border border-[#d7e3e9] bg-white shadow-sm sm:h-11 sm:w-11">
               <img
@@ -50,16 +49,17 @@ export default async function ChatPage({
           </div>
           <StartVideoCallButton targetUserId={targetUserId} memberName={member?.name} />
         </div>
-      }
-      body={
+      </div>
+      <div className="flex-1 min-h-0 overflow-hidden px-0 py-0">
         <MessageList
           initialMessages={thread}
           currentUserId={userId}
           chatId={chatId}
         />
-      }
-      compactFooter
-      footer={<ChatForm />}
-    />
+      </div>
+      <div className="border-t border-[#e9eef1] px-3 py-3 sm:px-4">
+        <ChatForm />
+      </div>
+    </div>
   );
 }

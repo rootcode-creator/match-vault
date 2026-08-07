@@ -107,7 +107,7 @@ export default function ChatForm() {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="w-full"
+      className="w-full min-w-0"
     >
       <div className="w-full rounded-[24px] border border-[#cde0ea] bg-[linear-gradient(180deg,#e9f6ff_0%,#d8ecfb_100%)] p-1.5 shadow-[0_8px_24px_rgba(36,91,122,0.12)]">
         <Controller
@@ -122,9 +122,9 @@ export default function ChatForm() {
               classNames={{
                 base: "w-full",
                 inputWrapper:
-                  "h-12 rounded-[18px] border border-[#c9dce7] bg-white/95 px-3 shadow-none data-[hover=true]:bg-white group-data-[focus=true]:border-[#9fc2d5] group-data-[focus=true]:bg-white",
+                  "w-full h-12 rounded-[18px] border border-[#c9dce7] bg-white/95 px-3 shadow-none data-[hover=true]:bg-white group-data-[focus=true]:border-[#9fc2d5] group-data-[focus=true]:bg-white",
                 input:
-                  "border-0 bg-transparent text-sm font-medium text-[#173042] placeholder:text-[#65869a] outline-none ring-0 focus:outline-none focus:ring-0",
+                  "w-full border-0 bg-transparent text-sm font-medium text-[#173042] placeholder:text-[#65869a] outline-none ring-0 focus:outline-none focus:ring-0",
                 innerWrapper: "gap-2",
               }}
               endContent={
@@ -150,7 +150,7 @@ export default function ChatForm() {
           )}
         />
       </div>
-      <div className="flex flex-col">
+      <div className="flex flex-col mt-2">
         {errors.root?.serverError && (
           <p className="text-danger text-sm">
             {errors.root.serverError.message}

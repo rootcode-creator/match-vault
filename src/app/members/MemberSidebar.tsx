@@ -34,7 +34,7 @@ export default function MemberSidebar({
     membersId.indexOf(member.userId) !== -1;
 
   return (
-    <Card className="w-full overflow-hidden border border-default-200 bg-white shadow-sm min-h-[83vh] lg:sticky lg:top-24">
+    <Card className="flex h-full w-full flex-col overflow-hidden border border-default-200 bg-white shadow-sm">
       <div className="relative h-24 bg-gradient-to-r from-indigo-600 via-violet-600 to-slate-700">
         <div className="absolute left-1/2 -bottom-10 -translate-x-1/2">
           <div className="relative rounded-full bg-white p-1 shadow-sm">
@@ -61,7 +61,7 @@ export default function MemberSidebar({
         </div>
       </div>
 
-      <CardBody className="pt-14 pb-3 px-4">
+      <CardBody className="flex-1 pt-14 pb-3 px-4">
         <div className="flex flex-col items-center">
           <div className="mt-2 flex items-center gap-2">
             <div className="text-lg font-semibold text-default-900">
@@ -76,7 +76,7 @@ export default function MemberSidebar({
 
         <Divider className="my-4" />
 
-        <nav className="flex flex-col gap-2 mb-3">
+        <nav className="flex flex-col gap-2 mb-3 pt-10">
           {navLinks.map((link) => {
             const isActive = pathname === link.href;
             return (
@@ -100,12 +100,12 @@ export default function MemberSidebar({
       <Divider />
 
       <CardFooter className="pt-4">
-        <div className="flex gap-2">
+        <div className="flex justify-center w-full">
           <Button
             as={Link}
             href="/members"
             fullWidth
-            className="font-semibold"
+            className="max-w-xs font-semibold"
             color="default"
             variant="bordered"
           >

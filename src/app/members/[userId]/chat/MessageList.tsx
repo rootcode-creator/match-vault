@@ -109,10 +109,10 @@ useEffect(() => {
 
 
 return (
-    <div className="min-h-[24vh] max-h-[48vh] h-auto overflow-y-auto overflow-x-hidden rounded-[24px] border border-[#d6e5eb] bg-[linear-gradient(180deg,#fbfefe_0%,#f1f7fb_100%)] px-3 py-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.85)] sm:max-h-[48vh] sm:px-4">
+    <div className="flex h-full min-h-0 flex-1 flex-col overflow-y-auto overflow-x-hidden px-0 py-0 sm:px-0">
 
         {messages.length === 0 ? (
-            <div className="flex min-h-[32vh] flex-col items-center justify-center gap-3 text-sm font-medium text-[#67808f]">
+            <div className="flex flex-1 flex-col items-center justify-center gap-3 text-sm font-medium text-[#67808f]">
                 <div>No messages yet</div>
                 {typing ? (
                     <div
@@ -129,7 +129,7 @@ return (
                 ) : null}
             </div>
         ) : (
-            <div className="flex flex-col gap-3 sm:gap-4">
+            <div className="flex min-h-0 flex-1 flex-col gap-3 sm:gap-4">
                 {messages.map((message, index) => {
                     const nextMessage = messages[index + 1];
                     const showAvatar = !nextMessage || nextMessage.senderId !== message.senderId;
