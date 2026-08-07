@@ -17,6 +17,18 @@ export async function getTokenByEmail(email: string) {
     }
 }
 
+export async function getTokensByEmailAndType(email: string, type: TokenType) {
+    try {
+        const normalized = normalizeEmail(email);
+        return prisma.token.findMany({
+            where: { email: normalized, type }
+        });
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+}
+
 export async function getTokenByToken(token: string) {
     try {
         // Try exact match first
@@ -60,12 +72,15 @@ export async function generateToken(email: string, type: TokenType) {
     const token = getToken();
     const expires = new Date(Date.now() + 1000 * 60 * 60 * 24); //  Expires in 24 hours
 
-    const existingToken = await getTokenByEmail(normalizedEmail);
+    const existingTokens = await getTokensByEmailAndType(normalizedEmail, type);
 
-    if (existingToken) {
-        await prisma.token.delete({
-            where: { id: existingToken.id }
-        })
+    if (existingTokens.length > 0) {
+        await prisma.token.deleteMany({
+            where: {
+                email: normalizedEmail,
+                type
+            }
+        });
     }
 
     return prisma.token.create({
@@ -83,6 +98,18 @@ export async function deleteTokenById(id: string) {
         return prisma.token.delete({
             where: { id }
         })
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+}
+
+export async function deleteTokensByEmailAndType(email: string, type: TokenType) {
+    try {
+        const normalized = normalizeEmail(email);
+        return prisma.token.deleteMany({
+            where: { email: normalized, type }
+        });
     } catch (error) {
         console.log(error);
         throw error;
