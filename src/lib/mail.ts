@@ -34,11 +34,25 @@ function getBaseUrl() {
     return 'http://localhost:3000';
 }
 
+function getMailDomain() {
+    const configured = process.env.mail_domain?.trim() || process.env.MAIL_DOMAIN?.trim() || process.env.NEXT_PUBLIC_MAIL_DOMAIN?.trim();
+
+    if (!configured) {
+        throw new Error('Missing mail domain. Set mail_domain in your environment.');
+    }
+
+    return configured;
+}
+
+function getFromAddress(localPart: string) {
+    return `${localPart}@${getMailDomain()}`;
+}
+
 export async function sendVerificationEmail(email: string, token: string) {
     const link = `${getBaseUrl()}/verify-email?token=${encodeURIComponent(token)}`;
 
     return getResendClient().emails.send({
-        from: 'verify-email@credentials.kawserahmad.engineer',
+        from: getFromAddress('verify-email'),
         to: email,
         subject: 'Verify your email address',
         html: `
@@ -53,7 +67,7 @@ export async function sendPasswordResetEmail(email: string, token: string) {
     const link = `${getBaseUrl()}/reset-password?token=${encodeURIComponent(token)}`;
 
     return getResendClient().emails.send({
-        from: 'reset-password@credentials.kawserahmad.engineer',
+        from: getFromAddress('reset-password'),
         to: email,
         subject: 'Reset your password',
         html: `
@@ -70,7 +84,7 @@ export async function sendScheduledMeetingEmail(email: string, meetingDescriptio
     const link = `${getBaseUrl()}/videoCall/facetime/${callId}`;
 
     return getResendClient().emails.send({
-        from: 'scheduled-meeting@credentials.kawserahmad.engineer',
+        from: getFromAddress('scheduled-meeting'),
         to: email,
         subject: `Scheduled FaceTime: ${meetingDescription}`,
         html: `
