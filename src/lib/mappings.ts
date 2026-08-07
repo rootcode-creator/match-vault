@@ -22,10 +22,10 @@ export function mapMessageToMessageDto(message: MessageWithSenderRecipient) {
         dateRead: message.dateRead ? formatShortDateTime(message.dateRead) : null,
         senderId: message.sender?.userId,
         senderName: message.sender?.name,
-        senderImage: message.sender?.image,
+        senderImage: message.sender?.image ?? message.sender?.user?.image,
         recipientId: message.recipient?.userId,
-        recipientImage: message.recipient?.image,
-        recipientName: message.recipient?.name
+        recipientName: message.recipient?.name,
+        recipientImage: message.recipient?.image ?? message.recipient?.user?.image,
 
 
     }

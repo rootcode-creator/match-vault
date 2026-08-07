@@ -68,7 +68,14 @@ type MessageWithSenderRecipient = Prisma.MessageGetPayload<{
         sender: {
 
 
-            select: { userId, name, image }
+            select: {
+                userId,
+                name,
+                image,
+                user: {
+                    select: { image }
+                }
+            }
 
 
         },
@@ -77,7 +84,14 @@ type MessageWithSenderRecipient = Prisma.MessageGetPayload<{
         recipient: {
 
 
-            select: { userId, name, image }
+            select: {
+                userId,
+                name,
+                image,
+                user: {
+                    select: { image }
+                }
+            }
 
 
         }

@@ -351,7 +351,12 @@ const messageSelect = {
                     select: {
                         userId: true,
                         name: true,
-                        image: true
+                        image: true,
+                        user: {
+                            select: {
+                                image: true
+                            }
+                        }
                     }
                 },
 
@@ -359,7 +364,12 @@ const messageSelect = {
                     select: {
                         userId: true,
                         name: true,
-                        image: true
+                        image: true,
+                        user: {
+                            select: {
+                                image: true
+                            }
+                        }
                     }
                 }
 }
