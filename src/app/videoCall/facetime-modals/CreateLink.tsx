@@ -430,7 +430,7 @@ const MeetingForm = ({
                             const isPast = isPastDate(day.date);
                             return (
                                 <button type="button" key={day.date}
-                                    onClick={() => !isPast && handleDateChange(day.date)}
+                                    onClick={(e) => { e.preventDefault(); e.stopPropagation(); if (!isPast) handleDateChange(day.date); }}
                                     disabled={isPast}
                                     className={`h-8 text-xs rounded flex items-center justify-center transition ${
                                         selectedDate === day.date && !isPast
