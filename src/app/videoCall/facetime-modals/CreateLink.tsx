@@ -429,8 +429,7 @@ const MeetingForm = ({
                         {calendarDays.map((day) => {
                             const isPast = isPastDate(day.date);
                             return (
-                                <button
-                                    key={day.date}
+                                <button type="button" key={day.date}
                                     onClick={() => !isPast && handleDateChange(day.date)}
                                     disabled={isPast}
                                     className={`h-8 text-xs rounded flex items-center justify-center transition ${
@@ -530,6 +529,9 @@ const MeetingLink = ({ facetimeLink }: { facetimeLink: string }) => {
         </>
     );
 };
+
+
+
 
 
 
