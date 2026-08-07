@@ -26,7 +26,7 @@ export default function PresenceAvatar({
       />
       {isOnline && (
         <span
-          className="absolute -top-0.5 -right-0.5 h-3 w-3 rounded-full bg-red-500 ring-2 ring-white animate-pulse"
+          className="absolute top-0.5 right-0.5 h-3 w-3 rounded-full bg-red-500 ring-2 ring-white animate-pulse"
           aria-label="Online"
         />
       )}
