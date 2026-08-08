@@ -2,6 +2,8 @@ import React from 'react';
 import MessageSidebar from "./MessageSidebar";
 import { getMessagesByContainer } from "../actions/messageActions"
 import MessageTable from "./MessageTable"
+import { auth } from "@/auth";
+import { redirect } from "next/navigation";
 
 
 
@@ -10,6 +12,9 @@ export default async function MessagesPage({
 }: {
   searchParams: Promise<{ container?: string }>;
 }) {
+  const session = await auth();
+  const isAdmin = session?.user?.role === "ADMIN";
+  if (isAdmin) return redirect('/');
   const INITIAL_MESSAGES_LIMIT = 5;
   const LOAD_MORE_MESSAGES_LIMIT = 2;
 

@@ -23,12 +23,12 @@ export default function SocialLogin() {
     await signOut({ redirect: false });
 
     if (provider === "google") {
-      await signIn(provider, { callbackUrl: "/members" }, { prompt: "select_account" });
+      await signIn(provider, { callbackUrl: "/" }, { prompt: "select_account" });
       return;
     }
 
     await signIn(provider, {
-      callbackUrl: "/members",
+      callbackUrl: "/",
     });
   };
 

@@ -46,9 +46,22 @@ export default function LoginForm() {
     const result = await signInUser(data);
 
     if (result.status === "success") {
-      router.push("/members");
-      router.refresh();
-      return;
+      try {
+        const res = await fetch('/api/auth/session');
+        const session = await res.json();
+        const role = session?.user?.role;
+        if (role === 'ADMIN') {
+          router.push('/admin/moderation');
+        } else {
+          router.push('/members');
+        }
+        router.refresh();
+        return;
+      } catch (e) {
+        router.push('/members');
+        router.refresh();
+        return;
+      }
     }
 
     // Show a toast and map possible field errors from server

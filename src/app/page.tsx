@@ -1,9 +1,12 @@
 import { auth } from "@/auth";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
 export default async function Home() {
   const session = await auth();
   const currentYear = new Date().getFullYear();
+  const isAdmin = session?.user?.role === "ADMIN";
+  if (session && isAdmin) redirect('/admin/moderation');
 
   return (
     <div className="relative flex min-h-[calc(100vh-80px)] flex-col overflow-hidden">
@@ -30,18 +33,22 @@ export default async function Home() {
         <div className="mt-8 flex w-full max-w-md flex-col items-stretch gap-3 sm:mt-9 sm:max-w-none sm:flex-row sm:flex-wrap sm:items-center sm:justify-center sm:gap-4">
           {session ? (
             <>
-              <Link
-                href="/members"
-                className="inline-flex min-w-[160px] items-center justify-center rounded-full bg-black px-7 py-3 text-base font-semibold text-white transition hover:bg-zinc-800 sm:min-w-[170px] sm:px-8 sm:text-lg"
-              >
-                Start matching
-              </Link>
-              <Link
-                href="/messages"
-                className="inline-flex min-w-[145px] items-center justify-center rounded-full border border-default-300 bg-white/90 px-7 py-3 text-base font-semibold text-default-800 transition hover:bg-white sm:min-w-[150px] sm:px-8 sm:text-lg"
-              >
-                Messages
-              </Link>
+              {!isAdmin && (
+                <>
+                  <Link
+                    href="/members"
+                    className="inline-flex min-w-[160px] items-center justify-center rounded-full bg-black px-7 py-3 text-base font-semibold text-white transition hover:bg-zinc-800 sm:min-w-[170px] sm:px-8 sm:text-lg"
+                  >
+                    Start matching
+                  </Link>
+                  <Link
+                    href="/messages"
+                    className="inline-flex min-w-[145px] items-center justify-center rounded-full border border-default-300 bg-white/90 px-7 py-3 text-base font-semibold text-default-800 transition hover:bg-white sm:min-w-[150px] sm:px-8 sm:text-lg"
+                  >
+                    Messages
+                  </Link>
+                </>
+              )}
             </>
           ) : (
             <>

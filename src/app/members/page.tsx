@@ -8,6 +8,7 @@ import { GetMemberParams } from '@/types';
 import EmptyState from '@/components/EmptyState';
 import { getAuthUserIdOrNull } from '../actions/authActions';
 import { redirect } from 'next/navigation';
+import { auth } from '@/auth';
 
 export default async function MembersPage({searchParams,}:{
   searchParams: Promise<GetMemberParams>;
@@ -17,6 +18,9 @@ export default async function MembersPage({searchParams,}:{
   if (!userId) {
     redirect('/login');
   }
+  const session = await auth();
+  const isAdmin = session?.user?.role === 'ADMIN';
+  if (isAdmin) redirect('/admin/moderation');
 
   const params = await searchParams;
   // By default, show members even if they don't have a photo so newly registered users appear
