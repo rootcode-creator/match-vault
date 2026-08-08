@@ -88,21 +88,23 @@ export default function MemberPhotos({
             {/* Controls for editing (kept as before) */}
             {editing && (
               <>
-                <div
-                  onClick={() => onSetMain(photo)}
-                  className="absolute top-3 left-3 z-50"
-                >
-                  <StarButton
-                    selected={
-                      photo.url === mainImageUrl
-                    }
-                    loading={
-                      loading.isLoading &&
-                      loading.type === "main" &&
-                      loading.id === photo.id
-                    }
-                  />
-                </div>
+                {photo.isApproved && (
+                  <div
+                    onClick={() => onSetMain(photo)}
+                    className="absolute top-3 left-3 z-50"
+                  >
+                    <StarButton
+                      selected={
+                        photo.url === mainImageUrl
+                      }
+                      loading={
+                        loading.isLoading &&
+                        loading.type === "main" &&
+                        loading.id === photo.id
+                      }
+                    />
+                  </div>
+                )}
                 <div
                   onClick={() => onDelete(photo)}
                   className="absolute top-3 right-3 z-50"
