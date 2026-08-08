@@ -17,12 +17,14 @@ type Props = {
   photos: Photo[] | null;
   editing?: boolean;
   mainImageUrl?: string | null;
+  gridClassName?: string;
 };
 
 export default function MemberPhotos({
   photos,
   editing,
   mainImageUrl,
+  gridClassName,
 }: Props) {
   const router = useRouter();
   const [loading, setLoading] = useState({
@@ -69,7 +71,10 @@ export default function MemberPhotos({
   };
 
   return (
-    <div className="grid grid-cols-2 gap-4 p-2 sm:grid-cols-3 sm:gap-4 md:grid-cols-4 lg:grid-cols-5 lg:gap-6">
+    <div className={clsx(
+      "grid grid-cols-2 gap-4 p-2 sm:grid-cols-3 sm:gap-4 md:grid-cols-4 lg:grid-cols-5 lg:gap-6",
+      gridClassName
+    )}>
       {photos &&
         photos.map((photo) => (
           <div

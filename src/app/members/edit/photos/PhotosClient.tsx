@@ -25,7 +25,12 @@ export default function PhotosClient({ member, photos }: Props) {
       </div>
       <div className="mt-8 space-y-6 flex-1">
         <MemberPhotoUpload />
-        <MemberPhotos photos={photos} editing={true} mainImageUrl={member?.image} />
+        <MemberPhotos
+          photos={photos}
+          editing={true}
+          mainImageUrl={member?.image}
+          gridClassName="sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
+        />
       </div>
     </div>
   );
