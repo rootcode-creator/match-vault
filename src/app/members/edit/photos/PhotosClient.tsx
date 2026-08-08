@@ -29,7 +29,7 @@ export default function PhotosClient({ member, photos }: Props) {
           photos={photos}
           editing={true}
           mainImageUrl={member?.image}
-          gridClassName="sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
+          gridClassName="sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5"
         />
       </div>
     </div>
