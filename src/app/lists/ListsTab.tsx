@@ -63,7 +63,7 @@ export default function ListsTab({ members, likeIds }: Props) {
   }
 
   return (
-    <div className="flex w-full flex-col mt-2 gap-5">
+    <div className="flex w-full flex-col mt-6 gap-5">
       <Tabs
         aria-label="Like tabs"
         items={tabs}
