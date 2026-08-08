@@ -14,16 +14,14 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
 type Props = {
-  userInfo: {
+  userInfo:{
     name: string | null;
     image: string | null;
-  } | null;
-  isAdmin?: boolean;
+  }| null;
 };
 
 export default function UserMenu({
   userInfo,
-  isAdmin = false,
 }: Props) {
   const [isMounted, setIsMounted] = useState(false);
 
@@ -81,16 +79,14 @@ export default function UserMenu({
             Welcome, {getDisplayName(userInfo?.name)}
           </DropdownItem>
         </DropdownSection>
-        {!isAdmin && (
-          <DropdownItem
-            key="2"
-            as={Link}
-            href="/members/edit"
-            className="user-menu__item"
-          >
-            Edit profile
-          </DropdownItem>
-        )}
+        <DropdownItem
+        key="2"
+          as={Link}
+          href="/members/edit"
+          className="user-menu__item"
+        >
+          Edit profile
+        </DropdownItem>
         <DropdownItem key="3"
           color="danger"
           onClick={async () => signOutUser()}

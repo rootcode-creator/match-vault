@@ -115,7 +115,7 @@ export default function TopNav({
         >
           {isLoggedIn && (
             <div className="ml-auto">
-              <UserMenu userInfo={userInfo} isAdmin={isAdmin} />
+              <UserMenu userInfo={userInfo} />
             </div>
           )}
         </NavbarContent>
