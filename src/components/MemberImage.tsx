@@ -85,8 +85,11 @@ export default function MemberImage({
       )}
 
       {/* Admin action overlay */}
-      {isAdmin && (
-        <div className="absolute bottom-3 left-1/2 z-50 flex -translate-x-1/2 items-center gap-2 rounded-full bg-white/90 p-1 shadow-sm">
+      {isAdmin && !photo?.isApproved && (
+        <div className="absolute top-3 left-1/2 z-50 flex -translate-x-1/2 items-center gap-2 rounded-full bg-white/95 px-3 py-1.5 shadow-sm shadow-default-100/50">
+          <span className="text-xs font-semibold text-default-900 sm:text-sm">
+            Awaiting approval
+          </span>
           <Button
             onClick={() => approve(photo.id)}
             color="success"
