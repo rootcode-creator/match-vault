@@ -77,7 +77,7 @@ export default function MemberImage({
 
       {/* Awaiting approval badge for non-admins */}
       {!photo?.isApproved && !isAdmin && (
-        <div className="absolute top-3 left-3 z-40 inline-flex min-w-max items-center justify-center rounded-full border border-default-200 bg-white px-3 py-1.5 text-xs font-semibold text-default-900 shadow-sm shadow-default-100/40 sm:text-sm">
+        <div className="absolute top-3 left-3 z-40 inline-flex min-w-max max-w-[calc(100%-5.5rem)] items-center justify-center rounded-full border border-default-200 bg-white px-2.5 py-1 text-[11px] font-semibold text-default-900 shadow-sm shadow-default-100/40 sm:text-xs">
           <span className="whitespace-nowrap">
             Awaiting approval
           </span>
