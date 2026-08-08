@@ -77,7 +77,7 @@ export default function MemberImage({
 
       {/* Awaiting approval badge for non-admins */}
       {!photo?.isApproved && !isAdmin && (
-        <div className="absolute top-3 left-3 z-40 rounded-full bg-white/90 px-3 py-1 text-sm font-semibold text-danger shadow-sm">
+        <div className="absolute top-3 left-3 z-40 rounded-full border border-default-200 bg-white px-4 py-1.5 text-sm font-semibold text-default-900 shadow-sm shadow-default-100/40">
           Awaiting approval
         </div>
       )}
