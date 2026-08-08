@@ -16,7 +16,7 @@ type Props = {
 
 export default function PhotosClient({ member, photos }: Props) {
   return (
-    <div className="edit-photos-page flex h-full w-full flex-col overflow-hidden rounded-[28px] border border-black bg-white px-8 py-8 shadow-sm">
+    <div className="flex h-full w-full flex-col overflow-hidden rounded-[28px] border border-black bg-white px-8 py-8 shadow-sm">
       <div className="space-y-4">
         <h1 className="text-2xl font-semibold text-slate-950">Update Photos</h1>
         <p className="max-w-2xl text-sm leading-7 text-slate-600">
@@ -25,24 +25,8 @@ export default function PhotosClient({ member, photos }: Props) {
       </div>
       <div className="mt-8 space-y-6 flex-1">
         <MemberPhotoUpload />
-        <div className="member-photos-grid">
-          <MemberPhotos photos={photos} editing={true} mainImageUrl={member?.image} />
-        </div>
+        <MemberPhotos photos={photos} editing={true} mainImageUrl={member?.image} />
       </div>
-      <style jsx global>{`
-        .edit-photos-page .member-photos-grid .grid > div > .block {
-          width: 100% !important;
-          height: 14rem !important;
-          min-height: 14rem !important;
-          max-height: 14rem !important;
-        }
-
-        @media (min-width: 1024px) {
-          .edit-photos-page .member-photos-grid .grid > div {
-            min-width: 15rem;
-          }
-        }
-      `}</style>
     </div>
   );
 }

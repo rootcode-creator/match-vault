@@ -7,6 +7,7 @@ import {
 import { Photo } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
+import clsx from "clsx";
 import DeleteButton from "./DeleteButton";
 import MemberImage from "./MemberImage";
 import StarButton from "./StarButton";
@@ -75,7 +76,12 @@ export default function MemberPhotos({
             key={photo.id}
             className="relative rounded-2xl overflow-hidden border border-default-200 bg-default-0 shadow-sm transition-transform hover:shadow-md hover:-translate-y-0.5"
           >
-            <div className="block w-full h-56 overflow-hidden">
+            <div
+              className={clsx(
+                "block w-full overflow-hidden",
+                editing ? "aspect-square" : "h-56"
+              )}
+            >
               <MemberImage photo={photo} />
             </div>
 
