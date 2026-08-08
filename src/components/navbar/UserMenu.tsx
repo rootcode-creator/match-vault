@@ -14,13 +14,6 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
 type Props = {
-  userInfo:{
-    name: string | null;
-    image: string | null;
-  }| null;
-};
-
-type Props = {
   userInfo: {
     name: string | null;
     image: string | null;
