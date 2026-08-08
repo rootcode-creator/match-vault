@@ -68,14 +68,18 @@ export default function MemberPhotos({
   };
 
   return (
-    <div className="grid grid-cols-2 gap-3 p-3 sm:grid-cols-3 sm:p-4 md:grid-cols-4 lg:grid-cols-5 lg:p-5">
+    <div className="grid grid-cols-2 gap-4 p-2 sm:grid-cols-3 sm:gap-4 md:grid-cols-4 lg:grid-cols-5 lg:gap-6">
       {photos &&
         photos.map((photo) => (
           <div
             key={photo.id}
-            className="relative"
+            className="relative rounded-2xl overflow-hidden border border-default-200 bg-default-0 shadow-sm transition-transform hover:shadow-md hover:-translate-y-0.5"
           >
-            <MemberImage photo={photo} />
+            <div className="block w-full h-56 overflow-hidden">
+              <MemberImage photo={photo} />
+            </div>
+
+            {/* Controls for editing (kept as before) */}
             {editing && (
               <>
                 <div

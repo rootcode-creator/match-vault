@@ -50,52 +50,58 @@ export default function MemberImage({
   };
 
   return (
-    <div>
+    <div className="relative w-full h-full">
       {photo?.publicId ? (
         <CldImage
           alt="Image of member"
           src={photo.publicId}
-          width={300}
-          height={300}
+          width={600}
+          height={600}
           crop="fill"
           gravity="faces"
-          className={clsx("rounded-2xl", {
-            "opacity-40":
-              !photo.isApproved && !isAdmin,
-          })}
+          className={clsx(
+            "w-full h-full object-cover",
+            {
+              "opacity-60": !photo.isApproved && !isAdmin,
+            }
+          )}
           priority
         />
       ) : (
         <Image
           src={photo?.url || "/images/user.png"}
           alt="Image of user"
+          className="w-full h-full object-cover"
         />
       )}
+
+      {/* Awaiting approval badge for non-admins */}
       {!photo?.isApproved && !isAdmin && (
-        <div className="absolute bottom-2 w-full bg-slate-200 p-1">
-          <div className="flex justify-center text-danger font-semibold">
-            Awaiting approval
-          </div>
+        <div className="absolute top-3 left-3 z-40 rounded-full bg-white/90 px-3 py-1 text-sm font-semibold text-danger shadow-sm">
+          Awaiting approval
         </div>
       )}
 
+      {/* Admin action overlay */}
       {isAdmin && (
-        <div className="flex flex-row gap-2 mt-2">
+        <div className="absolute bottom-3 left-1/2 z-50 flex -translate-x-1/2 items-center gap-2 rounded-full bg-white/90 p-1 shadow-sm">
           <Button
             onClick={() => approve(photo.id)}
             color="success"
             variant="bordered"
-            fullWidth
+            aria-label="Approve photo"
+            className="h-9 w-9 rounded-full p-0 flex items-center justify-center transition-colors"
           >
-            <ImCheckmark size={20} />
+            <ImCheckmark size={16} />
           </Button>
           <Button
             onClick={() => reject(photo)}
             color="danger"
             variant="bordered"
-            fullWidth
+            aria-label="Reject photo"
+            className="h-9 w-9 rounded-full p-0 flex items-center justify-center transition-colors"
           >
-            <ImCross size={20} />
+            <ImCross size={16} />
           </Button>
         </div>
       )}

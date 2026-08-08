@@ -20,8 +20,17 @@ type Props = {
   }| null;
 };
 
+type Props = {
+  userInfo: {
+    name: string | null;
+    image: string | null;
+  } | null;
+  isAdmin?: boolean;
+};
+
 export default function UserMenu({
   userInfo,
+  isAdmin = false,
 }: Props) {
   const [isMounted, setIsMounted] = useState(false);
 
@@ -79,14 +88,16 @@ export default function UserMenu({
             Welcome, {getDisplayName(userInfo?.name)}
           </DropdownItem>
         </DropdownSection>
-        <DropdownItem
-        key="2"
-          as={Link}
-          href="/members/edit"
-          className="user-menu__item"
-        >
-          Edit profile
-        </DropdownItem>
+        {!isAdmin && (
+          <DropdownItem
+            key="2"
+            as={Link}
+            href="/members/edit"
+            className="user-menu__item"
+          >
+            Edit profile
+          </DropdownItem>
+        )}
         <DropdownItem key="3"
           color="danger"
           onClick={async () => signOutUser()}
