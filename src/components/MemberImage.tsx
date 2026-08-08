@@ -86,30 +86,25 @@ export default function MemberImage({
 
       {/* Admin action overlay */}
       {isAdmin && !photo?.isApproved && (
-        <div className="absolute bottom-3 left-1/2 z-50 flex -translate-x-1/2 flex-wrap items-center justify-center gap-2 rounded-full bg-white/95 px-3 py-2 shadow-sm shadow-default-100/50 sm:flex-nowrap">
-          <span className="text-xs font-semibold text-default-900 sm:text-sm">
-            Awaiting approval
-          </span>
-          <div className="flex items-center gap-2">
-            <Button
-              onClick={() => approve(photo.id)}
-              color="success"
-              variant="bordered"
-              aria-label="Approve photo"
-              className="h-9 w-9 rounded-full p-0 flex items-center justify-center transition-colors"
-            >
-              <ImCheckmark size={16} />
-            </Button>
-            <Button
-              onClick={() => reject(photo)}
-              color="danger"
-              variant="bordered"
-              aria-label="Reject photo"
-              className="h-9 w-9 rounded-full p-0 flex items-center justify-center transition-colors"
-            >
-              <ImCross size={16} />
-            </Button>
-          </div>
+        <div className="absolute bottom-3 left-1/2 z-50 flex -translate-x-1/2 items-center justify-center gap-2 rounded-full bg-white/95 px-2.5 py-2 shadow-sm shadow-default-100/50">
+          <Button
+            onClick={() => approve(photo.id)}
+            color="success"
+            variant="bordered"
+            aria-label="Approve photo"
+            className="h-9 w-9 rounded-full p-0 flex items-center justify-center transition-colors"
+          >
+            <ImCheckmark size={16} />
+          </Button>
+          <Button
+            onClick={() => reject(photo)}
+            color="danger"
+            variant="bordered"
+            aria-label="Reject photo"
+            className="h-9 w-9 rounded-full p-0 flex items-center justify-center transition-colors"
+          >
+            <ImCross size={16} />
+          </Button>
         </div>
       )}
     </div>
