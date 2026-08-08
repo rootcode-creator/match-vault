@@ -59,6 +59,10 @@
 
 It is designed as an MVP-friendly production-ready foundation for social/match applications.
 
+### 🎬 Demonstration
+
+Watch the demo video: https://www.youtube.com/watch?v=uLWm4DZINak
+
 ## 📁 Project structure
 
 ```txt
